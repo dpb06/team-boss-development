@@ -8,17 +8,20 @@ public abstract class Timeslot {
 	private int time;
 	private Day day;
 	private int maxStudents;
-	private ArrayList<Student> assigned;
+	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
-	
+	public Timeslot(int UID, int time, Day d, int maxStud){
+		this.uID=UID;
+		this.time=time;
+		this.day=d;
+		this.maxStudents=maxStud;
+	}
 	
 	
 	public int getuID() {
 		return uID;
 	}
-	public void setuID(int uID) {
-		this.uID = uID;
-	}
+	
 	public int getTime() {
 		return time;
 	}
