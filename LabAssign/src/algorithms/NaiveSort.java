@@ -5,41 +5,45 @@ import java.util.ArrayList;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class naiveSort {
+public class NaiveSort {
 
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	
-	public naiveSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
+	public NaiveSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
 		sort();
+		commandLineOutput();
 	}
 	
 	/**
 	 * 
 	 */
 	public void sort(){
+		//For every student
 		for (Student s : students){
-			//For every student
-			//Put into first first lab choice
-			  //Put first first choice into a variable
-			//Remove setter for Student.assignedLab/Student.assignedTut (Change to preassigned to remove ambiguity?)
-			  //Find choice in this.labs
-			  //Add student to this.labs.choice.assigned
-			
-			
+			//Put first first lab choice into a variable
 			Timeslot first = s.getFirstLabs().get(0);
-			s.setAssignedLabs(first);
+			//Find index of choice in this.labs
 			int index = labs.indexOf(first);
+			//Find this.labs.choice.assigned
 			Timeslot assign = labs.get(index);
-			
-			
+			//Add student to this.labs.choice.assigned
+			assign.addStudent(s);
 		}
 	}
 	
+	
+	public void commandLineOutput(){
+		//For every lab slot
+		for (Timeslot t : labs){
+		//Call labPrint method
+			t.timeslotPrint();
+		}	
+	}
 	
 	
 	
