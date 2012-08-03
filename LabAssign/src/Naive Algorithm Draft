@@ -1,9 +1,0 @@
-STUDENT:
- UID: int
- name: String
- assigned: arrayList<String>
- firsts: arrayList<String>
- seconds: arrayList<String>
- thirds: arrayList<String>
- cannotAttends: arrayList<String>
- 
