@@ -32,6 +32,9 @@ public class Student {
 	//students  cannot attend tut choice from blackboard survey
 	private	ArrayList<Timeslot> cannotAttendTuts = new ArrayList<Timeslot>();
 		
+	
+	
+	//Make UID automatically generated
 		public Student (int UID, String fname, String lname, int sNumb){
 			this.UID=UID;
 			this.firstName=fname;
@@ -39,6 +42,15 @@ public class Student {
 			this.studentNum=sNumb;
 		}
 	
+		
+
+		public void printStudent() {
+			//Print UID firstname lastname
+			System.out.printf("%d %s %s", getUID(), getFirstName(), getLastName());
+		}
+		
+		
+		
 		public void addFirstLab(Timeslot t){
 			this.firstLabs.add(t);
 		}
@@ -58,9 +70,13 @@ public class Student {
 		public void addThirdLab(Timeslot t){
 			this.thirdLabs.add(t);
 		}	
+
+		public void addAssignedLab(Timeslot t){
+			this.assignedLab = t;
+		}
 		
-		public void addAssignLab(Timeslot t){
-			this.thirdTuts.add(t);
+		public void addAssignedTut(Timeslot t){
+			this.assignedTut = t;
 		}
 		
 		public void addThirdTut(Timeslot t){
@@ -130,4 +146,5 @@ public class Student {
 		public ArrayList<Timeslot> getCannotAttendTuts() {
 			return cannotAttendTuts;
 		}
+
 }

@@ -4,7 +4,7 @@ public enum Day {
 
 	Monday,
 	Tuesday,
-	Wednesay,
+	Wednesday,
 	Thursday,
 	Friday,
 	Saturday,

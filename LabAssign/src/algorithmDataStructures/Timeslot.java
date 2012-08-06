@@ -18,6 +18,27 @@ public abstract class Timeslot {
 	}
 	
 	
+	
+
+
+	public void timeslotPrint() {
+		//Print time/day
+		System.out.printf("\n\n%s %d", getDay(), getTime());
+		//For every assigned student
+		for (int i = 0; i < getAssigned().size(); i++){
+			//If lab is oversize
+			if(i > maxStudents-1){
+				//Indent overflowed student print messages
+				System.out.printf("\n\t");
+			} else {
+				System.out.println();
+			}
+			//Print student details
+			assigned.get(i).printStudent();
+		}
+	}
+	
+	
 	public int getuID() {
 		return uID;
 	}
@@ -43,8 +64,9 @@ public abstract class Timeslot {
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}
-	public void setAssigned(ArrayList<Student> assigned) {
-		this.assigned = assigned;
+	public void addStudent(Student s) {
+		this.assigned.add(s);
 	}
+
 	
 }
