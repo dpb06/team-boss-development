@@ -23,13 +23,13 @@ public abstract class Timeslot {
 
 	public void timeslotPrint() {
 		//Print time/day
-		System.out.printf("%s %d\n", getDay(), getTime());
+		System.out.printf("\n\n%s %d", getDay(), getTime());
 		//For every assigned student
 		for (int i = 0; i < getAssigned().size(); i++){
 			//If lab is oversize
-			if(i > maxStudents){
+			if(i > maxStudents-1){
 				//Indent overflowed student print messages
-				System.out.println("\t");
+				System.out.printf("\n\t");
 			} else {
 				System.out.println();
 			}
