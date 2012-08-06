@@ -15,6 +15,8 @@ public class NaiveSortTest {
 	//Create list of Student objects
 	//Create list of Lab objects
 	//Create new NaiveSort
+		
+		new NaiveSort(labs, new ArrayList<Timeslot>(), students);
 
 	}
 	
