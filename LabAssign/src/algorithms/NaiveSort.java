@@ -17,6 +17,7 @@ public class NaiveSort {
 		this.tutorials = tutorials;
 		sort();
 		commandLineOutput();
+		new FitnessFuncitons(tutorials, students, labs);
 	}
 	
 	/**
@@ -34,6 +35,7 @@ public class NaiveSort {
 			//Add student to this.labs.choice.assigned
 			assign.addStudent(s);
 		}
+		
 	}
 	
 	
