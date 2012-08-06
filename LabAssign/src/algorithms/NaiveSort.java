@@ -11,17 +11,23 @@ public class NaiveSort {
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	
+	/**
+	 * Initializes a NaiveSort algorithm, sorts the students into their first choices, prints algorithm output, constructs a FitnessFunctions class to analyze fitness.
+	 * @param labs - A list of lab timeslots
+	 * @param tutorials - A list of tutorial timeslots
+	 * @param students - A list of Student objects, including identifying data and information about student choices
+	 */
 	public NaiveSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
 		sort();
 		commandLineOutput();
-		new FitnessFuncitons(tutorials, students, labs);
+		new FitnessFunctions(tutorials, students, labs);
 	}
 	
 	/**
-	 * 
+	 * Puts all students into the lab that appears first in their list of first choices. (changes are stored in the labs arraylist)
 	 */
 	public void sort(){
 		//For every student
@@ -35,10 +41,11 @@ public class NaiveSort {
 			//Add student to this.labs.choice.assigned
 			assign.addStudent(s);
 		}
-		
 	}
 	
-	
+	/**
+	 * Iterates the list of labs and prints details to console so we can track output.
+	 */
 	public void commandLineOutput(){
 		//For every lab slot
 		for (Timeslot t : labs){
