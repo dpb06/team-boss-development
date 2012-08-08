@@ -9,6 +9,10 @@ public class Student {
 	private	int UID;
 	private	String firstName;
 	private	String lastName;
+	private boolean oneChoiceLab=true;
+	private boolean oneChoiceTut=true;
+	private int numOfChoicesLab=0;
+	private int numOfChoicesTut=0;
 		//last 3 digits of a student number
 	private	int studentNum;
 	//final assigned lab slot
@@ -49,38 +53,73 @@ public class Student {
 			System.out.printf("%d %s %s", getUID(), getFirstName(), getLastName());
 		}
 		
+		/**
+		 * if a student has more than 1 choice for labs to attend set the onechoice boolean to false
+		 */
+		public void oneChoiceStudentLab(){
+			if (getnumOfChoiceLab() >1){
+				setOneChoiceStudentLab(false);				
+			}
+		}
+		/**
+		 * if a student has more than 1 tut set the one choice boolean to false
+		 */
+		public void oneChoiceStudentTut(){
+			if (getnumOfChoiceTut() >1){
+				setOneChoiceStudentTut(false);				
+			}
+		}
 		
+		private void setOneChoiceStudentLab(boolean b) {
+			this.oneChoiceLab=b;
+		}
+		
+		private void setOneChoiceStudentTut(boolean b) {
+			this.oneChoiceTut=b;
+		}
 		
 		public void addFirstLab(Timeslot t){
 			this.firstLabs.add(t);
-		}
-
-		public void addFirstTut(Timeslot t){
-			this.firstTuts.add(t);
+			numOfChoicesLab++;
+			oneChoiceStudentLab();
 		}
 		
 		public void addSecondLab(Timeslot t){
 			this.secondLabs.add(t);
-		}
-		
-		public void addSecondTut(Timeslot t){
-			this.secondTuts.add(t);
+			numOfChoicesLab++;
+			oneChoiceStudentLab();
 		}
 		
 		public void addThirdLab(Timeslot t){
 			this.thirdLabs.add(t);
-		}	
+			numOfChoicesLab++;
+			oneChoiceStudentLab();
+		}
 
+		public void addFirstTut(Timeslot t){
+			this.firstTuts.add(t);
+			numOfChoicesTut++;
+			oneChoiceStudentTut();
+		}
+		
+		public void addSecondTut(Timeslot t){
+			this.secondTuts.add(t);
+			numOfChoicesTut++;
+			oneChoiceStudentTut();
+		}
+		
+		public void addThirdTut(Timeslot t){
+			this.thirdTuts.add(t);
+			numOfChoicesTut++;
+			oneChoiceStudentTut();
+		}
+		
 		public void addAssignedLab(Timeslot t){
 			this.assignedLab = t;
 		}
 		
 		public void addAssignedTut(Timeslot t){
 			this.assignedTut = t;
-		}
-		
-		public void addThirdTut(Timeslot t){
-			this.thirdTuts.add(t);
 		}
 		
 		public void addCannotAttendLab(Timeslot t){
@@ -134,7 +173,7 @@ public class Student {
 		public ArrayList<Timeslot> getThirdLabs() {
 			return thirdLabs;
 		}
-
+		
 		public ArrayList<Timeslot> getThirdTuts() {
 			return thirdTuts;
 		}
@@ -146,5 +185,12 @@ public class Student {
 		public ArrayList<Timeslot> getCannotAttendTuts() {
 			return cannotAttendTuts;
 		}
+		
+		public int  getnumOfChoiceLab(){
+			return this.numOfChoicesLab;
+		}
 
+		public int  getnumOfChoiceTut(){
+			return this.numOfChoicesTut;
+		}
 }
