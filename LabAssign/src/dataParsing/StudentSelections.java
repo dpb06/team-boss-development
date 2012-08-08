@@ -9,7 +9,6 @@ public class StudentSelections {
 	List<StudentSelections> firstChoice = new ArrayList<StudentSelections>();
 	List<StudentSelections> secondChoice = new ArrayList<StudentSelections>();
 	List<StudentSelections> thirdChoice = new ArrayList<StudentSelections>();	
-
 	
 	int choicesCount;
 	
