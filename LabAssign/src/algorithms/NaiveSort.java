@@ -38,7 +38,6 @@ public class NaiveSort {
 		
 	}
 	
-	
 	public void commandLineOutput(){
 		//For every lab slot
 		for (Timeslot t : labs){
