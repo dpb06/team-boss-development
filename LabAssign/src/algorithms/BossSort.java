@@ -37,7 +37,21 @@ public class BossSort {
 		priority=new PriorityQueue<Student>(this.students.size(), new StudentComparator());
 	
 		priorityCalculator();
+		sort();
 		new FitnessFunctions(tutorials, students, labs);
+	}
+	public void sort(){
+		//For every student
+		for (Student s : priority){
+			//Put first first lab choice into a variable
+			Timeslot first = s.getFirstLabs().get(0);
+			//Find index of choice in this.labs
+			int index = labs.indexOf(first);
+			//Find this.labs.choice.assigned
+			Timeslot assign = labs.get(index);
+			//Add student to this.labs.choice.assigned
+			assign.addStudent(s);
+		}
 	}
 	//HashMap for each Student, linking each Timeslot to choice number
 	//Priority of Student in Student
@@ -54,13 +68,15 @@ public class BossSort {
 	int second;
 	int third;
 	for(Student s:students){
-		studentPri=s.getnumOfChoiceLab()*10;
+		studentPri=s.getnumOfChoiceLab()*1000;
 		first=s.getFirstLabs().size();
-		second=s.getFirstLabs().size()*2;
-		third=s.getFirstLabs().size()*3;
+		second=s.getSecondLabs().size()*2;
+		third=s.getThirdLabs().size()*3;
 		studentPri=studentPri*(first+second+third);
+		studentPri = studentPri + ((int) (Math.random()*1000));
 		s.setPriority(studentPri);
 		priority.add(s);
+		System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
 	}
 	
 	//How many choices in total do they have? (More = higher priority)
