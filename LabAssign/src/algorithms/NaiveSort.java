@@ -17,7 +17,7 @@ public class NaiveSort {
 		this.tutorials = tutorials;
 		sort();
 		commandLineOutput();
-		new FitnessFuncitons(tutorials, students, labs);
+		new FitnessFunctions(tutorials, students, labs);
 	}
 	
 	/**
@@ -37,7 +37,6 @@ public class NaiveSort {
 		}
 		
 	}
-	
 	
 	public void commandLineOutput(){
 		//For every lab slot

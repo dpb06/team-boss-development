@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class FitnessFuncitons {
+public class FitnessFunctions {
 	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
@@ -18,7 +18,7 @@ public class FitnessFuncitons {
 	private float secondChoice;
 	private float thirdChoice;
 	
-	public FitnessFuncitons(ArrayList<Timeslot> tut, ArrayList<Student>student,ArrayList<Timeslot> labs){
+	public FitnessFunctions(ArrayList<Timeslot> tut, ArrayList<Student>student,ArrayList<Timeslot> labs){
 		this.students=student;
 		this.labs=labs;
 		this.tutorials=tut;
