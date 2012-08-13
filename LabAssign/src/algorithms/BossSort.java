@@ -1,10 +1,21 @@
 package algorithms;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+import algorithmDataStructures.Student;
+import algorithmDataStructures.Timeslot;
+
 public class BossSort {
 
 	
 	/**
 	 *  Picking students - how do we order this? (Possibly parse straight into PriorityQueue?)
+	 *  		-Priority 1 students who only have 1 choice
+	 *  		-Priority 2 Students who only have 2-3 choices
+	 *  		-Priority 3 students who have more than 3 choices 
+	 *  
 	 *  What happens if a student can only attend one lab? (Note they might not list this as a first)
 	 *  If a lab is overfilled, who do we move first?
 	 *  If a lab is overfilled, how do find students with more first choices? (PriorityQueue/Stack for Timeslot data structure)
@@ -14,9 +25,52 @@ public class BossSort {
 	 *  What ranges/weights do we need for our fitness functions?
 	 *  
 	 */
+	private ArrayList<Student> students;
+	private ArrayList<Timeslot> labs;
+	private ArrayList<Timeslot> tutorials;
+	private PriorityQueue<Student> priority;
 	
+	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
+		this.students = students;
+		this.labs = labs;
+		this.tutorials = tutorials;
+		priority=new PriorityQueue<Student>(this.students.size(), new StudentComparator());
 	
+		priorityCalculator();
+		new FitnessFunctions(tutorials, students, labs);
+	}
+	//HashMap for each Student, linking each Timeslot to choice number
+	//Priority of Student in Student
+	//PriorityQueue of Students to be assigned in BossSort (Low points = high priority)
 
+
+
+	//Before finding priority, if a Student has no first choices, bump up all their choices.
+	//Flag every Student that has their choices bumped.
+	
+	private void priorityCalculator() {
+	int studentPri;
+	int first;
+	int second;
+	int third;
+	for(Student s:students){
+		studentPri=s.getnumOfChoiceLab()*10;
+		first=s.getFirstLabs().size();
+		second=s.getFirstLabs().size()*2;
+		third=s.getFirstLabs().size()*3;
+		studentPri=studentPri*(first+second+third);
+		s.setPriority(studentPri);
+		priority.add(s);
+	}
+	
+	//How many choices in total do they have? (More = higher priority)
+	//How many first choices do they have? (More = lower priority)
+    	//How many second choices do they have? (More = lower priority)
+	        //How many third choices do they have? (More = lower priority)
+	
+	}
+	
+	
 	//Randomly pick first choices
 	  //Make a list for each lab containing students assigned to that lab who have more first choices 
 	//Balanced out overflowed labs
