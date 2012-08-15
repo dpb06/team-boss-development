@@ -37,8 +37,15 @@ public class BossSort {
 		priority=new PriorityQueue<Student>(this.students.size(), new StudentComparator());
 	
 		priorityCalculator();
-		sort();
 		new FitnessFunctions(tutorials, students, labs);
+
+		checkQueue();
+	}
+	private void checkQueue() {
+		while(priority.size() > 0){
+		Student s = priority.poll();
+		System.out.printf("%s, %d\n", s.getFirstName(), s.getPriority());
+		}
 	}
 	public void sort(){
 		//For every student
@@ -73,9 +80,9 @@ public class BossSort {
 		second=s.getSecondLabs().size()*2;
 		third=s.getThirdLabs().size()*3;
 		studentPri=studentPri*(first+second+third);
-		studentPri = studentPri + ((int) (Math.random()*1000));
+		studentPri = studentPri+ ((int) (Math.random()*1000));
 		s.setPriority(studentPri);
-		priority.add(s);
+		priority.offer(s);
 		System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
 	}
 	
