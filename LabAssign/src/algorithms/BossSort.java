@@ -9,7 +9,7 @@ import algorithmDataStructures.Timeslot;
 
 public class BossSort {
 
-	
+
 	/**
 	 *  Picking students - how do we order this? (Possibly parse straight into PriorityQueue?)
 	 *  		-Priority 1 students who only have 1 choice
@@ -29,36 +29,120 @@ public class BossSort {
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	private PriorityQueue<Student> priority;
-	
+	private ArrayList<Timeslot> notFull = new ArrayList<Timeslot>();
+
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
 		priority=new PriorityQueue<Student>(this.students.size(), new StudentComparator());
-	
+
 		priorityCalculator();
+		sort();
 		new FitnessFunctions(tutorials, students, labs);
 
 		checkQueue();
 	}
 	private void checkQueue() {
 		while(priority.size() > 0){
-		Student s = priority.poll();
-		System.out.printf("%s, %d\n", s.getFirstName(), s.getPriority());
+			Student s = priority.poll();
+			System.out.printf("%s, %d\n", s.getFirstName(), s.getPriority());
 		}
 	}
 	public void sort(){
-		//For every student
-		for (Student s : priority){
-			//Put first first lab choice into a variable
-			Timeslot first = s.getFirstLabs().get(0);
-			//Find index of choice in this.labs
-			int index = labs.indexOf(first);
-			//Find this.labs.choice.assigned
-			Timeslot assign = labs.get(index);
-			//Add student to this.labs.choice.assigned
-			assign.addStudent(s);
+		//Create list of labs that can be added to.
+		for (Timeslot t : labs){
+			notFull.add(t);
 		}
+		//For every student (in priority order)
+		for (Student s : priority){
+			//1	//Find first choice labs
+			//Check if those labs can be chosen (are in list of labs that aren't full)
+			ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
+			//If there are more than one
+			//Randomize
+			boolean success=false;
+			while(!success){
+				while(choices.size() > 0){
+
+					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					//Try to add student to chosen lab
+					
+					if(choice.addStudent(s)){
+						s.addAssignedLab(choice);
+						success=true;
+						
+						break;
+					}
+					//If returns false
+					if (!success){
+						//Remove lab from list of labs that can be added to
+						notFull.remove(choice);
+					}
+
+				}
+				choices= checkLabs(s.getSecondLabs());
+				while(choices.size()>0){
+
+					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					//Try to add student to chosen lab
+					if(choice.addStudent(s)){
+						s.addAssignedLab(choice);
+						success=true;
+						break;
+					}
+					//If returns false
+					if (!success){
+						//Remove lab from list of labs that can be added to
+						notFull.remove(choice);
+					}
+				}
+
+				choices= checkLabs(s.getThirdLabs());
+				while(choices.size()>0){
+
+					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					//Try to add student to chosen lab
+					if(choice.addStudent(s)){
+						s.addAssignedLab(choice);
+						success=true;
+						break;
+					}
+					//If returns false
+					if (!success){
+						//Remove lab from list of labs that can be added to
+						notFull.remove(choice);
+					}
+
+				}
+			}
+			//Return to 1
+			//Else go to next student
+
+			//If there are no first choice labs
+			//Use second choices
+			//If there are no second choices
+			//Use third choices
+			//If there are no third choices
+			//Throw an alert and ignore this student - move onto next student
+
+
+
+			//In situations where there are two labs to choose from
+			//Randomise? (For naive BossSort)
+			//Check which lab is less full (percentage)
+			//Check how each choice will immediate affect the fitness function
+			//Check how each choice will affect the fitness function of each resulting possibility after placing the student in that choice. 
+
+		}
+	}
+	private ArrayList<Timeslot> checkLabs(ArrayList<Timeslot> labs) {
+		for (Timeslot t : labs){
+			if (!notFull.contains(t)){
+				labs.remove(t);
+			}
+		}
+		return labs;
 	}
 	//HashMap for each Student, linking each Timeslot to choice number
 	//Priority of Student in Student
@@ -68,43 +152,43 @@ public class BossSort {
 
 	//Before finding priority, if a Student has no first choices, bump up all their choices.
 	//Flag every Student that has their choices bumped.
-	
-	private void priorityCalculator() {
-	int studentPri;
-	int first;
-	int second;
-	int third;
-	for(Student s:students){
-		studentPri=s.getnumOfChoiceLab()*1000;
-		first=s.getFirstLabs().size();
-		second=s.getSecondLabs().size()*2;
-		third=s.getThirdLabs().size()*3;
-		studentPri=studentPri*(first+second+third);
-		studentPri = studentPri+ ((int) (Math.random()*1000));
-		s.setPriority(studentPri);
-		priority.offer(s);
-		System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
-	}
-	
-	//How many choices in total do they have? (More = higher priority)
-	//How many first choices do they have? (More = lower priority)
-    	//How many second choices do they have? (More = lower priority)
-	        //How many third choices do they have? (More = lower priority)
-	
-	}
-	
-	
-	//Randomly pick first choices
-	  //Make a list for each lab containing students assigned to that lab who have more first choices 
-	//Balanced out overflowed labs
-	  //Randomly pick first choices
-	
-	
-	
 
-	
-	
-	
+	private void priorityCalculator() {
+		int studentPri;
+		int first;
+		int second;
+		int third;
+		for(Student s:students){
+			studentPri=s.getnumOfChoiceLab()*1000;
+			first=s.getFirstLabs().size();
+			second=s.getSecondLabs().size()*2;
+			third=s.getThirdLabs().size()*3;
+			studentPri=studentPri*(first+second+third);
+			studentPri = studentPri+ ((int) (Math.random()*1000));
+			s.setPriority(studentPri);
+			priority.offer(s);
+			System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
+		}
+
+		//How many choices in total do they have? (More = higher priority)
+		//How many first choices do they have? (More = lower priority)
+		//How many second choices do they have? (More = lower priority)
+		//How many third choices do they have? (More = lower priority)
+
+	}
+
+
+	//Randomly pick first choices
+	//Make a list for each lab containing students assigned to that lab who have more first choices 
+	//Balanced out overflowed labs
+	//Randomly pick first choices
+
+
+
+
+
+
+
 	/*Default algorithm (suggested by Vex)
 
 	Point system:
@@ -142,8 +226,8 @@ public class BossSort {
 	 2) Choice has less overall points in it
 	Same points:
 	 1) Random
-	 
-	 
+
+
 	 Possible priority clashes:
 		 All lab attendees cannot attend any other labs. (Not gonna happen)
 		 Clashing attendees have no other choices.
@@ -161,9 +245,9 @@ public class BossSort {
 		 Time slots are very unevenly allocated
 
 
-	*/
-	
-	
-	
-	
+	 */
+
+
+
+
 }

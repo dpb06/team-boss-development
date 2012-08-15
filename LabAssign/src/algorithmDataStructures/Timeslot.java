@@ -38,7 +38,6 @@ public abstract class Timeslot {
 		}
 	}
 	
-	
 	public int getuID() {
 		return uID;
 	}
@@ -64,8 +63,13 @@ public abstract class Timeslot {
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}
-	public void addStudent(Student s) {
+	public boolean addStudent(Student s) {
+		if (assigned.size() >= maxStudents){
+			return false;
+		} else {
 		this.assigned.add(s);
+		return true;
+		}
 	}
 
 	
