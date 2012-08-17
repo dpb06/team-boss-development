@@ -3,12 +3,14 @@ package UI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,7 +23,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -34,7 +35,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private JFrame frame;
 	private JMenuBar menuBar;
 	//private Graphics g;
-	
+	private int NUM_SESSIONS = 12;
 	private JPanel southButtonPanel;
 	
 	private JTextArea textArea;
@@ -99,26 +100,30 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		fileAlgoPanel.add(runButton);
 
 		frame.add(fileAlgoPanel, BorderLayout.CENTER);
-
-		// informational text area
-		textArea = new JTextArea(10, 80);
-		textArea.setLineWrap(true);
+		// gridPanel contains the the text areas for maximum sizes
+		JPanel gridPanel = new JPanel();
+		gridPanel.setBackground(Color.GRAY);
+		gridPanel.setLayout(new GridLayout(5,NUM_SESSIONS,2,2));
+		gridPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		JTextArea[] maxSizes = new JTextArea[NUM_SESSIONS];
+		for (int session = 0; session<NUM_SESSIONS; session++){
+			(maxSizes[session] =  new JTextArea(1,1)).setEditable(true);		
+			//Possible initial value?
+			//maxSizes[session].setText(val);
+			gridPanel.add(maxSizes[session]);
+		}
+		for (int session = 0; session<NUM_SESSIONS; session++){
+			gridPanel.add(new JLabel("Session "+(session+1)));
+		}
+		
+		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
-		textArea.scrollRectToVisible(getBounds());
-		JScrollPane scroll = new JScrollPane(textArea);
-		scroll.setPreferredSize(textArea.getPreferredScrollableViewportSize());
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 		
-		// southPanel contains the textArea and second panel of buttons
-		JPanel southPanel = new JPanel();
-		southPanel.setLayout(new BorderLayout());
-
 
 		// adding the text area to the south panel
-		southPanel.add(scroll, BorderLayout.SOUTH);
 
-		frame.add(southPanel, BorderLayout.SOUTH);
+		frame.add(gridPanel, BorderLayout.SOUTH);
 
 		frame.pack();
 		frame.setVisible(true);
