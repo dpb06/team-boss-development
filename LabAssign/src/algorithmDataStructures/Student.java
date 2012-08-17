@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 
-public class Student implements Comparator{
+public class Student implements Comparable{
 
 	private	int UID;
 	private	String firstName;
@@ -226,25 +226,21 @@ public class Student implements Comparator{
 	}
 
 
-
-	@Override
-	public int compare(Object o1, Object o2) {
+@Override
+	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		Student s1;
-		Student s2;
-		if(o1 instanceof Student && o2 instanceof Student ){
-			s1=(Student)o1;
-			s2=(Student)o2;
-
-			if(s1.getPriority()>s2.getPriority()){
+		if( o instanceof Student){
+			Student s1= (Student)o;
+			if(this.getPriority()>s1.getPriority()){
 				return 1;
 			}
-			if(s1.getPriority()<s2.getPriority()){
-				return -1;
+			else if(this.getPriority()==s1.getPriority()){
+				return 0;
 			}
-			return 0;
+			else
+			return -1;	
 		}
-		return -1;
+		return 0;
 	}
 
 
