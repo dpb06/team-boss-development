@@ -9,7 +9,7 @@ public class DataTimeslot extends Timeslot {
 
 		
 		public DataTimeslot(int UID, int startTime, int endTime, Day d){
-			super(UID, startTime,endTime, d, 0);
+			super(UID, startTime,endTime, d, 20);
 			
 			
 		}

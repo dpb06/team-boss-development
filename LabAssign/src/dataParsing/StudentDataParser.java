@@ -66,21 +66,16 @@ public class StudentDataParser {
 	}
 	
 	
-	public StudentDataParser(File f)  {
+	public StudentDataParser(File f) throws FileNotFoundException  {
 
 		String startText = "";
-		Scanner scan;
-		try {
-			scan = new Scanner(f);
-			while(scan.hasNext()){
-				startText += scan.nextLine();
-				System.out.println(startText);
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		Scanner scan = new Scanner(f);
+		while(scan.hasNext()){
+			String t = scan.nextLine();
+			startText += " "+t;
 		}
-
+		
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
@@ -225,8 +220,9 @@ public class StudentDataParser {
 				if(iTimeEnd == -1){
 					throw new IllegalArgumentException("Expected a time as the fourth token in: "+token);
 				}
-			
-			timeslots.add(new DataTimeslot(quID, iTimeStart, iTimeEnd, eDay));
+			Timeslot t = new DataTimeslot(quID, iTimeStart, iTimeEnd, eDay);
+			t.setMaxStudents(20);
+			timeslots.add(t);
 			}
 		}
 		return timeslots;
