@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public abstract class Timeslot {
 	
 	private int uID;
-	private int time;
+	private int timeStart;
+	private int timeEnd;
 	private Day day;
 	private int maxStudents;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
-	public Timeslot(int UID, int time, Day d, int maxStud){
+	public Timeslot(int UID, int timeS,int timeE, Day d, int maxStud){
 		this.uID=UID;
-		this.time=time;
+		this.timeStart=timeS;
+		this.timeEnd=timeE;
 		this.day=d;
 		this.maxStudents=maxStud;
 	}
@@ -42,11 +44,17 @@ public abstract class Timeslot {
 		return uID;
 	}
 	
-	public int getTime() {
-		return time;
+	public int getStartTime() {
+		return timeStart;
 	}
-	public void setTime(int time) {
-		this.time = time;
+	public int getEndTime() {
+		return timeEnd;
+	}
+	public void setStartTime(int time) {
+		this.timeStart = time;
+	}
+	public void setEndTime(int time) {
+		this.timeEnd = time;
 	}
 	public Day getDay() {
 		return day;
