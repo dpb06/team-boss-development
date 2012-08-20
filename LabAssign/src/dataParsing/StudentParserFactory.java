@@ -30,7 +30,7 @@ public class StudentParserFactory {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException{
-		File f = new File("ExampleData-Cleaned");
+		File f = new File("src/ExampleData-Cleaned");
 		
 		StudentDataParser sdp = new StudentDataParser(f);
 		List<Timeslot> test = sdp.getTimeslots();
