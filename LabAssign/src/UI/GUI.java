@@ -1,23 +1,18 @@
 package UI;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
-import java.text.AttributedCharacterIterator;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -35,6 +30,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+
+import algorithmDataStructures.Student;
+import algorithmDataStructures.Timeslot;
+import algorithms.BossSort;
+import dataParsing.StudentDataParser;
 
 /**
  * @author Haydn Newport and Barbara MacKenzie
@@ -76,12 +76,20 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		fileText.setMaximumSize(new Dimension(500, 20));
 		JButton fileButton = new JButton("Browse");
 		JButton runButton = new JButton("Run");
+		runButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doRun();				
+			}
+		});
 		fileButton.setBounds(0, 0, 50, 20);
 		fileButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Make this start in the text field path
+				//TODO: MAKE HANDLE NULL RETURNS
 				JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(fileText);
 				fileText.setText(fc.getSelectedFile().getAbsolutePath());
@@ -135,15 +143,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 		//Finish the panel, pack and display
-		
+		JPanel eastPanel = new JPanel();
+		eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
+		eastPanel.add(new JLabel("This is the east panel"));
 		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));		
-		//createMenu();
-		//topPanel.add(menuBar);
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);	
 		topPanel.add(gridPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
-		
+		frame.add(eastPanel, BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -183,6 +191,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		GUI g = new GUI();
 	}
 
+	public void doRun(){
+		try {
+			StudentDataParser parser  = new StudentDataParser(new File(fileText.getText()));
+			List<Timeslot> slots = parser.getTimeslots();
+			List<Student> students = parser.parseSelections(slots);
+			new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
