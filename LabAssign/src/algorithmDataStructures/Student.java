@@ -241,13 +241,6 @@ public class Student implements Comparable{
 			return 0;	
 		}
 		return 0;
-//try{
-//	Student s= (Student)o;
-//	return this.getPriority()-s.getPriority();
-//}catch(Exception e){
-//	e.printStackTrace();
-//	return 0;
-//}
 	}
 
 

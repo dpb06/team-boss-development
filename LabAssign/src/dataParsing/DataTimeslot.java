@@ -7,13 +7,10 @@ public class DataTimeslot extends Timeslot {
 
 	
 
-
-
 		
-		private int endTime;
 		public DataTimeslot(int UID, int startTime, int endTime, Day d){
-			super(UID, startTime, d, 0);
-			this.endTime=endTime;
+			super(UID, startTime,endTime, d, 0);
+			
 			
 		}
 		
@@ -23,10 +20,9 @@ public class DataTimeslot extends Timeslot {
 
 		public void dataTimeslotPrint() {
 			//Print time/day
-			System.out.printf("\n\n%s %d", getDay(), getTime());
+			System.out.printf("\n\n%s %d %d", getDay(), getStartTime(),getEndTime());
 			//For every assigned student
 		}
-		
 		
 
 

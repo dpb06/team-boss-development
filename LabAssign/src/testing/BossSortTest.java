@@ -17,9 +17,9 @@ public class BossSortTest {
 	//Create list of Student objects
 	//Create list of Lab objects
 	//Create new BossSort
-		labs.add(new Lab(1, 1310, Day.Monday, 2));
-		labs.add(new Lab(2, 1310, Day.Tuesday, 2));
-		labs.add(new Lab(3, 1310, Day.Wednesday, 2));
+		labs.add(new Lab(1, 1310,1510, Day.Monday, 2));
+		labs.add(new Lab(2, 1310,1510, Day.Tuesday, 2));
+		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, 2));
 		String first = "a";
 		String last = "z";
 		for(int i=0; i<10; i++){

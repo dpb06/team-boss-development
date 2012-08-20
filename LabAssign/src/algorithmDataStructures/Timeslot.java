@@ -25,7 +25,7 @@ public abstract class Timeslot {
 
 	public void timeslotPrint() {
 		//Print time/day
-		System.out.printf("\n\n%s %d", getDay(), getTime());
+		System.out.printf("\n\n%s %d %d", getDay(), getStartTime(),getEndTime());
 		//For every assigned student
 		for (int i = 0; i < getAssigned().size(); i++){
 			//If lab is oversize
@@ -42,7 +42,7 @@ public abstract class Timeslot {
 	
 
 	public String toString(){
-		return uID +":  "+ time+ " ";
+		return uID +":  "+ timeStart+ " - "+timeEnd ;
 	}
 	
 	
