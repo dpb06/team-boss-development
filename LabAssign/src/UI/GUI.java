@@ -1,14 +1,23 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -34,17 +43,17 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	// Parameters
 	private JFrame frame;
 	private JMenuBar menuBar;
-	//private Graphics g;
+	// private Graphics g;
 	private int NUM_SESSIONS = 12;
-	private JPanel southButtonPanel;
-	
+
 	private JTextArea textArea;
 	private final JTextField fileText;
 
-	// currently this sets up all the graphical user interface.  I'll later break it up into component methods
-	public GUI(){
+	// currently this sets up all the graphical user interface. I'll later break
+	// it up into component methods
+	public GUI() {
 		frame = new JFrame();
-		BorderLayout l = new BorderLayout();
+		BorderLayout l = new BorderLayout(4,4);
 		frame.setLayout(l);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -61,29 +70,29 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		int width = 500;
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
-		fileAlgoPanel.setBackground(Color.CYAN);
-		
+		//fileAlgoPanel.setBackground(Color.CYAN);
+
 		fileText = new JTextField("File Name here....", 10);
-		fileText.setMaximumSize(new Dimension(500,20));
+		fileText.setMaximumSize(new Dimension(500, 20));
 		JButton fileButton = new JButton("Browse");
 		JButton runButton = new JButton("Run");
 		fileButton.setBounds(0, 0, 50, 20);
 		fileButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Make this start in the text field path
+				// TODO: Make this start in the text field path
 				JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(fileText);
 				fileText.setText(fc.getSelectedFile().getAbsolutePath());
-				
+
 			}
 		});
-		
+
 		fileAlgoPanel.add(new JLabel("File    "));
 		fileAlgoPanel.add(fileText);
 		fileAlgoPanel.add(fileButton);
-		
+
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
@@ -92,86 +101,100 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		algoRadios[0] = new JRadioButton("Naive");
 		algoRadios[1] = new JRadioButton("Naive1");
 		algoRadios[2] = new JRadioButton("Naive3");
-		for (JRadioButton b : algoRadios){
+		for (JRadioButton b : algoRadios) {
 			algoGroup.add(b);
 			algoSelect.add(b);
 		}
 		fileAlgoPanel.add(algoSelect);
 		fileAlgoPanel.add(runButton);
 
-		frame.add(fileAlgoPanel, BorderLayout.CENTER);
+		
 		// gridPanel contains the the text areas for maximum sizes
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(Color.GRAY);
-		gridPanel.setLayout(new GridLayout(5,NUM_SESSIONS,2,2));
+		gridPanel.setLayout(new GridLayout(2, NUM_SESSIONS, 2, 2));
 		gridPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		JTextArea[] maxSizes = new JTextArea[NUM_SESSIONS];
-		for (int session = 0; session<NUM_SESSIONS; session++){
-			(maxSizes[session] =  new JTextArea(1,1)).setEditable(true);		
-			//Possible initial value?
-			//maxSizes[session].setText(val);
+		for (int session = 0; session < NUM_SESSIONS; session++) {
+			(maxSizes[session] = new JTextArea(1, 1)).setEditable(true);
+			// Possible initial value?
+			// maxSizes[session].setText(val);
 			gridPanel.add(maxSizes[session]);
 		}
-		for (int session = 0; session<NUM_SESSIONS; session++){
-			gridPanel.add(new JLabel("Session "+(session+1)));
+		// Add labels to inputs
+		for (int session = 0; session < NUM_SESSIONS; session++) {
+			gridPanel.add(new JLabel("Session " + (session + 1)));
 		}
 		
+		Comp102Canvas canvas = new Comp102Canvas();
+		canvas.setBackground(Color.black);
+		frame.add(canvas, BorderLayout.WEST);
+		canvas.addNotify();
+		canvas.drawOval(10,10,100,100,true);
+
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
-
+		//Finish the panel, pack and display
 		
-
-		// adding the text area to the south panel
-
-		frame.add(gridPanel, BorderLayout.SOUTH);
-
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));		
+		//createMenu();
+		//topPanel.add(menuBar);
+		topPanel.add(fileAlgoPanel);	
+		topPanel.add(gridPanel);
+		frame.add(topPanel, BorderLayout.NORTH);
+		
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	/** Self explanatory.  Builds the menu used by the game **/
-	public void createMenu(){
+	/** Self explanatory. Builds the menu used by the game **/
+	public void createMenu() {
 		// Menu bar for the game
 		menuBar = new JMenuBar();
-
+		menuBar.setAlignmentX(JMenuBar.LEFT_ALIGNMENT);
 		// first chain of menus
 		JMenu file = new JMenu("File");
-		file.setMnemonic(KeyEvent.VK_F);	// KeyEvents create hot-key shortcuts
-		file.getAccessibleContext().setAccessibleDescription("The only menu in this program that has menu items");
+		file.setMnemonic(KeyEvent.VK_F); // KeyEvents create hot-key shortcuts
+		file.getAccessibleContext().setAccessibleDescription(
+				"The only menu in this program that has menu items");
 		menuBar.add(file);
 
 		// 'New Game' menu option
 		JMenuItem newGame = new JMenuItem("New Game");
-		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
-		newGame.getAccessibleContext().setAccessibleDescription("Doesn't do anything yet!");	//TODO:
+		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				ActionEvent.ALT_MASK));
+		newGame.getAccessibleContext().setAccessibleDescription(
+				"Doesn't do anything yet!"); // TODO:
 		newGame.addActionListener(this);
 		file.add(newGame);
 		// 'Close' menu option
 		JMenuItem close = new JMenuItem("Close");
-		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
-		close.getAccessibleContext().setAccessibleDescription("Will eventually close the game!");	//TODO:
+		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
+				ActionEvent.ALT_MASK));
+		close.getAccessibleContext().setAccessibleDescription(
+				"Will eventually close the game!"); // TODO:
 		close.addActionListener(this);
 		file.add(close);
-
-		menuBar.add(new JMenuItem("Game"));	// probably not needed but I'm leaving it here for now...
-
-		frame.add(menuBar, BorderLayout.NORTH);
 	}
 
 	/** main method **/
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		GUI g = new GUI();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getActionCommand().equals("New Game")){
+		if (e.getActionCommand().equals("New Game")) {
 			// start a new game
-		} else if(e.getActionCommand().equals("Close")){
+		} else if (e.getActionCommand().equals("Close")) {
 			// close the current game
-			int q = JOptionPane.showConfirmDialog(this, new JLabel("Are you sure you want to\nclose this application?"), "Close", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			if(q == 0){
+			int q = JOptionPane.showConfirmDialog(this, new JLabel(
+					"Are you sure you want to\nclose this application?"),
+					"Close", JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (q == 0) {
 				frame.dispose();
 				System.exit(0);
 			}
