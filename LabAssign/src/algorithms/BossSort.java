@@ -41,13 +41,16 @@ public class BossSort {
 		priorityCalculator();
 		sort();
 		new FitnessFunctions(tutorials, students, labs);
-
-		checkQueue();
+		
+		guiOutPut();
 	}
-	private void checkQueue() {
-		while(priority.size() > 0){
-			Student s = priority.poll();
-			System.out.printf("%s, %d\n", s.getFirstName(), s.getPriority());
+	private void guiOutPut() {
+		// TODO Auto-generated method stub
+		for(Timeslot t:labs){
+			System.out.println(t.getDay());
+			for(Student s: t.getAssigned()){
+				System.out.println(s.getFirstName());
+			}
 		}
 	}
 
@@ -58,17 +61,23 @@ public class BossSort {
 			notFull.add(t);
 		}
 		//For every student (in priority order)
-		for (Student s : priority){
+		int eachstudent = 0;
+		int assignedloop = 0;
+		int choicesloop = 0;
+		while(priority.size() > 0){
+			Student s=priority.poll();
+			System.out.println("students: " + eachstudent++);
 			System.out.println("student priority: "+s.getPriority());
 			//WHILE assigned = false
 			boolean assigned = false;
-			while(!assigned){
+			while(!assigned ){
+				System.out.println("assigned : " + assignedloop++);
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
 				ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
 				//If the list is now empty
 				while(choices.size() > 0){
-					choices = checkLabs(s.getFirstLabs());
+					System.out.println("Choices : " + choicesloop++);
 					System.out.println("First");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
@@ -77,7 +86,6 @@ public class BossSort {
 						System.out.println(choice.getDay());
 						System.out.println("student added");
 						//If successful, assigned = true
-						choices=new ArrayList<Timeslot>();
 						assigned = true;
 						break;
 					}
@@ -85,6 +93,8 @@ public class BossSort {
 					else {
 						//Remove lab from list of labs that aren't full
 						notFull.remove(choice);
+						choices.remove(choice);
+						
 					}
 				}
 				//If assigned, break outer loop.
@@ -94,17 +104,18 @@ public class BossSort {
 
 				//Create a list of second choices
 				//Check if those choices are in the list of labs that aren't full
-				choices = checkLabs(s.getSecondLabs());
+				synchronized (s) {
+				ArrayList<Timeslot> choiceSecond = checkLabs(s.getSecondLabs());
 				//If the list is now empty
-				while(choices.size() > 0){
-					choices = checkLabs(s.getSecondLabs());
+				System.out.println("hi");
+				while(choiceSecond.size() > 0){
+					System.out.println("hello");
 					System.out.println("second");
 					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					Timeslot choice = choiceSecond.get((int) (Math.random()*choiceSecond.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
 						//If successful, assigned = true
-						choices=new ArrayList<Timeslot>();
 						assigned = true;
 						break;
 					}
@@ -112,7 +123,9 @@ public class BossSort {
 					else {
 						//Remove lab from list of labs that aren't full
 						notFull.remove(choice);
+						choiceSecond.remove(choice);
 					}
+				}
 				}
 				//If assigned, break outer loop.
 				if(assigned){
@@ -121,17 +134,17 @@ public class BossSort {
 
 				//Create a list of third choices
 				//Check if those choices are in the list of labs that aren't full
-				choices = checkLabs(s.getThirdLabs());
+				synchronized (s) {
+									ArrayList<Timeslot>choiceThird = checkLabs(s.getThirdLabs());
+			
 				//If the list is now empty
-				while(choices.size() > 0){
-					choices = checkLabs(s.getThirdLabs());
+				while(choiceThird.size() > 0){
 					System.out.println("third choice");
 					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					Timeslot choice = choiceThird.get((int) (Math.random()*choiceThird.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
 						//If successful, assigned = true
-						choices=new ArrayList<Timeslot>();
 						assigned = true;
 
 						break;
@@ -140,7 +153,9 @@ public class BossSort {
 					else {
 						//Remove lab from list of labs that aren't full
 						notFull.remove(choice);
+						choiceThird.remove(choice);
 					}
+				}
 				}
 				//If assigned, break outer loop.
 				if(assigned){
@@ -161,107 +176,13 @@ public class BossSort {
 				//If that choice is full
 				if (!notFull.contains(t)){
 					//Remove that choice from the list
-					choices.remove(t);
+					//choices.remove(t);
 				}
 			}
 			//Return the altered list
 			return choices;
 		}
-	//	public void sort(){
-	//		//Create list of labs that can be added to.
-	//		for (Timeslot t : labs){
-	//			notFull.add(t);
-	//		}
-	//		//For every student (in priority order)
-	//		for (Student s : priority){
-	//			//1	//Find first choice labs
-	//			//Check if those labs can be chosen (are in list of labs that aren't full)
-	//			ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
-	//			//If there are more than one
-	//			//Randomize
-	//			boolean success=false;
-	//			while(!success){
-	//				while(choices.size() > 0){
-	//
-	//					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
-	//					//Try to add student to chosen lab
-	//					
-	//					if(choice.addStudent(s)){
-	//						s.addAssignedLab(choice);
-	//						success=true;
-	//						
-	//						break;
-	//					}
-	//					//If returns false
-	//					if (!success){
-	//						//Remove lab from list of labs that can be added to
-	//						notFull.remove(choice);
-	//					}
-	//
-	//				}
-	//				choices= checkLabs(s.getSecondLabs());
-	//				while(choices.size()>0){
-	//
-	//					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
-	//					//Try to add student to chosen lab
-	//					if(choice.addStudent(s)){
-	//						s.addAssignedLab(choice);
-	//						success=true;
-	//						break;
-	//					}
-	//					//If returns false
-	//					if (!success){
-	//						//Remove lab from list of labs that can be added to
-	//						notFull.remove(choice);
-	//					}
-	//				}
-	//
-	//				choices= checkLabs(s.getThirdLabs());
-	//				while(choices.size()>0){
-	//
-	//					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
-	//					//Try to add student to chosen lab
-	//					if(choice.addStudent(s)){
-	//						s.addAssignedLab(choice);
-	//						success=true;
-	//						break;
-	//					}
-	//					//If returns false
-	//					if (!success){
-	//						//Remove lab from list of labs that can be added to
-	//						notFull.remove(choice);
-	//					}
-	//
-	//				}
-	//			}
-	//			//Return to 1
-	//			//Else go to next student
-	//
-	//			//If there are no first choice labs
-	//			//Use second choices
-	//			//If there are no second choices
-	//			//Use third choices
-	//			//If there are no third choices
-	//			//Throw an alert and ignore this student - move onto next student
-	//
-	//
-	//
-	//			//In situations where there are two labs to choose from
-	//			//Randomise? (For naive BossSort)
-	//			//Check which lab is less full (percentage)
-	//			//Check how each choice will immediate affect the fitness function
-	//			//Check how each choice will affect the fitness function of each resulting possibility after placing the student in that choice. 
-	//
-	//		}
-	//	}
-//	private ArrayList<Timeslot> checkLabs(ArrayList<Timeslot> labs) {
-//		for (Timeslot t : labs){
-//			if (!notFull.contains(t)){
-//				labs.remove(t);
-//			}
-//		}
-//		return labs;
-//	}
+
 	//HashMap for each Student, linking each Timeslot to choice number
 	//Priority of Student in Student
 	//PriorityQueue of Students to be assigned in BossSort (Low points = high priority)
@@ -296,74 +217,28 @@ public class BossSort {
 	}
 
 
-	//Randomly pick first choices
-	//Make a list for each lab containing students assigned to that lab who have more first choices 
-	//Balanced out overflowed labs
-	//Randomly pick first choices
 
 
 
 
-
-
-
-	/*Default algorithm (suggested by Vex)
-
-	Point system:
-	3rd choice = 1
-	2nd choice = 3
-	1st choice = 6
-	cannot attend = 10
-
-	Max point limit = |labs|*10 - 16 to ensure everyone lists at least two labs as possible.
-
-	(The reason for the arbitrary points system is to allow prioritisation that works for the benefit of those who do not try to game the system. Numbers may need review.)
-
-	People who can only attend one or partial labs must provide an explanation in advance so special consideration can be put in for them. This is handled by the lecturer.
-
-
-	Conflict Resolution Priority:
-	1) Pre-assigned by faculty (Students who require special considerations before algorithm is run)
-	2) Not assigned
-
-	Same assign state:
-	 1) Cannot attend any other labs
-	 2) Can attend other labs
-	Same attendance:
-	 1) Used fewest points
-	 2) Used most points
-	Same points:
-	 1) Has another 1st choice
-	 2) Has another 2nd choice
-	 3) Has another 3rd choice
-	Same choice:
-	 1) Choice has more openings
-	 2) Choice has less openings
-	Same openings:
-	 1) Choice has more overall points in it
-	 2) Choice has less overall points in it
-	Same points:
-	 1) Random
-
-
-	 Possible priority clashes:
-		 All lab attendees cannot attend any other labs. (Not gonna happen)
-		 Clashing attendees have no other choices.
-		 Clashing attendees' other choices have no openings.
-
-
-
-
-
-
-		 Possible alarms to raise:
-		 Many students prefer a particular time slot (total points assigned to that lab is very low.)
-		 Many students cannot make a particular time slot
-		 A time slot has very few students assigned to it after algorithm is completed
-		 Time slots are very unevenly allocated
-
-
-	 */
+//	 Possible priority clashes:
+//		 All lab attendees cannot attend any other labs. (Not gonna happen)
+//		 Clashing attendees have no other choices.
+//		 Clashing attendees' other choices have no openings.
+//
+//
+//
+//
+//
+//
+//		 Possible alarms to raise:
+//		 Many students prefer a particular time slot (total points assigned to that lab is very low.)
+//		 Many students cannot make a particular time slot
+//		 A time slot has very few students assigned to it after algorithm is completed
+//		 Time slots are very unevenly allocated
+//
+//
+//	 */
 
 
 

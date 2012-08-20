@@ -234,13 +234,20 @@ public class Student implements Comparable{
 			if(this.getPriority()>s1.getPriority()){
 				return 1;
 			}
-			else if(this.getPriority()==s1.getPriority()){
-				return 0;
+			else if(this.getPriority()<s1.getPriority()){
+				return -1;
 			}
 			else
-			return -1;	
+			return 0;	
 		}
 		return 0;
+//try{
+//	Student s= (Student)o;
+//	return this.getPriority()-s.getPriority();
+//}catch(Exception e){
+//	e.printStackTrace();
+//	return 0;
+//}
 	}
 
 
