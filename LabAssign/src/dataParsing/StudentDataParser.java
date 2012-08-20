@@ -66,13 +66,21 @@ public class StudentDataParser {
 	}
 	
 	
-	public StudentDataParser(File f) throws FileNotFoundException {
+	public StudentDataParser(File f)  {
 
 		String startText = "";
-		Scanner scan = new Scanner(f);
-		while(scan.hasNext())
-			startText += scan.nextLine();
-		
+		Scanner scan;
+		try {
+			scan = new Scanner(f);
+			while(scan.hasNext()){
+				startText += scan.nextLine();
+				System.out.println(startText);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
