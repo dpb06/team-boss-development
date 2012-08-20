@@ -89,7 +89,7 @@ public class Student implements Comparable{
 		return "Student" + lastName + ", " + firstName + ", \n"
 				+ "\tFirst Choices: " + firstLabs  
 				+ "\n\tSecondChoices: "+ secondLabs 
-				+ "\n\tThirdChoices: "+ thirdLabs;
+				+ "\n\tThirdChoices: "+ thirdLabs +"\n";
 	}
 	
 	
