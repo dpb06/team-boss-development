@@ -53,7 +53,7 @@ public class BossSort {
 		System.out.println();
 		for(Timeslot t:labs){
 			output.put(t,  t.getAssigned());
-    		System.out.println(t.getDay());
+    		System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
 			for(Student s: t.getAssigned()){
 				System.out.println("\t "+s.getFirstName());
 			}
