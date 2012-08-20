@@ -86,7 +86,7 @@ public class Student implements Comparable{
 
 	
 	public String toString() {
-		return "Student" + lastName + ", " + firstName + ", \n"
+		return "Student: " + lastName + ", " + firstName + ", \n"
 				+ "\tFirst Choices: " + firstLabs  
 				+ "\n\tSecondChoices: "+ secondLabs 
 				+ "\n\tThirdChoices: "+ thirdLabs +"\n";

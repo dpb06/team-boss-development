@@ -39,9 +39,8 @@ public class FitnessFunctions {
 			labEveness=(float)size/(float)t.getMaxStudents();
 			float labPercent=100*labEveness;
 			System.out.printf("Lab fullness : %.2f percent \n",labPercent);		
-			
 		}
-		
+		System.out.println();
 	}
 	/**
 	 * Calculates the percentage of student who are in there first choice lab.
@@ -70,7 +69,7 @@ public class FitnessFunctions {
 			thirdChoice=(float)numThirdChoice/(float)totalStudents;
 			total.add(firstChoice);
 			
-			System.out.println(t.getStartTime()+" - "+t.getStartTime()+" "+t.getDay());
+			System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay());
 			System.out.printf("Percentage of students in there first choice: %.2f \n",firstChoice);
 			System.out.printf("Percentage of students in there second choice: %.2f \n",secondChoice);
 			System.out.printf("Percentage of students in there third choice: %.2f \n",thirdChoice);

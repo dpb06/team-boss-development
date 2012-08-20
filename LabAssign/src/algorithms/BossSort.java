@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import algorithmDataStructures.Student;
@@ -31,6 +32,7 @@ public class BossSort {
 	private PriorityQueue<Student> priority;
 	private ArrayList<Timeslot> notFull = new ArrayList<Timeslot>();
 	private ArrayList<Student> flagged= new ArrayList<Student>();
+	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
 
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
@@ -39,21 +41,33 @@ public class BossSort {
 		priority=new PriorityQueue<Student>();
 
 		priorityCalculator();
+		System.out.println();
 		sort();
+		System.out.println();
 		new FitnessFunctions(tutorials, students, labs);
 		
 		guiOutPut();
 	}
 	private void guiOutPut() {
 		// TODO Auto-generated method stub
+		System.out.println();
 		for(Timeslot t:labs){
-			System.out.println(t.getDay());
+			output.put(t,  t.getAssigned());
+    		System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getFirstName());
+				System.out.println("\t "+s.getFirstName());
 			}
+		}
+		System.out.println();
+		System.out.println("Flagged students");
+		for(Student s: flagged){
+			System.out.println("\t "+s.getFirstName());
 		}
 	}
 
+
+	// TODO: Bump third choices up to second if first choices are full???
+	
 	public void sort(){
 
 		//Create a list of labs that aren't full
@@ -61,30 +75,23 @@ public class BossSort {
 			notFull.add(t);
 		}
 		//For every student (in priority order)
-		int eachstudent = 0;
-		int assignedloop = 0;
-		int choicesloop = 0;
 		while(priority.size() > 0){
 			Student s=priority.poll();
-			System.out.println("students: " + eachstudent++);
-			System.out.println("student priority: "+s.getPriority());
+			System.out.println("Student priority: "+s.getPriority());
 			//WHILE assigned = false
 			boolean assigned = false;
 			while(!assigned ){
-				System.out.println("assigned : " + assignedloop++);
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
 				ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
 				//If the list is now empty
 				while(choices.size() > 0){
-					System.out.println("Choices : " + choicesloop++);
-					System.out.println("First");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
-						System.out.println(choice.getDay());
-						System.out.println("student added");
+						System.out.println("First");
+						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
 						break;
@@ -107,14 +114,13 @@ public class BossSort {
 				synchronized (s) {
 				ArrayList<Timeslot> choiceSecond = checkLabs(s.getSecondLabs());
 				//If the list is now empty
-				System.out.println("hi");
 				while(choiceSecond.size() > 0){
-					System.out.println("hello");
-					System.out.println("second");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choiceSecond.get((int) (Math.random()*choiceSecond.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
+						System.out.println("Second");
+						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
 						break;
@@ -139,14 +145,14 @@ public class BossSort {
 			
 				//If the list is now empty
 				while(choiceThird.size() > 0){
-					System.out.println("third choice");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choiceThird.get((int) (Math.random()*choiceThird.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
+						System.out.println("Third");
+						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
-
 						break;
 					}
 					//If unsuccessful
@@ -164,6 +170,7 @@ public class BossSort {
 
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
 				flagged.add(s);
+				System.out.println("Flagged: " + s.getFirstName() + "\n");
 				break;
 
 			}
