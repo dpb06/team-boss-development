@@ -135,15 +135,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 		//Finish the panel, pack and display
-		
+		JPanel eastPanel = new JPanel();
+		eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
+		eastPanel.add(new JLabel("This is the east panel"));
 		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));		
-		//createMenu();
-		//topPanel.add(menuBar);
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);	
 		topPanel.add(gridPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
-		
+		frame.add(eastPanel, BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 	}
