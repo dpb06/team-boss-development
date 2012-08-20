@@ -39,9 +39,8 @@ public class FitnessFunctions {
 			labEveness=(float)size/(float)t.getMaxStudents();
 			float labPercent=100*labEveness;
 			System.out.printf("Lab fullness : %.2f percent \n",labPercent);		
-			
 		}
-		
+		System.out.println();
 	}
 	/**
 	 * Calculates the percentage of student who are in there first choice lab.
