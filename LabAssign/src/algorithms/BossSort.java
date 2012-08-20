@@ -66,6 +66,7 @@ public class BossSort {
 	}
 
 
+	// TODO: Bump third choices up to second if first choices are full???
 	
 	public void sort(){
 
