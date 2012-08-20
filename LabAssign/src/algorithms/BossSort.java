@@ -85,11 +85,11 @@ public class BossSort {
 				ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
 				//If the list is now empty
 				while(choices.size() > 0){
-					System.out.println("First");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
+						System.out.println("First");
 						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
@@ -114,11 +114,11 @@ public class BossSort {
 				ArrayList<Timeslot> choiceSecond = checkLabs(s.getSecondLabs());
 				//If the list is now empty
 				while(choiceSecond.size() > 0){
-					System.out.println("Second");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choiceSecond.get((int) (Math.random()*choiceSecond.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
+						System.out.println("Second");
 						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
@@ -144,15 +144,14 @@ public class BossSort {
 			
 				//If the list is now empty
 				while(choiceThird.size() > 0){
-					System.out.println("Third");
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = choiceThird.get((int) (Math.random()*choiceThird.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
+						System.out.println("Third");
 						System.out.println(choice.getDay() + "\n");
 						//If successful, assigned = true
 						assigned = true;
-
 						break;
 					}
 					//If unsuccessful
@@ -170,6 +169,7 @@ public class BossSort {
 
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
 				flagged.add(s);
+				System.out.println("Flagged: " + s.getFirstName() + "\n");
 				break;
 
 			}
