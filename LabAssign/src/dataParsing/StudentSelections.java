@@ -6,9 +6,9 @@ import java.util.List;
 public class StudentSelections {
 
 	
-	List<StudentParserFactory> firstChoice = new ArrayList<StudentParserFactory>();
-	List<StudentParserFactory> secondChoice = new ArrayList<StudentParserFactory>();
-	List<StudentParserFactory> thirdChoice = new ArrayList<StudentParserFactory>();
+	List<StudentSelections> firstChoice = new ArrayList<StudentSelections>();
+	List<StudentSelections> secondChoice = new ArrayList<StudentSelections>();
+	List<StudentSelections> thirdChoice = new ArrayList<StudentSelections>();	
 	
 	int choicesCount;
 	

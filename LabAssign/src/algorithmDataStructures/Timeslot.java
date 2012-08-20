@@ -40,6 +40,13 @@ public abstract class Timeslot {
 		}
 	}
 	
+
+	public String toString(){
+		return uID +":  "+ time+ " ";
+	}
+	
+	
+
 	public int getuID() {
 		return uID;
 	}
