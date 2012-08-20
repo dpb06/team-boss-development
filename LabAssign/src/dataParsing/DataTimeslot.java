@@ -1,20 +1,19 @@
 package dataParsing;
 
 import algorithmDataStructures.Day;
+import algorithmDataStructures.Timeslot;
 
-public class DataTimeslot {
+public class DataTimeslot extends Timeslot {
 
 	
 
 
-		private int uID;
-		private int time;
-		private Day day;
+
 		
-		public DataTimeslot(int UID, int time, Day d){
-			this.uID=UID;
-			this.time=time;
-			this.day=d;
+		private int endTime;
+		public DataTimeslot(int UID, int startTime, int endTime, Day d){
+			super(UID, startTime, d, 0);
+			this.endTime=endTime;
 			
 		}
 		
@@ -29,23 +28,7 @@ public class DataTimeslot {
 		}
 		
 		
-		public int getuID() {
-			return uID;
-		}
-		
-		public int getTime() {
-			return time;
-		}
-		public void setTime(int time) {
-			this.time = time;
-		}
-		public Day getDay() {
-			return day;
-		}
-		public void setDay(Day day) {
-			this.day = day;
-		}
-		
+
 
 	
 }

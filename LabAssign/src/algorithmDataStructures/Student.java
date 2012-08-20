@@ -193,4 +193,13 @@ public class Student {
 		public int  getnumOfChoiceTut(){
 			return this.numOfChoicesTut;
 		}
+		
+		public String toString(){
+		
+			return ("Student: "+lastName+", "+firstName+"\n"+firstLabs+"\n"
+					+secondLabs+"\n"+thirdLabs+"\n");
+			
+		}
+		
+		
 }
