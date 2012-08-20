@@ -76,6 +76,7 @@ public class StudentDataParser {
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
+		// remove the first line of the file, (the line stating the format)
 		text = text.substring(34);
 		
 		Scanner tempScan = new Scanner(text);		
@@ -265,7 +266,7 @@ public class StudentDataParser {
 		
 		int count = 0;
 		
-		System.out.println(timeslots);
+		
 		while(iter.hasNext()){
 			token = iter.next();
 
@@ -328,10 +329,7 @@ public class StudentDataParser {
 	private Timeslot getTimeslot(List<Timeslot> timeslots, int quID) {
 	
 		for(Timeslot t : timeslots){
-			if(quID == 2)
-				System.out.println(t.getuID());
 			if(quID == t.getuID()){
-				System.out.println("PASS : 2");
 				return t;
 				
 			}
