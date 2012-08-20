@@ -34,6 +34,10 @@ public class BossSort {
 	private ArrayList<Student> flagged= new ArrayList<Student>();
 	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
 
+	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
+		return output;
+	}
+	
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
