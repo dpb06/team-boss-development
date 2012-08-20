@@ -84,6 +84,15 @@ public class Student implements Comparable{
 		System.out.printf("%d %s %s", getUID(), getFirstName(), getLastName());
 	}
 
+	
+	public String toString() {
+		return "Student" + lastName + ", " + firstName + ", \n"
+				+ "\tFirst Choices: " + firstLabs  
+				+ "\n\tSecondChoices: "+ secondLabs 
+				+ "\n\tThirdChoices: "+ thirdLabs;
+	}
+	
+	
 	/**
 	 * if a student has more than 1 choice for labs to attend set the onechoice boolean to false
 	 */
