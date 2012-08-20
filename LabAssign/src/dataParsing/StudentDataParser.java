@@ -66,9 +66,10 @@ public class StudentDataParser {
 	}
 	
 	
-	public StudentDataParser(File f) throws FileNotFoundException {
+	public StudentDataParser(File f) throws FileNotFoundException  {
 
 		String startText = "";
+		
 		Scanner scan = new Scanner(f);
 		while(scan.hasNext()){
 			String t = scan.nextLine();
