@@ -11,6 +11,12 @@ public abstract class Timeslot {
 	private int maxStudents;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
+	private int min;
+	private int max;
+	private int prefMax;
+	private int prefMin;
+	
+
 	public Timeslot(int UID, int timeS,int timeE, Day d, int maxStud){
 		this.uID=UID;
 		this.timeStart=timeS;
@@ -18,10 +24,6 @@ public abstract class Timeslot {
 		this.day=d;
 		this.maxStudents=maxStud;
 	}
-	
-	
-	
-
 
 	public void timeslotPrint() {
 		//Print time/day
@@ -78,6 +80,22 @@ public abstract class Timeslot {
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}
+	public int getMin() {
+		return min;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public int getPrefMax() {
+		return prefMax;
+	}
+
+	public int getPrefMin() {
+		return prefMin;
+	}
+
 	public boolean addStudent(Student s) {
 		if (assigned.size() >= maxStudents){
 			return false;
