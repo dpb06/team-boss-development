@@ -148,7 +148,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		in.get(0).addStudent(new Student(1, "i", "n", 1316));
 		in.get(0).addStudent(new Student(14, "j", "n", 1317));
 		in.get(0).addStudent(new Student(18, "k", "n", 1318));
-		
+		in.get(1).addStudent(new Student(18, "l", "n", 1318));
 		canvas.setSections(in);
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);

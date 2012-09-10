@@ -2,6 +2,7 @@ package UI;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ public class HistoCanvas extends Canvas {
 	private ArrayList<Timeslot> sections;
 	private HashMap<Rectangle, Timeslot> rectangles;
 
+	public HistoCanvas(){
+		setPreferredSize(new Dimension(500, 200));
+	}
+	
 	public void setSections(List<Timeslot> in) {
 		sections = new ArrayList<Timeslot>(in);
 		recalculate();
@@ -31,6 +36,7 @@ public class HistoCanvas extends Canvas {
 		int width = this.getWidth() / sections.size();
 		int height = this.getHeight();
 		int largestSection = -Integer.MAX_VALUE;
+		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : sections) {
 			if (t.getMaxStudents() > largestSection) {
 				largestSection = t.getMaxStudents();
