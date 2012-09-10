@@ -11,10 +11,9 @@ public abstract class Timeslot {
 	private int maxStudents;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
-	private int min;
-	private int max;
-	private int prefMax;
-	private int prefMin;
+	private int rangeMin;
+	private int rangePrefHigh;
+	private int rangePrefLow;
 	
 
 	public Timeslot(int UID, int timeS,int timeE, Day d, int maxStud){
@@ -80,21 +79,7 @@ public abstract class Timeslot {
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}
-	public int getMin() {
-		return min;
-	}
 
-	public int getMax() {
-		return max;
-	}
-
-	public int getPrefMax() {
-		return prefMax;
-	}
-
-	public int getPrefMin() {
-		return prefMin;
-	}
 
 	public boolean addStudent(Student s) {
 		if (assigned.size() >= maxStudents){
@@ -105,5 +90,31 @@ public abstract class Timeslot {
 		}
 	}
 
+	public int getRangeMin() {
+		return rangeMin;
+	}
+
+	public void setRangeMin(int rangeMin) {
+		this.rangeMin = rangeMin;
+	}
+
+	public int getRangePrefHigh() {
+		return rangePrefHigh;
+	}
+
+	public void setRangePrefHigh(int rangePrefHigh) {
+		this.rangePrefHigh = rangePrefHigh;
+	}
+
+	public int getRangePrefLow() {
+		return rangePrefLow;
+	}
+
+	public void setRangePrefLow(int rangePrefLow) {
+		this.rangePrefLow = rangePrefLow;
+	}
+	public int getSize(){
+		return assigned.size();
+	}
 	
 }
