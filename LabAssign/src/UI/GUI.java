@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -139,7 +140,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		
 		canvas = new HistoCanvas();
 		canvas.setBackground(Color.black);
-		frame.add(canvas, BorderLayout.WEST);
 		canvas.addNotify();
 		List<Timeslot> in = new ArrayList<Timeslot>();
 		in.add(new Lab(12,1640,3110,Day.Friday, 2));
@@ -150,6 +150,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		in.get(0).addStudent(new Student(18, "k", "n", 1318));
 		in.get(1).addStudent(new Student(18, "l", "n", 1318));
 		canvas.setSections(in);
+
+		frame.add(canvas, BorderLayout.WEST);
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 		//Finish the panel, pack and display

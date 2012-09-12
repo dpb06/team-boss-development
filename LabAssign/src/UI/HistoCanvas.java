@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import algorithmDataStructures.Timeslot;
 
-import comp102.UI;
-
-public class HistoCanvas extends Canvas {
+public class HistoCanvas extends JPanel {
 	private ArrayList<Timeslot> sections;
 	private HashMap<Rectangle, Timeslot> rectangles;
 
@@ -27,8 +28,9 @@ public class HistoCanvas extends Canvas {
 		repaint();
 	}
 
-	@Override
+	
 	public void paint(Graphics g) {
+		
 		histogram(g);
 	}
 
@@ -55,7 +57,7 @@ public class HistoCanvas extends Canvas {
 	/** Histogram representation of all Sections */
 	public void histogram(Graphics g) {
 		if (this.rectangles == null) { // There's no data
-			UI.println("No data to plot histogram");
+			System.out.println("No data to plot histogram");
 			return;
 		}
 
@@ -66,15 +68,13 @@ public class HistoCanvas extends Canvas {
 		for (Rectangle r : rectangles.keySet()) {
 			Timeslot s = rectangles.get(r);
 			// Set color according to things
-			if (s.getSize() < s.getRangeMin()
-					|| s.getSize() > s.getMaxStudents())
+			if (s.getSize() < s.getRangeMin() || s.getSize() > s.getMaxStudents())
 				g.setColor(Color.RED);
-			else if (s.getSize() < s.getRangePrefLow()
-					|| s.getSize() > s.getRangePrefHigh())
+			else if (s.getSize() < s.getRangePrefLow() || s.getSize() > s.getRangePrefHigh())
 				g.setColor(Color.YELLOW);
 			else
-				g.setColor(Color.GREEN); // If neither previous, should be
-											// within preferred range
+				g.setColor(Color.GREEN); 
+				// If neither previous, should be within preferred range
 			g.drawRect(r.x, r.y, r.width, r.height);
 		}
 	}
