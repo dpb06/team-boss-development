@@ -31,6 +31,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import algorithmDataStructures.Day;
+import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
@@ -48,6 +50,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	private JTextArea textArea;
 	private final JTextField fileText;
+	private HistoCanvas canvas; 
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -134,12 +137,19 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			gridPanel.add(new JLabel("Session " + (session + 1)));
 		}
 		
-		Comp102Canvas canvas = new Comp102Canvas();
+		canvas = new HistoCanvas();
 		canvas.setBackground(Color.black);
 		frame.add(canvas, BorderLayout.WEST);
 		canvas.addNotify();
-		canvas.drawOval(10,10,100,100,true);
-
+		List<Timeslot> in = new ArrayList<Timeslot>();
+		in.add(new Lab(12,1640,3110,Day.Friday, 2));
+		in.add(new Lab(13,1640,3110,Day.Thursday, 3));
+		in.get(0).addStudent(new Student(12, "h", "n", 1315));
+		in.get(0).addStudent(new Student(1, "i", "n", 1316));
+		in.get(0).addStudent(new Student(14, "j", "n", 1317));
+		in.get(0).addStudent(new Student(18, "k", "n", 1318));
+		in.get(1).addStudent(new Student(18, "l", "n", 1318));
+		canvas.setSections(in);
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 		//Finish the panel, pack and display

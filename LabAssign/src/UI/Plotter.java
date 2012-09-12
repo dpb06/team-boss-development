@@ -1,15 +1,22 @@
 package UI;
 
-import algorithmDataStructures.Student;
-import comp102.*;
-import java.util.*;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import algorithmDataStructures.Student;
+
+import comp102.UI;
+import comp102.UIButtonListener;
+import comp102.UIMouseListener;
 
 public class Plotter implements UIButtonListener, MouseListener, UIMouseListener{
 	// Fields
-	private ArrayList<Section> sections = new ArrayList<Section>();
 
 	// Constant fields holding the dimensions of the graph
 	private final int graphLeft	  = 10;
@@ -44,7 +51,8 @@ public class Plotter implements UIButtonListener, MouseListener, UIMouseListener
 			UI.clearText();
 		}
 		else if (button.equals("Histogram") ){
-			this.histogram();
+			this.histogram(UI.getCanvas());
+			UI.repaintGraphics();
 		}
 		else if (button.equals("Lists") ){
 			UI.clearText();
@@ -62,12 +70,11 @@ public class Plotter implements UIButtonListener, MouseListener, UIMouseListener
 	}
 
 	/** Histogram representation of all Sections		*/
-	public void histogram(){
+	public void histogram(Graphics g){
 		if (this.sections==null) {	// There's no data
 			UI.println("No data to plot histogram");
 			return;
 		}
-		UI.clearGraphics();
 
 		int ratio = graphHeight/largestSection;
 		int x = graphLeft;
@@ -85,25 +92,25 @@ public class Plotter implements UIButtonListener, MouseListener, UIMouseListener
 			int columnHeight = s.getSize() * ratio;	// Size of bar
 
 			if (s.getSize() < s.getMin() || s.getSize() > s.getMax())	// If below min/above max
-				UI.setColor(Color.RED);
+				g.setColor(Color.RED);
 			else if (s.getSize() < s.getPrefMin() || s.getSize() > s.getPrefMax()) 
-				UI.setColor(Color.YELLOW);
+				g.setColor(Color.YELLOW);
 			else
-				UI.setColor(Color.GREEN);	// If neither previous, should be within preferred range
+				g.setColor(Color.GREEN);	// If neither previous, should be within preferred range
 
-			UI.fillRect(x, y - columnHeight, columnWidth, columnHeight);
+			g.fillRect(x, y - columnHeight, columnWidth, columnHeight);
 
-			UI.setColor(Color.black);
-			UI.drawRect(x, y - columnHeight, columnWidth, columnHeight);
-			UI.drawLine(x, y, x, y + 5);
-			UI.drawLine(x + columnWidth, y, x + columnWidth, y + 5);
+			g.setColor(Color.black);
+			g.drawRect(x, y - columnHeight, columnWidth, columnHeight);
+			g.drawLine(x, y, x, y + 5);
+			g.drawLine(x + columnWidth, y, x + columnWidth, y + 5);
 
 			s.setLeft(x);
 			s.setTop(y - columnHeight);
 			s.setWidth(columnWidth);
 			s.setHeight(columnHeight);
 			
-			UI.drawString(s.getSectionTime(), x, y + drop);
+			g.drawString(s.getSectionTime(), x, y + drop);
 			drop += change;
 			//if(drop >= 40 || drop <= -40)
 			//	change = -1 * change;

@@ -1,77 +1,97 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
 public class BossSort {
 
-
-	/**
-	 *  Picking students - how do we order this? (Possibly parse straight into PriorityQueue?)
-	 *  		-Priority 1 students who only have 1 choice
-	 *  		-Priority 2 Students who only have 2-3 choices
-	 *  		-Priority 3 students who have more than 3 choices 
-	 *  
-	 *  What happens if a student can only attend one lab? (Note they might not list this as a first)
-	 *  If a lab is overfilled, who do we move first?
-	 *  If a lab is overfilled, how do find students with more first choices? (PriorityQueue/Stack for Timeslot data structure)
-	 *  What if a lab is underfilled? (How do define underfilled?)
-	 *  What if cutting a lab is the best move, but it causes (a lot of) difficulty with one or two students?
-	 *  
-	 *  What ranges/weights do we need for our fitness functions?
-	 *  
-	 */
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
-	private PriorityQueue<Student> priority;
+	private PriorityQueue<Student> priority = new PriorityQueue<Student>();
 	private ArrayList<Timeslot> notFull = new ArrayList<Timeslot>();
 	private ArrayList<Student> flagged= new ArrayList<Student>();
 	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
 
-	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
-		return output;
-	}
-	
+
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
-		priority=new PriorityQueue<Student>();
 
 		priorityCalculator();
 		System.out.println();
+		System.out.println("priorityCalculator() in BossSort");
 		sort();
 		System.out.println();
+		System.out.println("FitnessFunctions(tuts,stus,labs) in BossSort");
 		new FitnessFunctions(tutorials, students, labs);
-		
-		guiOutPut();
-	}
-	private void guiOutPut() {
-		// TODO Auto-generated method stub
-		System.out.println();
-		for(Timeslot t:labs){
-			output.put(t,  t.getAssigned());
-    		System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
-			for(Student s: t.getAssigned()){
-				System.out.println("\t "+s.getFirstName());
-			}
-		}
-		System.out.println();
-		System.out.println("Flagged students");
-		for(Student s: flagged){
-			System.out.println("\t "+s.getFirstName());
-		}
+
+		guiOutput();
 	}
 
+	/**
+	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
+	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
+	 */
+	private void priorityCalculator() {
+		//Initialize integer values to represent priority, and factors that affect it. 
+		int studentPriority;
+		int first;
+		int second;
+		int third;
+		//Iterate list of students.
+		for(Student s:students){
+			//Largest priority weighting is the number of labs the student can attend.
+			studentPriority = s.getnumOfChoiceLab()*1000;
+			//Next is the number of third choices the student has selected.
+			third = s.getThirdLabs().size()*3;
+			//Then the number of second choices the student has selected.
+			second = s.getSecondLabs().size()*2;
+			//Finally the number of first choices the student has selected.
+			first = s.getFirstLabs().size();
+			//Combine priority values by multiplying the lab choices using the number of labs as a factor.
+			studentPriority = studentPriority*(first+second+third);
+			//Add an element of randomization.
+			studentPriority = studentPriority+ ((int) (Math.random()*1000));
+			/*
+			 * This means:
+			 *   The students with fewest lab choices have a lower priority-value.
+			 *   In cases of equal number of lab choices:
+			 *     The students with fewest third choices have a lower priority-value.
+			 *     The students with fewest second choices have a lower priority-value.
+			 *     
+			 * Thus, the algorithm primarily attempts to place students in their first choices,
+			 * and does not prioritize placing students in a second choice if they can't be placed
+			 * in a first choice. 
+			 *   
+			 * NB: A LOW PRIORITY-VALUE EQUATES TO A HIGH PRIORITY.
+			 *    (as seen in the compareTo method of the Student class)
+			 */
+			//Set the priority in the Student object.
+			s.setPriority(studentPriority);
+			//Add the student to the priorityQueue.
+			priority.add(s);
+			//Printspam the priority of each student.
+			System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
+		}
 
+		//How many choices in total do they have? (More = higher priority)
+		//How many first choices do they have? (More = lower priority)
+		//How many second choices do they have? (More = lower priority)
+		//How many third choices do they have? (More = lower priority)
+
+	}
+
+	/**
+	 * Places each student (in priority order) into a Timeslot, according to the fullness of each Timeslot
+	 * and the student's choices. The Timeslot object is altered to reflect the student's placement.
+	 * If the student cannot be assigned, they will be added to a list of flagged students.
+	 */
 	// TODO: Bump third choices up to second if first choices are full???
-	
 	public void sort(){
 
 		//Create a list of labs that aren't full
@@ -87,7 +107,7 @@ public class BossSort {
 			while(!assigned ){
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> choices = checkLabs(s.getFirstLabs());
+				ArrayList<Timeslot> choices = s.getFirstLabs();
 				//If the list is now empty
 				while(choices.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
@@ -105,7 +125,7 @@ public class BossSort {
 						//Remove lab from list of labs that aren't full
 						notFull.remove(choice);
 						choices.remove(choice);
-						
+
 					}
 				}
 				//If assigned, break outer loop.
@@ -115,8 +135,7 @@ public class BossSort {
 
 				//Create a list of second choices
 				//Check if those choices are in the list of labs that aren't full
-				synchronized (s) {
-				ArrayList<Timeslot> choiceSecond = checkLabs(s.getSecondLabs());
+				ArrayList<Timeslot> choiceSecond = s.getSecondLabs();
 				//If the list is now empty
 				while(choiceSecond.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
@@ -136,7 +155,6 @@ public class BossSort {
 						choiceSecond.remove(choice);
 					}
 				}
-				}
 				//If assigned, break outer loop.
 				if(assigned){
 					break;
@@ -144,9 +162,9 @@ public class BossSort {
 
 				//Create a list of third choices
 				//Check if those choices are in the list of labs that aren't full
-				synchronized (s) {
-									ArrayList<Timeslot>choiceThird = checkLabs(s.getThirdLabs());
-			
+
+				ArrayList<Timeslot>choiceThird = s.getThirdLabs();
+
 				//If the list is now empty
 				while(choiceThird.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
@@ -166,7 +184,6 @@ public class BossSort {
 						choiceThird.remove(choice);
 					}
 				}
-				}
 				//If assigned, break outer loop.
 				if(assigned){
 					break;
@@ -174,84 +191,44 @@ public class BossSort {
 
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
 				flagged.add(s);
-				System.out.println("Flagged: " + s.getFirstName() + "\n");
+				System.out.println("Not Assigned: " + s.getFirstName() + "\n");
 				break;
 
 			}
 		}
 	}
 
-		private ArrayList<Timeslot> checkLabs(ArrayList<Timeslot> choices) {
-			//For each choice given
-			for (Timeslot t : choices){
-				//If that choice is full
-				if (!notFull.contains(t)){
-					//Remove that choice from the list
-					//choices.remove(t);
-				}
+	/**
+	 * Creates a hashmap containing each lab/tutorial as keys and an arraylist of students assigned to
+	 * that timeslot as values. This hashmap is saved in the variable 'output', and serves as the input
+	 * to the GUI.
+	 */
+	private void guiOutput() {
+		System.out.println();
+		System.out.println("guiOutPut() in BossSort");
+		//Iterate through Timeslots.
+		for(Timeslot t:labs){
+			//Add the timeslot and its assigned students to the output hashmap.
+			output.put(t,  t.getAssigned());
+			//Printspam the timeslot and its assigned students.
+			System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
+			for(Student s: t.getAssigned()){
+				System.out.println("\t "+s.getFirstName());
 			}
-			//Return the altered list
-			return choices;
 		}
-
-	//HashMap for each Student, linking each Timeslot to choice number
-	//Priority of Student in Student
-	//PriorityQueue of Students to be assigned in BossSort (Low points = high priority)
-
-
+		//Printspam the flagged students.
+		System.out.println();
+		System.out.println("Not Assigned:");
+		for(Student s: flagged){
+			System.out.println("\t "+s.getFirstName());
+		}
+	}
 
 	//Before finding priority, if a Student has no first choices, bump up all their choices.
 	//Flag every Student that has their choices bumped.
 
-	private void priorityCalculator() {
-		int studentPri;
-		int first;
-		int second;
-		int third;
-		for(Student s:students){
-			studentPri=s.getnumOfChoiceLab()*1000;
-			first=s.getFirstLabs().size();
-			second=s.getSecondLabs().size()*2;
-			third=s.getThirdLabs().size()*3;
-			studentPri=studentPri*(first+second+third);
-			studentPri = studentPri+ ((int) (Math.random()*1000));
-			s.setPriority(studentPri);
-			priority.add(s);
-			System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
-		}
-
-		//How many choices in total do they have? (More = higher priority)
-		//How many first choices do they have? (More = lower priority)
-		//How many second choices do they have? (More = lower priority)
-		//How many third choices do they have? (More = lower priority)
-
+	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
+		return output;
 	}
-
-
-
-
-
-
-//	 Possible priority clashes:
-//		 All lab attendees cannot attend any other labs. (Not gonna happen)
-//		 Clashing attendees have no other choices.
-//		 Clashing attendees' other choices have no openings.
-//
-//
-//
-//
-//
-//
-//		 Possible alarms to raise:
-//		 Many students prefer a particular time slot (total points assigned to that lab is very low.)
-//		 Many students cannot make a particular time slot
-//		 A time slot has very few students assigned to it after algorithm is completed
-//		 Time slots are very unevenly allocated
-//
-//
-//	 */
-
-
-
 
 }
