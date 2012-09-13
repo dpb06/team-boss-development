@@ -1,7 +1,6 @@
 package UI;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -137,21 +137,40 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		for (int session = 0; session < NUM_SESSIONS; session++) {
 			gridPanel.add(new JLabel("Session " + (session + 1)));
 		}
-		
+		JPanel canvasPanel = new JPanel();
+		Dimension d = new Dimension(frame.getWidth()-100, 500);
+		canvasPanel.add(new Box.Filler(d,d,d));
 		canvas = new HistoCanvas();
-		canvas.setBackground(Color.black);
-		canvas.addNotify();
+		//canvas.setBackground(Color.red);
 		List<Timeslot> in = new ArrayList<Timeslot>();
 		in.add(new Lab(12,1640,3110,Day.Friday, 2));
 		in.add(new Lab(13,1640,3110,Day.Thursday, 3));
+		in.add(new Lab(13,1640,3110,Day.Friday, 6));
 		in.get(0).addStudent(new Student(12, "h", "n", 1315));
 		in.get(0).addStudent(new Student(1, "i", "n", 1316));
 		in.get(0).addStudent(new Student(14, "j", "n", 1317));
 		in.get(0).addStudent(new Student(18, "k", "n", 1318));
-		in.get(1).addStudent(new Student(18, "l", "n", 1318));
+		in.get(1).addStudent(new Student(19, "l", "n", 1319));
+		in.get(1).addStudent(new Student(20, "l", "n", 1319));
+		in.get(1).addStudent(new Student(21, "l", "n", 1319));
+		in.get(1).addStudent(new Student(22, "l", "n", 1319));
+		in.get(1).addStudent(new Student(23, "l", "n", 1319));
+		in.get(1).addStudent(new Student(24, "l", "n", 1319));
+		in.get(1).addStudent(new Student(25, "l", "n", 1319));
+		in.get(1).addStudent(new Student(12, "h", "n", 1315));
+		in.get(1).addStudent(new Student(1, "i", "n", 1316));
+		in.get(1).addStudent(new Student(14, "j", "n", 1317));
+		in.get(1).addStudent(new Student(18, "k", "n", 1318));
+		in.get(1).addStudent(new Student(19, "l", "n", 1319));
+		in.get(1).addStudent(new Student(20, "l", "n", 1319));
+		in.get(1).addStudent(new Student(21, "l", "n", 1319));
+		in.get(2).addStudent(new Student(22, "l", "n", 1319));
+		in.get(2).addStudent(new Student(23, "l", "n", 1319));
+		in.get(2).addStudent(new Student(24, "l", "n", 1319));
+		in.get(2).addStudent(new Student(25, "l", "n", 1319));
 		canvas.setSections(in);
-
-		frame.add(canvas, BorderLayout.WEST);
+		canvasPanel.add(canvas);
+		frame.add(canvasPanel, BorderLayout.CENTER);
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 		//Finish the panel, pack and display

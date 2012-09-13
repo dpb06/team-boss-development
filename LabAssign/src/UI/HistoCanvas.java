@@ -1,25 +1,33 @@
 package UI;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JFrame;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class HistoCanvas extends JPanel {
+public class HistoCanvas extends JPanel implements MouseListener{
 	private ArrayList<Timeslot> sections;
 	private HashMap<Rectangle, Timeslot> rectangles;
+	private JPanel results = new JPanel(); 		// For where selected TimeSlot displays
 
 	public HistoCanvas(){
+		this.addMouseListener(this);
+		//addMouseListener(this);
 		setPreferredSize(new Dimension(500, 200));
+		
 	}
 	
 	public void setSections(List<Timeslot> in) {
@@ -29,14 +37,16 @@ public class HistoCanvas extends JPanel {
 	}
 
 	
-	public void paint(Graphics g) {
-		
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		histogram(g);
 	}
 
 	private void recalculate() {
-		int width = this.getWidth() / sections.size();
-		int height = this.getHeight();
+		Rectangle bounds = this.getBounds();
+		Dimension size = this.getPreferredSize();
+		int width = size.width / sections.size();
+		int height = size.height;
 		int largestSection = -Integer.MAX_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : sections) {
@@ -48,9 +58,7 @@ public class HistoCanvas extends JPanel {
 		for (int i = 0; i < sections.size(); i++) {
 			Timeslot t = sections.get(i);
 			rectangles.put(
-					new Rectangle(i * width, height
-							- (t.getMaxStudents() * student), width, t
-							.getMaxStudents() * student), t);
+					new Rectangle(i * width, height- (t.getMaxStudents() * student), width, t.getMaxStudents() * student), t);
 		}
 	}
 
@@ -75,7 +83,57 @@ public class HistoCanvas extends JPanel {
 			else
 				g.setColor(Color.GREEN); 
 				// If neither previous, should be within preferred range
+			g.fillRect(r.x, r.y, r.width, r.height);
+			g.setColor(Color.black);
 			g.drawRect(r.x, r.y, r.width, r.height);
 		}
+		
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		for(Rectangle r: rectangles.keySet()){
+			if(r.contains(e.getPoint())){
+				JDialog jD = new JDialog();
+				jD.setTitle("Students in Session:");
+				jD.setSize(200, 500);
+				JPanel jP = new JPanel();
+				jP.setLayout(new BoxLayout(jP, BoxLayout.Y_AXIS));
+				
+				String result =  rectangles.get(r).toString();
+				JLabel jL = new JLabel(result);
+				jP.add(jL);
+				
+				for(Student s: rectangles.get(r).getAssigned()){
+					result =  s.getFirstName() + " " + s.getLastName() + " - " + s.getStudentNum();
+					jL = new JLabel(result);
+					jP.add(jL);
+				}
+				jD.add(jP);
+				jD.setVisible(true);
+				break;
+			}
+		}		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// Just for MouseListener implementation		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// Just for MouseListener implementation
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// Just for MouseListener implementation		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// Just for MouseListener implementation		
 	}
 }
