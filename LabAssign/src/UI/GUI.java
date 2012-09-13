@@ -227,7 +227,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			StudentDataParser parser  = new StudentDataParser(new File(fileText.getText()));
 			List<Timeslot> slots = parser.getTimeslots();
 			List<Student> students = parser.parseSelections(slots);
-			new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+			BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+			canvas.setSections(new ArrayList<Timeslot>(bs.getOutput().keySet()));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
