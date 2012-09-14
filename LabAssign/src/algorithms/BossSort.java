@@ -12,7 +12,6 @@ public class BossSort {
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	private PriorityQueue<Student> priority = new PriorityQueue<Student>();
-	private ArrayList<Timeslot> notFull = new ArrayList<Timeslot>();
 	private ArrayList<Student> flagged= new ArrayList<Student>();
 	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
 
@@ -94,10 +93,6 @@ public class BossSort {
 	// TODO: Bump third choices up to second if first choices are full???
 	public void sort(){
 
-		//Create a list of labs that aren't full
-		for (Timeslot t : labs){
-			notFull.add(t);
-		}
 		//For every student (in priority order)
 		while(priority.size() > 0){
 			Student s=priority.poll();
@@ -122,10 +117,7 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						//Remove lab from list of labs that aren't full
-						notFull.remove(choice);
 						choices.remove(choice);
-
 					}
 				}
 				//If assigned, break outer loop.
@@ -150,8 +142,6 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						//Remove lab from list of labs that aren't full
-						notFull.remove(choice);
 						choiceSecond.remove(choice);
 					}
 				}
@@ -179,8 +169,6 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						//Remove lab from list of labs that aren't full
-						notFull.remove(choice);
 						choiceThird.remove(choice);
 					}
 				}

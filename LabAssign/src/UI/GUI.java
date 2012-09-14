@@ -142,6 +142,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		canvasPanel.add(new Box.Filler(d,d,d));
 		canvas = new HistoCanvas();
 		//canvas.setBackground(Color.red);
+		
+		//TODO: Create a stub-data generating class for test data like this
 		List<Timeslot> in = new ArrayList<Timeslot>();
 		in.add(new Lab(12,1640,3110,Day.Friday, 2));
 		in.add(new Lab(13,1640,3110,Day.Thursday, 3));

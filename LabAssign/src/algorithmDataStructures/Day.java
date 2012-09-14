@@ -1,7 +1,6 @@
 package algorithmDataStructures;
 
 public enum Day {
-
 	Monday,
 	Tuesday,
 	Wednesday,
@@ -9,5 +8,4 @@ public enum Day {
 	Friday,
 	Saturday,
 	Sunday;
-	
 }
