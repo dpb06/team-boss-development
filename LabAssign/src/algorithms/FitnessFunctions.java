@@ -3,6 +3,7 @@ package algorithms;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -12,6 +13,7 @@ public class FitnessFunctions {
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	private ArrayList<Float> total;
+	private static StaticTimeslotMap hash;
 	
 	private float labEveness;
 	private float firstChoice;
@@ -53,13 +55,13 @@ public class FitnessFunctions {
 		total=new ArrayList<Float>();
 		for(Timeslot t: labs){
 			for(Student s: t.getAssigned()){
-				if(s.getFirstLabs().contains(t)){
+				if(hash.getFirsts(s).contains(t)){
 					numFirstChoice++;
 				}
-				else if(s.getSecondLabs().contains(t)){
+				else if(hash.getSeconds(s).contains(t)){
 					numSecondChoice++;
 				}
-				else if(s.getThirdLabs().contains(t)){
+				else if(hash.getThirds(s).contains(t)){
 					numThirdChoice++;
 				}
 				totalStudents++;

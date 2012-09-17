@@ -19,7 +19,7 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
 public class HistoCanvas extends JPanel implements MouseListener{
-	private ArrayList<Timeslot> sections;
+	private ArrayList<Timeslot> timeslots;
 	private HashMap<Rectangle, Timeslot> rectangles;
 	private JPanel results = new JPanel(); 		// For where selected TimeSlot displays
 
@@ -30,8 +30,8 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		
 	}
 	
-	public void setSections(List<Timeslot> in) {
-		sections = new ArrayList<Timeslot>(in);
+	public void setTimeslots(List<Timeslot> in) {
+		timeslots = new ArrayList<Timeslot>(in);
 		recalculate();
 		repaint();
 	}
@@ -45,33 +45,33 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	private void recalculate() {
 		Rectangle bounds = this.getBounds();
 		Dimension size = this.getPreferredSize();
-		int width = size.width / sections.size();
+		int width = size.width / timeslots.size();
 		int height = size.height;
 		int largestSection = -Integer.MAX_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
-		for (Timeslot t : sections) {
+		for (Timeslot t : timeslots) {
 			if (t.getMaxStudents() > largestSection) {
 				largestSection = t.getMaxStudents();
 			}
 		}
 		int student = height / largestSection;
-		for (int i = 0; i < sections.size(); i++) {
-			Timeslot t = sections.get(i);
+		for (int i = 0; i < timeslots.size(); i++) {
+			Timeslot t = timeslots.get(i);
 			rectangles.put(
 					new Rectangle(i * width, height- (t.getMaxStudents() * student), width, t.getMaxStudents() * student), t);
 		}
 	}
 
-	/** Histogram representation of all Sections */
+	/** Histogram representation of all Timeslots */
 	public void histogram(Graphics g) {
 		if (this.rectangles == null) { // There's no data
 			System.out.println("No data to plot histogram");
 			return;
 		}
 
-		// Plots a GREEN bar for all sections within preferred range
-		// Plots a YELLOW bar for all sections outside preferred range
-		// Plots a RED bar for all sections below min/above max
+		// Plots a GREEN bar for all timeslots within preferred range
+		// Plots a YELLOW bar for all timeslots outside preferred range
+		// Plots a RED bar for all timeslots below min/above max
 
 		for (Rectangle r : rectangles.keySet()) {
 			Timeslot s = rectangles.get(r);
@@ -106,7 +106,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 				jP.add(jL);
 				
 				for(Student s: rectangles.get(r).getAssigned()){
-					result =  s.getFirstName() + " " + s.getLastName() + " - " + s.getStudentNum();
+					result = "" + s.getStudentNum();
 					jL = new JLabel(result);
 					jP.add(jL);
 				}

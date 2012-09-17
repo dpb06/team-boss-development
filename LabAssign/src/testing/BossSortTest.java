@@ -8,6 +8,43 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO: Make JUnit test suite instead
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public class BossSortTest {
 
 	private ArrayList<Student> students = new ArrayList<Student>();
@@ -17,9 +54,11 @@ public class BossSortTest {
 	//Create list of Student objects
 	//Create list of Lab objects
 	//Create new BossSort
-		labs.add(new Lab(1, 1310,1510, Day.Monday, 3));
-		labs.add(new Lab(2, 1310,1510, Day.Tuesday, 3));
-		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, 2));
+		int[] threshOne = {0,0,3,3};
+		int[] threshTwo = {0,0,2,2};
+		labs.add(new Lab(1, 1310,1510, Day.Monday, threshOne));
+		labs.add(new Lab(2, 1310,1510, Day.Tuesday, threshOne));
+		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, threshTwo));
 		String first = "a";
 		String last = "z";
 		for(int i=0; i<10; i++){

@@ -8,20 +8,23 @@ public abstract class Timeslot {
 	private int timeStart;
 	private int timeEnd;
 	private Day day;
+	private int minStudents;
+	private int preferredMin;
+	private int preferredMax;
 	private int maxStudents;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
-	private int rangeMin;
-	private int rangePrefHigh;
-	private int rangePrefLow;
-	
+	//TODO: Check if range is okay as percentage and possibly refactor.
 
-	public Timeslot(int UID, int timeS,int timeE, Day d, int maxStud){
-		this.uID=UID;
-		this.timeStart=timeS;
-		this.timeEnd=timeE;
-		this.day=d;
-		this.maxStudents=maxStud;
+	public Timeslot(int UID, int startTime, int endTime, Day day, int[] threshold){
+		this.uID = UID;
+		this.timeStart = startTime;
+		this.timeEnd = endTime;
+		this.day = day;
+		this.minStudents = threshold[0];
+		this.preferredMin = threshold[1];
+		this.preferredMax = threshold[2];
+		this.maxStudents = threshold[3];
 	}
 
 	public void timeslotPrint() {
@@ -37,7 +40,7 @@ public abstract class Timeslot {
 				System.out.println();
 			}
 			//Print student details
-			assigned.get(i).printStudent();
+			System.out.println(assigned.get(i).getStudentNum());
 		}
 	}
 	
@@ -48,9 +51,6 @@ public abstract class Timeslot {
 	
 	
 
-	public int getuID() {
-		return uID;
-	}
 	
 	public int getStartTime() {
 		return timeStart;
@@ -58,23 +58,11 @@ public abstract class Timeslot {
 	public int getEndTime() {
 		return timeEnd;
 	}
-	public void setStartTime(int time) {
-		this.timeStart = time;
-	}
-	public void setEndTime(int time) {
-		this.timeEnd = time;
-	}
 	public Day getDay() {
 		return day;
 	}
-	public void setDay(Day day) {
-		this.day = day;
-	}
 	public int getMaxStudents() {
 		return maxStudents;
-	}
-	public void setMaxStudents(int maxStudents) {
-		this.maxStudents = maxStudents;
 	}
 	public ArrayList<Student> getAssigned() {
 		return assigned;
@@ -91,30 +79,41 @@ public abstract class Timeslot {
 	}
 
 	public int getRangeMin() {
-		return rangeMin;
+		return minStudents;
 	}
 
 	public void setRangeMin(int rangeMin) {
-		this.rangeMin = rangeMin;
+		this.minStudents = rangeMin;
 	}
 
 	public int getRangePrefHigh() {
-		return rangePrefHigh;
+		return preferredMax;
 	}
 
 	public void setRangePrefHigh(int rangePrefHigh) {
-		this.rangePrefHigh = rangePrefHigh;
+		this.preferredMax = rangePrefHigh;
 	}
 
 	public int getRangePrefLow() {
-		return rangePrefLow;
+		return preferredMin;
 	}
 
 	public void setRangePrefLow(int rangePrefLow) {
-		this.rangePrefLow = rangePrefLow;
+		this.preferredMin = rangePrefLow;
 	}
 	public int getSize(){
 		return assigned.size();
 	}
+	
+	
+	
+
+	public void dataTimeslotPrint() {
+		//Print time/day
+		System.out.printf("\n\n%s %d %d", getDay(), getStartTime(),getEndTime());
+		//For every assigned student
+	}
+	
+	
 	
 }

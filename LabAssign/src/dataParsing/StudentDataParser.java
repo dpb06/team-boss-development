@@ -15,6 +15,7 @@ import algorithmDataStructures.Timeslot;
 
 public class StudentDataParser {
 	
+	
 	/**
 	 * Data file format:
 	 * 
@@ -220,7 +221,8 @@ public class StudentDataParser {
 				if(iTimeEnd == -1){
 					throw new IllegalArgumentException("Expected a time as the fourth token in: "+token);
 				}
-			Timeslot t = new DataTimeslot(quID, iTimeStart, iTimeEnd, eDay);
+				//TODO: Make Timeslot construction match new constructor (takes int, int, int, int[4])
+			Timeslot t = new Timeslot(quID, iTimeStart, iTimeEnd, eDay);
 			t.setMaxStudents(20);
 			timeslots.add(t);
 			}

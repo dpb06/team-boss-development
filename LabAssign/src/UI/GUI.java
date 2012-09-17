@@ -145,32 +145,36 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		
 		//TODO: Create a stub-data generating class for test data like this
 		List<Timeslot> in = new ArrayList<Timeslot>();
-		in.add(new Lab(12,1640,3110,Day.Friday, 2));
-		in.add(new Lab(13,1640,3110,Day.Thursday, 3));
-		in.add(new Lab(13,1640,3110,Day.Friday, 6));
-		in.get(0).addStudent(new Student(12, "h", "n", 1315));
-		in.get(0).addStudent(new Student(1, "i", "n", 1316));
-		in.get(0).addStudent(new Student(14, "j", "n", 1317));
-		in.get(0).addStudent(new Student(18, "k", "n", 1318));
-		in.get(1).addStudent(new Student(19, "l", "n", 1319));
-		in.get(1).addStudent(new Student(20, "l", "n", 1319));
-		in.get(1).addStudent(new Student(21, "l", "n", 1319));
-		in.get(1).addStudent(new Student(22, "l", "n", 1319));
-		in.get(1).addStudent(new Student(23, "l", "n", 1319));
-		in.get(1).addStudent(new Student(24, "l", "n", 1319));
-		in.get(1).addStudent(new Student(25, "l", "n", 1319));
-		in.get(1).addStudent(new Student(12, "h", "n", 1315));
-		in.get(1).addStudent(new Student(1, "i", "n", 1316));
-		in.get(1).addStudent(new Student(14, "j", "n", 1317));
-		in.get(1).addStudent(new Student(18, "k", "n", 1318));
-		in.get(1).addStudent(new Student(19, "l", "n", 1319));
-		in.get(1).addStudent(new Student(20, "l", "n", 1319));
-		in.get(1).addStudent(new Student(21, "l", "n", 1319));
-		in.get(2).addStudent(new Student(22, "l", "n", 1319));
-		in.get(2).addStudent(new Student(23, "l", "n", 1319));
-		in.get(2).addStudent(new Student(24, "l", "n", 1319));
-		in.get(2).addStudent(new Student(25, "l", "n", 1319));
-		canvas.setSections(in);
+		//TODO: Make Timeslot construction match new constructor (takes int, int, int, int[4])
+		int[] threshOne = {0,0,2,2};
+		int[] threshTwo = {0,0,3,3};
+		int[] threshThree = {0,0,6,6};
+		in.add(new Lab(12,1640,3110,Day.Friday, threshOne));
+		in.add(new Lab(13,1640,3110,Day.Thursday, threshTwo));
+		in.add(new Lab(13,1640,3110,Day.Friday, threshThree));
+		in.get(0).addStudent(new Student(1315));
+		in.get(0).addStudent(new Student(1316));
+		in.get(0).addStudent(new Student(1317));
+		in.get(0).addStudent(new Student(1318));
+		in.get(1).addStudent(new Student(1319));
+		in.get(1).addStudent(new Student(1320));
+		in.get(1).addStudent(new Student(1321));
+		in.get(1).addStudent(new Student(1322));
+		in.get(1).addStudent(new Student(1323));
+		in.get(1).addStudent(new Student(1324));
+		in.get(1).addStudent(new Student(1325));
+		in.get(1).addStudent(new Student(1326));
+		in.get(1).addStudent(new Student(1327));
+		in.get(1).addStudent(new Student(1328));
+		in.get(1).addStudent(new Student(1329));
+		in.get(1).addStudent(new Student(1330));
+		in.get(1).addStudent(new Student(1331));
+		in.get(1).addStudent(new Student(1332));
+		in.get(2).addStudent(new Student(1333));
+		in.get(2).addStudent(new Student(1334));
+		in.get(2).addStudent(new Student(1335));
+		in.get(2).addStudent(new Student(1336));
+		canvas.setTimeslots(in);
 		canvasPanel.add(canvas);
 		frame.add(canvasPanel, BorderLayout.CENTER);
 		textArea = new JTextArea(1, 4);
@@ -230,7 +234,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			List<Timeslot> slots = parser.getTimeslots();
 			List<Student> students = parser.parseSelections(slots);
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-			canvas.setSections(new ArrayList<Timeslot>(bs.getOutput().keySet()));
+			canvas.setTimeslots(new ArrayList<Timeslot>(bs.getOutput().keySet()));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

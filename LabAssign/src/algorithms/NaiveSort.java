@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 
+import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -10,6 +11,7 @@ public class NaiveSort {
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
+	private static StaticTimeslotMap hash;
 	
 	public NaiveSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
@@ -27,7 +29,7 @@ public class NaiveSort {
 		//For every student
 		for (Student s : students){
 			//Put first first lab choice into a variable
-			Timeslot first = s.getFirstLabs().get(0);
+			Timeslot first = hash.getFirsts(s).get(0);
 			//Find index of choice in this.labs
 			int index = labs.indexOf(first);
 			//Find this.labs.choice.assigned

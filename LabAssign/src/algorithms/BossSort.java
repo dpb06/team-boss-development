@@ -3,17 +3,24 @@ package algorithms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+
+import algorithmDataStructures.AlgorithmOutput;
+import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class BossSort {
+public class BossSort implements Algorithm{
 
+	
+	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
+	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	private PriorityQueue<Student> priority = new PriorityQueue<Student>();
 	private ArrayList<Student> flagged= new ArrayList<Student>();
-	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
+	private static StaticTimeslotMap hash;
+	private AlgorithmOutput output = new AlgorithmOutput();
 
 
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
@@ -21,6 +28,10 @@ public class BossSort {
 		this.labs = labs;
 		this.tutorials = tutorials;
 
+	}
+	
+
+	public AlgorithmOutput start() {
 		priorityCalculator();
 		System.out.println();
 		System.out.println("priorityCalculator() in BossSort");
@@ -30,7 +41,10 @@ public class BossSort {
 		new FitnessFunctions(tutorials, students, labs);
 
 		guiOutput();
+		return output;
 	}
+	
+	
 
 	/**
 	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
@@ -39,23 +53,30 @@ public class BossSort {
 	private void priorityCalculator() {
 		//Initialize integer values to represent priority, and factors that affect it. 
 		int studentPriority;
-		int first;
-		int second;
-		int third;
 		//Iterate list of students.
 		for(Student s:students){
+			//Temporarily store arraylist of student's choices.
+			ArrayList<Integer> choices = s.getChoices();
+			//Initialise variables for assigning priority points for each choice.
+			int thirdPoints = 0;
+			int secondPoints = 0;
+			int firstPoints = 0;
 			//Largest priority weighting is the number of labs the student can attend.
 			studentPriority = s.getnumOfChoiceLab()*1000;
-			//Next is the number of third choices the student has selected.
-			third = s.getThirdLabs().size()*3;
-			//Then the number of second choices the student has selected.
-			second = s.getSecondLabs().size()*2;
-			//Finally the number of first choices the student has selected.
-			first = s.getFirstLabs().size();
+			for(int i:choices){
+				switch(i){
+				//Next is the number of third choices the student has selected.
+				case(3): thirdPoints += 3;
+				//Then the number of second choices the student has selected.
+				case(2): secondPoints += 2;
+				//Finally the number of first choices the student has selected.
+				case(1): firstPoints++;
+				}
+			}
 			//Combine priority values by multiplying the lab choices using the number of labs as a factor.
-			studentPriority = studentPriority*(first+second+third);
+			studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
 			//Add an element of randomization.
-			studentPriority = studentPriority+ ((int) (Math.random()*1000));
+			studentPriority = studentPriority+((int) (Math.random()*1000));
 			/*
 			 * This means:
 			 *   The students with fewest lab choices have a lower priority-value.
@@ -75,7 +96,7 @@ public class BossSort {
 			//Add the student to the priorityQueue.
 			priority.add(s);
 			//Printspam the priority of each student.
-			System.out.println(s.getFirstName()+" Priority: "+s.getPriority());
+			System.out.println(s.getStudentNum()+" Priority: "+s.getPriority());
 		}
 
 		//How many choices in total do they have? (More = higher priority)
@@ -102,11 +123,11 @@ public class BossSort {
 			while(!assigned ){
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> choices = s.getFirstLabs();
+				ArrayList<Timeslot> firsts = hash.getFirsts(s);
 				//If the list is now empty
-				while(choices.size() > 0){
+				while(firsts.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = choices.get((int) (Math.random()*choices.size()));
+					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
 						System.out.println("First");
@@ -117,7 +138,7 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						choices.remove(choice);
+						firsts.remove(choice);
 					}
 				}
 				//If assigned, break outer loop.
@@ -126,12 +147,12 @@ public class BossSort {
 				}
 
 				//Create a list of second choices
+				ArrayList<Timeslot> seconds = hash.getSeconds(s);
 				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> choiceSecond = s.getSecondLabs();
 				//If the list is now empty
-				while(choiceSecond.size() > 0){
+				while(seconds.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = choiceSecond.get((int) (Math.random()*choiceSecond.size()));
+					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
 						System.out.println("Second");
@@ -142,7 +163,7 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						choiceSecond.remove(choice);
+						seconds.remove(choice);
 					}
 				}
 				//If assigned, break outer loop.
@@ -152,13 +173,14 @@ public class BossSort {
 
 				//Create a list of third choices
 				//Check if those choices are in the list of labs that aren't full
-
-				ArrayList<Timeslot>choiceThird = s.getThirdLabs();
-
+				//Create a list of second choices
+				ArrayList<Timeslot> thirds = hash.getThirds(s);
+				//Check if those choices are in the list of labs that aren't full
+				
 				//If the list is now empty
-				while(choiceThird.size() > 0){
+				while(thirds.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = choiceThird.get((int) (Math.random()*choiceThird.size()));
+					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//Try to add student to the chosen lab
 					if(choice.addStudent(s)){
 						System.out.println("Third");
@@ -169,7 +191,7 @@ public class BossSort {
 					}
 					//If unsuccessful
 					else {
-						choiceThird.remove(choice);
+						thirds.remove(choice);
 					}
 				}
 				//If assigned, break outer loop.
@@ -179,7 +201,7 @@ public class BossSort {
 
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
 				flagged.add(s);
-				System.out.println("Not Assigned: " + s.getFirstName() + "\n");
+				System.out.println("Not Assigned: " + s.getStudentNum() + "\n");
 				break;
 
 			}
@@ -201,14 +223,14 @@ public class BossSort {
 			//Printspam the timeslot and its assigned students.
 			System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
 			for(Student s: t.getAssigned()){
-				System.out.println("\t "+s.getFirstName());
+				System.out.println("\t "+s.getStudentNum());
 			}
 		}
 		//Printspam the flagged students.
 		System.out.println();
 		System.out.println("Not Assigned:");
 		for(Student s: flagged){
-			System.out.println("\t "+s.getFirstName());
+			System.out.println("\t "+s.getStudentNum());
 		}
 	}
 
@@ -218,5 +240,8 @@ public class BossSort {
 	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
 		return output;
 	}
+
+
+
 
 }

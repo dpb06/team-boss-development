@@ -8,6 +8,44 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.NaiveSort;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO: Make JUnit test suite instead
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public class NaiveSortTest {
 
 	private ArrayList<Student> students = new ArrayList<Student>();
@@ -18,9 +56,11 @@ public class NaiveSortTest {
 	//Create list of Student objects
 	//Create list of Lab objects
 	//Create new NaiveSort
-		labs.add(new Lab(1, 1310,1510, Day.Monday, 2));
-		labs.add(new Lab(2, 1310,1510, Day.Tuesday, 2));
-		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, 2));
+		int[] threshOne = {0,0,3,3};
+		int[] threshTwo = {0,0,2,2};
+		labs.add(new Lab(1, 1310,1510, Day.Monday, threshOne));
+		labs.add(new Lab(2, 1310,1510, Day.Tuesday, threshOne));
+		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, threshTwo));
 		String first = "a";
 		String last = "z";
 		for(int i=0; i<10; i++){
