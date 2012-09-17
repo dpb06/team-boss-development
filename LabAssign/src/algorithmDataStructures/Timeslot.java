@@ -104,8 +104,12 @@ public abstract class Timeslot {
 	public int getSize(){
 		return assigned.size();
 	}
-	
-	
+	public boolean isOverFilled(){
+		return assigned.size()>maxStudents;
+	}
+	public void removeStudent(Student s){
+		assigned.remove(s);
+	}
 	
 
 	public void dataTimeslotPrint() {
