@@ -236,7 +236,7 @@ public class BossSort implements Algorithm{
 	//Before finding priority, if a Student has no first choices, bump up all their choices.
 	//Flag every Student that has their choices bumped.
 
-	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
+	public AlgorithmOutput getOutput() {
 		return output;
 	}
 

@@ -16,6 +16,15 @@ public class BossSortJUnitSuite {
 		students = j.getStudents();
 		labs = j.getLabs();
 		tutorials = j.getTutorials();
+		
+		
+		//TODO: Test input vs output.
+		//TODO: Test non-determinism of output.
+		//TODO: Are all students in input accounted for by the output?
+		//TODO: Sanity check inputs.
+		//TODO: Check code coverage.
+		
+		
 	}
 	
 }

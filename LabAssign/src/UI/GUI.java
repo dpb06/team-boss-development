@@ -174,6 +174,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		in.get(2).addStudent(new Student(1334));
 		in.get(2).addStudent(new Student(1335));
 		in.get(2).addStudent(new Student(1336));
+		//TODO: Make this work with the AlgorithmOutput class.
 		canvas.setTimeslots(in);
 		canvasPanel.add(canvas);
 		frame.add(canvasPanel, BorderLayout.CENTER);
