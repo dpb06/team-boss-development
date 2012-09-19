@@ -31,7 +31,8 @@ public class HowardsSort {
 		this.labs=labs;
 
 		sort((ArrayList<Student>) students.clone());
-		new FitnessFunctions(tutorials, students, labs);
+		//TODO: Use new fitness function data structure
+		//new FitnessFunctions(tutorials, students, labs);
 		guiOutput();
 	}
 	

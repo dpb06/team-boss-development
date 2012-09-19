@@ -37,7 +37,8 @@ public class BossSort implements Algorithm{
 		sort();
 		System.out.println();
 		System.out.println("FitnessFunctions(tuts,stus,labs) in BossSort");
-		new FitnessFunctions(tutorials, students, labs);
+		//TODO: Use new fitness function data structure
+		//new FitnessFunctions(tutorials, students, labs);
 
 		guiOutput();
 		return output;
