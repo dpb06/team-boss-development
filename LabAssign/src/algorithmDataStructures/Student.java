@@ -19,11 +19,16 @@ public class Student implements Comparable{
 	//final assigned tutorial Slot
 	private	Timeslot assignedTut;
 	//list of integers representing choices. (Timeslot correlates with index) 0 = cannot attend
-	private ArrayList<Integer> choices = new ArrayList<Integer>(); 
+	private ArrayList<Integer> choices;
 
 
-	public Student (int studentNum){
+	public Student (int studentNum, int[] choices){
 		this.studentNum=studentNum;
+		ArrayList<Integer> c = new ArrayList<Integer>();
+		for(int i:choices){
+			c.add(i);
+		}
+		this.choices = c;
 	}
 	
 	

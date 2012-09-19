@@ -118,6 +118,8 @@ public abstract class Timeslot {
 		//For every assigned student
 	}
 	
-	
+	public boolean isOverfilled(){
+		return (assigned.size()>maxStudents);
+	}
 	
 }

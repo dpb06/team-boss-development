@@ -80,7 +80,7 @@ public class HowardsSort {
 
 		}
 		//assignSecond Labs
-		indexOverfilledLabs=overFilledLabs();isOverfilled
+		indexOverfilledLabs=overFilledLabs();
 		for(int a= 0;a<indexOverfilledLabs.size();a++){
 
 			int size=labs.get(indexOverfilledLabs.get(a)).getAssigned().size();

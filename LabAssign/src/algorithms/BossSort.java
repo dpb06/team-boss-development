@@ -27,7 +27,6 @@ public class BossSort implements Algorithm{
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
-
 	}
 	
 
