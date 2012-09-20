@@ -27,7 +27,6 @@ public class BossSort implements Algorithm{
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
-
 	}
 	
 
@@ -38,7 +37,8 @@ public class BossSort implements Algorithm{
 		sort();
 		System.out.println();
 		System.out.println("FitnessFunctions(tuts,stus,labs) in BossSort");
-		new FitnessFunctions(tutorials, students, labs);
+		//TODO: Use new fitness function data structure
+		//new FitnessFunctions(tutorials, students, labs);
 
 		guiOutput();
 		return output;
@@ -237,7 +237,7 @@ public class BossSort implements Algorithm{
 	//Before finding priority, if a Student has no first choices, bump up all their choices.
 	//Flag every Student that has their choices bumped.
 
-	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
+	public AlgorithmOutput getOutput() {
 		return output;
 	}
 

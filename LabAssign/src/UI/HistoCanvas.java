@@ -31,6 +31,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	}
 	
 	public void setTimeslots(List<Timeslot> in) {
+		//TODO: Make this work with the AlgorithmOutput class.
 		timeslots = new ArrayList<Timeslot>(in);
 		recalculate();
 		repaint();

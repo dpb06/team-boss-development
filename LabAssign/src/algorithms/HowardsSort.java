@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
@@ -23,14 +24,15 @@ public class HowardsSort {
 	private ArrayList<Timeslot> tutorials;
 	private ArrayList<Student> flagged= new ArrayList<Student>();
 	private static StaticTimeslotMap hash;
-	private HashMap<Timeslot,ArrayList<Student>> output = new HashMap<Timeslot, ArrayList<Student>>();
+	private AlgorithmOutput output = new AlgorithmOutput();
 
 	public HowardsSort(ArrayList<Timeslot> labs,ArrayList<Timeslot>tut,ArrayList<Student> students ){
 		this.students=students;
 		this.labs=labs;
 
 		sort((ArrayList<Student>) students.clone());
-		new FitnessFunctions(tutorials, students, labs);
+		//TODO: Use new fitness function data structure
+		//new FitnessFunctions(tutorials, students, labs);
 		guiOutput();
 	}
 	
@@ -171,7 +173,8 @@ public class HowardsSort {
 			System.out.println("\t "+s.getStudentNum());
 		}
 	}
-	public HashMap<Timeslot, ArrayList<Student>> getOutput() {
+	
+	public AlgorithmOutput getOutput() {
 		return output;
 	}
 

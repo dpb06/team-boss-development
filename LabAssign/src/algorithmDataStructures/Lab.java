@@ -6,4 +6,6 @@ public class Lab extends Timeslot{
 		super(UID, startTime, endTime, day, threshold);
 	}
 	
+	//TODO: make UID match index in StaticTimeslotMap
+	
 }
