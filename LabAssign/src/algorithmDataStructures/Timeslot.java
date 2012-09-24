@@ -16,15 +16,16 @@ public abstract class Timeslot {
 	
 	//TODO: Check if range is okay as percentage and possibly refactor.
 
-	public Timeslot(int UID, int startTime, int endTime, Day day, int[] threshold){
+	public Timeslot(int UID, int startTime, int endTime, Day day){
 		this.uID = UID;
 		this.timeStart = startTime;
 		this.timeEnd = endTime;
 		this.day = day;
-		this.minStudents = threshold[0];
-		this.preferredMin = threshold[1];
-		this.preferredMax = threshold[2];
-		this.maxStudents = threshold[3];
+		this.maxStudents=20; //default value
+	//	this.minStudents = threshold[0];
+		//this.preferredMin = threshold[1];
+	//	this.preferredMax = threshold[2];
+	//	this.maxStudents = threshold[3];
 	}
 
 	public void timeslotPrint() {
@@ -121,5 +122,7 @@ public abstract class Timeslot {
 	public boolean isOverfilled(){
 		return (assigned.size()>maxStudents);
 	}
-	
+	public int getuID(){
+		return uID;
+	}
 }

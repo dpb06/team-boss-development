@@ -25,7 +25,9 @@ public class Student implements Comparable{
 	private ArrayList<Timeslot> secondChoices;
 	private ArrayList<Timeslot> thirdChoices;
 	private ArrayList<Timeslot> cannotAttend;
-
+	
+	private int choiceCount=0;
+	
 	public Student (int studentNum){
 		this.studentNum=studentNum;
 	}
@@ -36,7 +38,7 @@ public class Student implements Comparable{
 	 * @param t
 	 * @return
 	 */
-	public boolean addFirstChoice(Timeslot t){
+	public boolean addFirstLab(Timeslot t){
 		if(firstChoices==null){
 			firstChoices=new ArrayList<Timeslot>();
 		}
@@ -44,6 +46,7 @@ public class Student implements Comparable{
 			return false;
 		}
 		firstChoices.add(t);
+		choiceCount++;
 		return true;
 	}
 	
@@ -52,7 +55,7 @@ public class Student implements Comparable{
  * @param t
  * @return
  */
-	public boolean addSecondChoice(Timeslot t){
+	public boolean addSecondLab(Timeslot t){
 		if(secondChoices==null){
 			secondChoices=new ArrayList<Timeslot>();
 		}
@@ -60,6 +63,7 @@ public class Student implements Comparable{
 			return false;
 		}
 		secondChoices.add(t);
+		choiceCount++;
 		return true;
 	}
 /**
@@ -67,7 +71,7 @@ public class Student implements Comparable{
  * @param t
  * @return
  */
-	public boolean addThirdChoice(Timeslot t){
+	public boolean addThirdLab(Timeslot t){
 		if(thirdChoices==null){
 			thirdChoices=new ArrayList<Timeslot>();
 		}
@@ -75,6 +79,7 @@ public class Student implements Comparable{
 			return false;
 		}
 		thirdChoices.add(t);
+		choiceCount++;
 		return true;
 	}
 /**
@@ -144,6 +149,11 @@ public class Student implements Comparable{
 		this.name = name;
 	}
 	
+	public int getChoiceCount() {
+		return choiceCount;
+	}
+
+
 	public String toString() {
 		return "Student: " + studentNum + "\n";
 	}

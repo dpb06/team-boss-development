@@ -46,7 +46,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	private void recalculate() {
 		Rectangle bounds = this.getBounds();
 		Dimension size = this.getPreferredSize();
-		int width = size.width / timeslots.size();
+		int width = size.width / timeslots.size();		
 		int height = size.height;
 		int largestSection = -Integer.MAX_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();

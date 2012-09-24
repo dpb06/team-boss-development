@@ -13,6 +13,8 @@ public class BossSort implements Algorithm{
 
 	
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
+	//TODO: Make sure we can handle cases where a student has no choices AKA cannot attend and labs
+	
 	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;

@@ -6,6 +6,7 @@ import algorithmDataStructures.Day;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
+import algorithms.CuttingSort;
 
 public class JUnitTestingData {
 
@@ -80,77 +81,77 @@ public class JUnitTestingData {
 			for(int ind=0; ind<asdf.length; ind++){
 				if(asdf[ind] == 0){
 					switch(ind){
-					case 1:
+					case 0:
 						s.addCannotAttend(labOne);
 						break;
-					case 2:
+					case 1:
 						s.addCannotAttend(labTwo);
 						break;
-					case 3:
+					case 2:
 						s.addCannotAttend(labThree);
 						break;
-					case 4:
+					case 3:
 						s.addCannotAttend(labFour);
 						break;
-					case 5:
+					case 4:
 						s.addCannotAttend(labFive);
 						break;
 					}					
 				}
 				else if(asdf[ind] == 1){
 					switch(ind){
+					case 0:
+						s.addFirstLab(labOne);
+						break;
 					case 1:
-						s.addFirstChoice(labOne);
+						s.addFirstLab(labTwo);
 						break;
 					case 2:
-						s.addFirstChoice(labTwo);
+						s.addFirstLab(labThree);
 						break;
 					case 3:
-						s.addFirstChoice(labThree);
+						s.addFirstLab(labFour);
 						break;
 					case 4:
-						s.addFirstChoice(labFour);
-						break;
-					case 5:
-						s.addFirstChoice(labFive);
+						s.addFirstLab(labFive);
 						break;
 					}
 				}
 				else if(asdf[ind] == 2){
 					switch(ind){
+					case 0:
+						s.addSecondLab(labOne);
+						break;
 					case 1:
-						s.addSecondChoice(labOne);
+						s.addSecondLab(labTwo);
 						break;
 					case 2:
-						s.addSecondChoice(labTwo);
+						s.addSecondLab(labThree);
 						break;
 					case 3:
-						s.addSecondChoice(labThree);
+						s.addSecondLab(labFour);
 						break;
 					case 4:
-						s.addSecondChoice(labFour);
-						break;
-					case 5:
-						s.addSecondChoice(labFive);
+						s.addSecondLab(labFive);
 						break;
 					}
 				}
 				else if(asdf[ind] == 3){
 					switch(ind){
 					case 1:
-						s.addThirdChoice(labOne);
+						s.addThirdLab(labOne);
 						break;
 					case 2:
-						s.addThirdChoice(labTwo);
+						s.addThirdLab(labTwo);
 						break;
 					case 3:
-						s.addThirdChoice(labThree);
+						s.addThirdLab(labThree);
 						break;
 					case 4:
-						s.addThirdChoice(labFour);
+						s.addThirdLab(labFour);
 						break;
 					case 5:
-						s.addThirdChoice(labFive);
+						s.addThirdLab(labFive);
 						break;
 					}
 				}
@@ -174,6 +175,9 @@ public class JUnitTestingData {
 	public ArrayList<Timeslot> getTutorials(){
 		return tutorials;
 	}
-	
+	public static void main(String []args){
+		JUnitTestingData j=new JUnitTestingData();
+		new CuttingSort(j.getLabs(), j.getTutorials(), j.getStudents());
+	}
 	
 }
