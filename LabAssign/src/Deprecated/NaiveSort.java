@@ -2,9 +2,6 @@ package Deprecated;
 
 import java.util.ArrayList;
 
-import fitnessFunctions.FitnessFunctions;
-
-import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -13,7 +10,6 @@ public class NaiveSort {
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
-	private static StaticTimeslotMap hash;
 	
 	public NaiveSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;

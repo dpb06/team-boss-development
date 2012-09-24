@@ -58,7 +58,7 @@ public class BossSortTest {
 		int[] threshTwo = {0,0,2,2};
 		labs.add(new Lab(1, 1310,1510, Day.Monday, threshOne));
 		labs.add(new Lab(2, 1310,1510, Day.Tuesday, threshOne));
-		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, threshTwo));
+		labs.add(new Lab(3, 1310, 1510,Day.Wednesday, choices.get(index) threshTwo));
 		String first = "a";
 		String last = "z";
 		for(int i=0; i<10; i++){

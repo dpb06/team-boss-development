@@ -73,11 +73,92 @@ public class JUnitTestingData {
 		for(int i = 300213937; i < 300213987; i++){
 			//Pick a choice for the student.
 			int index = i%14;
+			int[] asdf = choices.get(index);
 			//Create a student.
-			Student s = new Student(i, choices.get(index));
+			Student s = new Student(i);			
+			//TODO: UNUGLIFY THIS.
+			for(int ind=0; ind<asdf.length; ind++){
+				if(asdf[ind] == 0){
+					switch(ind){
+					case 1:
+						s.addCannotAttend(labOne);
+						break;
+					case 2:
+						s.addCannotAttend(labTwo);
+						break;
+					case 3:
+						s.addCannotAttend(labThree);
+						break;
+					case 4:
+						s.addCannotAttend(labFour);
+						break;
+					case 5:
+						s.addCannotAttend(labFive);
+						break;
+					}					
+				}
+				else if(asdf[ind] == 1){
+					switch(ind){
+					case 1:
+						s.addFirstChoice(labOne);
+						break;
+					case 2:
+						s.addFirstChoice(labTwo);
+						break;
+					case 3:
+						s.addFirstChoice(labThree);
+						break;
+					case 4:
+						s.addFirstChoice(labFour);
+						break;
+					case 5:
+						s.addFirstChoice(labFive);
+						break;
+					}
+				}
+				else if(asdf[ind] == 2){
+					switch(ind){
+					case 1:
+						s.addSecondChoice(labOne);
+						break;
+					case 2:
+						s.addSecondChoice(labTwo);
+						break;
+					case 3:
+						s.addSecondChoice(labThree);
+						break;
+					case 4:
+						s.addSecondChoice(labFour);
+						break;
+					case 5:
+						s.addSecondChoice(labFive);
+						break;
+					}
+				}
+				else if(asdf[ind] == 3){
+					switch(ind){
+					case 1:
+						s.addThirdChoice(labOne);
+						break;
+					case 2:
+						s.addThirdChoice(labTwo);
+						break;
+					case 3:
+						s.addThirdChoice(labThree);
+						break;
+					case 4:
+						s.addThirdChoice(labFour);
+						break;
+					case 5:
+						s.addThirdChoice(labFive);
+						break;
+					}
+				}
+			}
 			//Add student to students.
 			students.add(s);
 		}
+		
 		
 		//TODO: Add test data to represent tutorials
 	}

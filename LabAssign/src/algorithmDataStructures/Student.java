@@ -6,52 +6,100 @@ import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import Deprecated.StaticTimeslotMap;
+
 
 public class Student implements Comparable{
 
 	private	int studentNum;
 	private int Priority=0;
-	private static StaticTimeslotMap hash;
-
+	
+	private String name;
 
 	//final assigned lab slot
 	private	Timeslot assignedLab;
 	//final assigned tutorial Slot
 	private	Timeslot assignedTut;
 	//list of integers representing choices. (Timeslot correlates with index) 0 = cannot attend
-	private ArrayList<Integer> choices;
+	private ArrayList<Timeslot> firstChoices;
+	private ArrayList<Timeslot> secondChoices;
+	private ArrayList<Timeslot> thirdChoices;
+	private ArrayList<Timeslot> cannotAttend;
 
-
-	public Student (int studentNum, int[] choices){
+	public Student (int studentNum){
 		this.studentNum=studentNum;
-		ArrayList<Integer> c = new ArrayList<Integer>();
-		for(int i:choices){
-			c.add(i);
+	}
+
+	
+	/**
+	 * adds a timeslot to the students list of first choices.
+	 * @param t
+	 * @return
+	 */
+	public boolean addFirstChoice(Timeslot t){
+		if(firstChoices==null){
+			firstChoices=new ArrayList<Timeslot>();
 		}
-		this.choices = c;
+		if(firstChoices.contains(t)){
+			return false;
+		}
+		firstChoices.add(t);
+		return true;
 	}
 	
-	
-	
+/**
+ * adds a timeslot to the list of students second choices.
+ * @param t
+ * @return
+ */
+	public boolean addSecondChoice(Timeslot t){
+		if(secondChoices==null){
+			secondChoices=new ArrayList<Timeslot>();
+		}
+		if(secondChoices.contains(t)){
+			return false;
+		}
+		secondChoices.add(t);
+		return true;
+	}
+/**
+ * adds a timeslot to the list of students third choices.
+ * @param t
+ * @return
+ */
+	public boolean addThirdChoice(Timeslot t){
+		if(thirdChoices==null){
+			thirdChoices=new ArrayList<Timeslot>();
+		}
+		if(thirdChoices.contains(t)){
+			return false;
+		}
+		thirdChoices.add(t);
+		return true;
+	}
+/**
+ * adds a timeslot to the list of students cannot attend.
+ * @param t
+ * @return
+ */
+	public boolean addCannotAttend(Timeslot t){
+		if(cannotAttend==null){
+			cannotAttend=new ArrayList<Timeslot>();
+		}
+		if(cannotAttend.contains(t))
+			return false;
+		cannotAttend.add(t);
+		return true;
+	}
+
 	public int getPriority() {
 		return Priority;
 	}
-
-
-
+	
 	public void setPriority(int priority) {
 		Priority = priority;
 	}
-
 	
-	public String toString() {
-		return "Student: " + studentNum + "\n" + choices.toString();
-	}
-	
-	
-
-
-
 	public void setAssignedLab(Timeslot t){
 		this.assignedLab = t;
 	}
@@ -60,26 +108,73 @@ public class Student implements Comparable{
 		this.assignedTut = t;
 	}
 
-
 	public int getStudentNum() {
 		return studentNum;
 	}
 	
-	public ArrayList<Integer> getChoices() {
-		return choices;
-	}
-
 	public Timeslot getAssignedLab() {
 		return assignedLab;
 	}
 
+	public ArrayList<Timeslot> getFirstChoices() {
+		return firstChoices;
+	}
+	
+	public ArrayList<Timeslot> getSecondChoices() {
+		return secondChoices;
+	}
+	
+	public ArrayList<Timeslot> getThirdChoices() {
+		return thirdChoices;
+	}
+	
+	public ArrayList<Timeslot> getCannotAttend() {
+		return cannotAttend;
+	}
+	
 	public Timeslot getAssignedTut() {
 		return assignedTut;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
-
-
-@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String toString() {
+		return "Student: " + studentNum + "\n";
+	}
+	/**
+	 * prints out the student with all of its information that it holds
+	 * first choices,second choice,third choices and cannot attends
+	 */
+	public void printDebug(){
+		StringBuilder firstLabTest=new StringBuilder();	
+		for(Timeslot t:firstChoices){
+			firstLabTest.append("\t"+t.toString()+"\n");
+		}
+		firstLabTest.append("second choice: \n");
+		for(Timeslot t:secondChoices){
+			firstLabTest.append("\t"+t.toString()+"\n");
+		}
+		firstLabTest.append("thirdc choice: \n");
+		for(Timeslot t:thirdChoices){
+			firstLabTest.append("\t"+t.toString()+"\n");
+		}
+		firstLabTest.append("Cannot Attend: \n");
+		for(Timeslot t:cannotAttend){
+			firstLabTest.append("\t"+t.toString()+"\n");
+		}
+		System.out.println(toString());
+		System.out.println("First Choices: ");
+		System.out.println(firstLabTest.toString());
+	
+	}
+	
+	@Override
 	public int compareTo(Object o) {
 		//Ensure object is a Student.
 		if( o instanceof Student){
@@ -95,7 +190,7 @@ public class Student implements Comparable{
 			}
 			//If priorities are even, return 0.
 			else{
-			return 0;
+				return 0;
 			}
 		}
 		//If object is not a Student, throw exception.
@@ -104,15 +199,9 @@ public class Student implements Comparable{
 	}
 
 
-
-public int getnumOfChoiceLab() {
-	int sum = 0;
-	for (int i:choices){
-		if(i!=0){
-			sum++;
-		}
+	public int getTotalLabChoices() {
+		return firstChoices.size() + secondChoices.size() + thirdChoices.size();
 	}
-	return sum;
-}
+
 
 }

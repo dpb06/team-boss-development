@@ -1,13 +1,14 @@
 package algorithms;
 
 import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Lab;
-import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -20,16 +21,16 @@ import algorithmDataStructures.Timeslot;
 public class HowardsSort {
 	private ArrayList <Student>students;
 	private ArrayList<Student>assignedStudents;
-	private ArrayList <Timeslot>labs;
-	private ArrayList<Timeslot> tutorials;
+	private ArrayList<Integer> indexOverfilledLabs=new ArrayList<Integer>();
+	private ArrayList<Timeslot>labs;
 	private ArrayList<Student> flagged= new ArrayList<Student>();
-	private static StaticTimeslotMap hash;
 	private AlgorithmOutput output = new AlgorithmOutput();
+	private ArrayList<Timeslot> tutorials;
 
-	public HowardsSort(ArrayList<Timeslot> labs,ArrayList<Timeslot>tut,ArrayList<Student> students ){
+	public HowardsSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students=students;
 		this.labs=labs;
-
+		this.tutorials=tutorials;
 		sort((ArrayList<Student>) students.clone());
 		//TODO: Use new fitness function data structure
 		//new FitnessFunctions(tutorials, students, labs);
@@ -45,7 +46,7 @@ public class HowardsSort {
 		for (int i=0;i<numStudents;i++){
 			currentStudent=students.get((int)(Math.random()*students.size()));
 			students.remove(currentStudent);
-			firstChoiceLab=hash.getFirsts(currentStudent);
+			firstChoiceLab=currentStudent.getFirstChoices();
 			int lowestLabSize=0;
 			for(int z=0;z<firstChoiceLab.size();z++){
 				if(firstChoiceLab.get(z).getAssigned().size()<firstChoiceLab.get(lowestLabSize).getAssigned().size()){
@@ -68,8 +69,8 @@ public class HowardsSort {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(hash.getFirsts(currentStudent).size()>1){
-					for(Timeslot t:hash.getFirsts(currentStudent)){
+				if(currentStudent.getFirstChoices().size()>1){
+					for(Timeslot t:currentStudent.getFirstChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverFilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
@@ -90,8 +91,8 @@ public class HowardsSort {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(hash.getSeconds(currentStudent).size()>1){
-					for(Timeslot t:hash.getSeconds(currentStudent)){
+				if(currentStudent.getSecondChoices().size()>1){
+					for(Timeslot t:currentStudent.getSecondChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverFilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
@@ -112,8 +113,8 @@ public class HowardsSort {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(hash.getThirds(currentStudent).size()>1){
-					for(Timeslot t:hash.getThirds(currentStudent)){
+				if(currentStudent.getThirdChoices().size()>1){
+					for(Timeslot t:currentStudent.getThirdChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverFilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
@@ -137,12 +138,11 @@ public class HowardsSort {
 	}
 
 	public ArrayList<Integer> overFilledLabs(){
-		ArrayList<Integer> indexOverfilledLabs=new ArrayList<Integer>();
+		indexOverfilledLabs.clear();
 		for(int i=0;i<labs.size();i++){
 			if(labs.get(i).isOverFilled()){
 				System.out.println("over filled lab: "+labs.get(i).toString());
-				indexOverfilledLabs.add(i);
-				
+				indexOverfilledLabs.add(i);				
 			}
 		}
 		return indexOverfilledLabs;

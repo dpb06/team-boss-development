@@ -1,9 +1,8 @@
-package algorithms;
+package Deprecated;
 
 import java.sql.Time;
 import java.util.ArrayList;
 
-import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -40,7 +39,7 @@ public class FitnessFunctions {
 			System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay());
 			labEveness=(float)size/(float)t.getMaxStudents();
 			float labPercent=100*labEveness;
-			System.out.printf("Lab fullness : %.2f percent \n",labPercent);		
+			System.out.printf("Lab fullness : %.2f percent \n",labPercent);	
 		}
 		System.out.println();
 	}

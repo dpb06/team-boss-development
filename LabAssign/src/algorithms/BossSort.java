@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.AlgorithmOutput;
-import algorithmDataStructures.StaticTimeslotMap;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -19,7 +19,6 @@ public class BossSort implements Algorithm{
 	private ArrayList<Timeslot> tutorials;
 	private PriorityQueue<Student> priority = new PriorityQueue<Student>();
 	private ArrayList<Student> flagged= new ArrayList<Student>();
-	private static StaticTimeslotMap hash;
 	private AlgorithmOutput output = new AlgorithmOutput();
 
 
@@ -55,24 +54,20 @@ public class BossSort implements Algorithm{
 		int studentPriority;
 		//Iterate list of students.
 		for(Student s:students){
-			//Temporarily store arraylist of student's choices.
-			ArrayList<Integer> choices = s.getChoices();
 			//Initialise variables for assigning priority points for each choice.
 			int thirdPoints = 0;
 			int secondPoints = 0;
 			int firstPoints = 0;
+			
 			//Largest priority weighting is the number of labs the student can attend.
-			studentPriority = s.getnumOfChoiceLab()*1000;
-			for(int i:choices){
-				switch(i){
-				//Next is the number of third choices the student has selected.
-				case(3): thirdPoints += 3;
-				//Then the number of second choices the student has selected.
-				case(2): secondPoints += 2;
-				//Finally the number of first choices the student has selected.
-				case(1): firstPoints++;
-				}
-			}
+			studentPriority = s.getTotalLabChoices()*1000;
+			//Next is the number of third choices the student has selected.
+			thirdPoints = s.getThirdChoices().size()*3;
+			//Next is the number of second choices the student has selected.
+			secondPoints = s.getSecondChoices().size()*2;
+			//Next is the number of first choices the student has selected.
+			firstPoints = s.getFirstChoices().size();
+			
 			//Combine priority values by multiplying the lab choices using the number of labs as a factor.
 			studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
 			//Add an element of randomization.
@@ -123,7 +118,7 @@ public class BossSort implements Algorithm{
 			while(!assigned ){
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> firsts = hash.getFirsts(s);
+				ArrayList<Timeslot> firsts = s.getFirstChoices();
 				//If the list is now empty
 				while(firsts.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
@@ -147,7 +142,7 @@ public class BossSort implements Algorithm{
 				}
 
 				//Create a list of second choices
-				ArrayList<Timeslot> seconds = hash.getSeconds(s);
+				ArrayList<Timeslot> seconds = s.getSecondChoices();
 				//Check if those choices are in the list of labs that aren't full
 				//If the list is now empty
 				while(seconds.size() > 0){
@@ -174,7 +169,7 @@ public class BossSort implements Algorithm{
 				//Create a list of third choices
 				//Check if those choices are in the list of labs that aren't full
 				//Create a list of second choices
-				ArrayList<Timeslot> thirds = hash.getThirds(s);
+				ArrayList<Timeslot> thirds = s.getThirdChoices();
 				//Check if those choices are in the list of labs that aren't full
 				
 				//If the list is now empty
