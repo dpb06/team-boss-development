@@ -22,11 +22,11 @@ public class JUnitTestingData {
 		int[] threshThree = {2,4,10,15};
 		
 		//Create five labs, with maximums of 10,10,10,12,15.
-		Lab labOne = new Lab(1, 1310, 1410, Day.Monday, threshOne);
-		Lab labTwo = new Lab(2, 1310, 1410, Day.Tuesday, threshOne);
-		Lab labThree = new Lab(3, 900, 1000, Day.Wednesday, threshTwo);
-		Lab labFour = new Lab(4, 1310, 1410, Day.Thursday, threshOne);
-		Lab labFive = new Lab(5, 1510, 1620, Day.Thursday, threshThree);
+		Lab labOne = new Lab(1, 1310, 1410, Day.Monday);
+		Lab labTwo = new Lab(2, 1310, 1410, Day.Tuesday);
+		Lab labThree = new Lab(3, 900, 1000, Day.Wednesday);
+		Lab labFour = new Lab(4, 1310, 1410, Day.Thursday);
+		Lab labFive = new Lab(5, 1510, 1620, Day.Thursday);
 
 		//Add the five labs to labs.
 		labs.add(labOne);

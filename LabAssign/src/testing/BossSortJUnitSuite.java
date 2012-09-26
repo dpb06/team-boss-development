@@ -62,11 +62,11 @@ public class BossSortJUnitSuite {
 		Timeslot ts2 = new Lab(11, 1100, 1200, Day.Wednesday);
 		Timeslot ts3 = new Lab(12, 1200, 1300, Day.Wednesday);
 		Student s1 = new Student(1);
-		s1.addFirstChoice(ts1);
+		s1.addFirstLab(ts1);
 		Student s2 = new Student(2);
-		s2.addFirstChoice(ts2);
+		s2.addFirstLab(ts2);
 		Student s3 = new Student(3);
-		s3.addFirstChoice(ts3);
+		s3.addFirstLab(ts3);
 		ArrayList<Student> studs = new ArrayList<Student>();
 		studs.add(s1);
 		studs.add(s2);
