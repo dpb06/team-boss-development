@@ -3,6 +3,8 @@ package UI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +33,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import algorithmDataStructures.Day;
 import algorithmDataStructures.Lab;
@@ -52,6 +56,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private JTextArea textArea;
 	private final JTextField fileText;
 	private HistoCanvas canvas; 
+	private ArrayList<Bounds> SessionBounds = new ArrayList<Bounds>();
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -257,4 +262,147 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
 	}
+	
+	// The bounds class is used by the GUI to store the bounds
+	// given to it by the user for use in the algorithm of choice.
+	//   Each set of bounds has a maximum, a minimum, and a preferred max and min.
+	public class Bounds{
+		
+		int min = 0;
+		int max = 20;
+		int prefmin = 0;
+		int prefmax = 20; 
+		
+		public Bounds(int _min, int _max, int _prefmin, int _prefmax){
+			min = _min;
+			max = _max;
+			prefmin = _prefmin;
+			prefmax = _prefmax;
+		}
+		
+		public boolean createInputBoxes(JFrame frame, int drawRow, String name){
+			if(frame.getLayout() instanceof GridBagLayout ){
+				
+				//Uses the gridbag layout manager, so we can set up where we want the
+				// boxes to be placed in the grid. 
+				GridBagConstraints c = new GridBagConstraints();
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.weightx = 0.5;
+				c.gridy = drawRow;
+				
+				JLabel title = new JLabel(name);
+				c.gridx = 0;				
+				frame.add(title, c);
+				
+				final JTextArea minText = new JTextArea("0");
+				c.gridx++;				
+				frame.add(minText, c);
+				minText.getDocument().addDocumentListener(new DocumentListener(){
+
+					@Override
+					public void changedUpdate(DocumentEvent e) { update(e);}
+
+					@Override
+					public void insertUpdate(DocumentEvent e) { update(e);}
+
+					@Override
+					public void removeUpdate(DocumentEvent e) { update(e);}
+					
+					public void update(DocumentEvent e){
+						if(Integer.parseInt(minText.getText()) < 0){
+							minText.setText("0");
+						}else
+							min = Integer.parseInt(minText.getText());
+					}
+				});
+				
+				
+				final JTextArea maxText = new JTextArea("20");
+				c.gridx++;				
+				frame.add(maxText, c);
+				maxText.getDocument().addDocumentListener(new DocumentListener(){
+
+					@Override
+					public void changedUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void insertUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void removeUpdate(DocumentEvent e) { update(e);}
+					
+					public void update(DocumentEvent e){
+						if(Integer.parseInt(maxText.getText()) < 0){
+							maxText.setText("0");
+						}else
+							max = Integer.parseInt(maxText.getText());
+					}
+				});
+				
+				final JTextArea prefMinText = new JTextArea("0");
+				c.gridx++;				
+				frame.add(prefMinText, c);
+				prefMinText.getDocument().addDocumentListener(new DocumentListener(){
+					@Override
+					public void changedUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void insertUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void removeUpdate(DocumentEvent e) { update(e);}
+					
+					public void update(DocumentEvent e){
+						if(Integer.parseInt(prefMinText.getText()) < 0){
+							prefMinText.setText("0");
+							prefmin = 0;
+						}else
+							prefmin = Integer.parseInt(prefMinText.getText());
+					}
+				});
+				
+				final JTextArea prefMaxText = new JTextArea("20");
+				c.gridx++;				
+				frame.add(prefMaxText, c);
+				prefMaxText.getDocument().addDocumentListener(new DocumentListener(){
+					@Override
+					public void changedUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void insertUpdate(DocumentEvent e) { update(e);}
+					@Override
+					public void removeUpdate(DocumentEvent e) { update(e);}
+					
+					public void update(DocumentEvent e){
+						if(Integer.parseInt(prefMaxText.getText()) < 0){
+							prefMaxText.setText("0");
+							prefmax = 0;
+						}else
+							prefmax = Integer.parseInt(prefMaxText.getText());
+					}
+				});
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+
+		public int getMin() {
+			return min;
+		}
+		
+		public int getMax() {
+			return max;
+		}
+
+		public int getPrefMin() {
+			return prefmin;
+		}
+
+		public int getPrefMax() {
+			return prefmax;
+		}
+		
+	}
+	
+	public void addBoundsInputs(){
+		
+	}
+	
 }
