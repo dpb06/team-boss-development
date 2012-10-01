@@ -46,6 +46,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	private void recalculate() {
 		Rectangle bounds = this.getBounds();
 		Dimension size = this.getPreferredSize();
+		if (timeslots.size() == 0) return;
 		int width = size.width / timeslots.size();		
 		int height = size.height;
 		int largestSection = -Integer.MAX_VALUE;
@@ -77,7 +78,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		for (Rectangle r : rectangles.keySet()) {
 			Timeslot s = rectangles.get(r);
 			// Set color according to things
-			if (s.getSize() < s.getRangeMin() || s.getSize() > s.getMaxStudents())
+			if (s.getSize() < s.getMinStudents() || s.getSize() > s.getMaxStudents())
 				g.setColor(Color.RED);
 			else if (s.getSize() < s.getPreferredMin() || s.getSize() > s.getPreferredMax())
 				g.setColor(Color.YELLOW);
