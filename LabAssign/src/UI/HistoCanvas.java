@@ -78,9 +78,9 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		for (Rectangle r : rectangles.keySet()) {
 			Timeslot s = rectangles.get(r);
 			// Set color according to things
-			if (s.getSize() < s.getMinStudents() || s.getSize() > s.getMaxStudents())
+			if (s.getAssigned().size() < s.getMinStudents() || s.getAssigned().size() > s.getMaxStudents())
 				g.setColor(Color.RED);
-			else if (s.getSize() < s.getPreferredMin() || s.getSize() > s.getPreferredMax())
+			else if (s.getAssigned().size() < s.getPreferredMin() || s.getAssigned().size() > s.getPreferredMax())
 				g.setColor(Color.YELLOW);
 			else
 				g.setColor(Color.GREEN); 
