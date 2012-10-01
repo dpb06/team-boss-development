@@ -1,5 +1,7 @@
 package algorithms;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -204,23 +206,37 @@ public class BossSort {
 	 * to the GUI.
 	 */
 	private void guiOutput() {
-		System.out.println();
-		System.out.println("guiOutPut() in BossSort");
-		//Iterate through Timeslots.
-		for(Timeslot t:labs){
-			//Add the timeslot and its assigned students to the output hashmap.
-			output.put(t,  t.getAssigned());
-			//Printspam the timeslot and its assigned students.
-			System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
-			for(Student s: t.getAssigned()){
-				System.out.println("\t "+s.getFirstName());
+		try{
+			// Create file 
+			FileWriter fstream = new FileWriter("Output/printout.txt");
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write("guiOutPut() in BossSort");
+			out.newLine();
+			//Iterate through Timeslots.
+			for(Timeslot t:labs){
+				//Add the timeslot and its assigned students to the output hashmap.
+				output.put(t,  t.getAssigned());
+				//Printspam the timeslot and its assigned students.
+				out.write(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
+				out.newLine();
+				for(Student s: t.getAssigned()){
+					out.write("\t "+s.getFirstName());
+					out.newLine();
+				}
 			}
-		}
-		//Printspam the flagged students.
-		System.out.println();
-		System.out.println("Not Assigned:");
-		for(Student s: flagged){
-			System.out.println("\t "+s.getFirstName());
+			//Printspam the flagged students.
+			out.newLine();
+			out.write("Not Assigned:");
+			out.newLine();
+			for(Student s: flagged){
+				out.write("\t "+s.getFirstName());
+				out.newLine();
+			}
+			//Close the output stream
+			out.close();
+
+		}catch (Exception e){//Catch exception if any
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 
