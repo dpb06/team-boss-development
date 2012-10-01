@@ -7,9 +7,7 @@ import testing.JUnitTestingData;
 
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
-import algorithmDataStructures.TimeSlotTotals;
 import algorithmDataStructures.Timeslot;
-import algorithmDataStructures.Tutorial;
 
 public class CuttingSort implements Algorithm {
 	private ArrayList<Student> students;
