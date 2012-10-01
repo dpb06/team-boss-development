@@ -62,7 +62,7 @@ public class BossSort implements Algorithm{
 			int firstPoints = 0;
 			
 			//Largest priority weighting is the number of labs the student can attend.
-			studentPriority = s.getTotalLabChoices()*1000;
+			studentPriority = s.getNumCanAttend()*1000;
 			//Next is the number of third choices the student has selected.
 			thirdPoints = s.getThirdChoices().size()*3;
 			//Next is the number of second choices the student has selected.
@@ -126,10 +126,10 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
 					//Try to add student to the chosen lab
-					if(choice.addStudent(s)){
-						System.out.println("First");
+					if(!choice.isOverfilled()){
+						choice.addStudent(s);
+						System.out.println("Third");
 						System.out.println(choice.getDay() + "\n");
-						//If successful, assigned = true
 						assigned = true;
 						break;
 					}
@@ -151,10 +151,10 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
 					//Try to add student to the chosen lab
-					if(choice.addStudent(s)){
-						System.out.println("Second");
+					if(!choice.isOverfilled()){
+						choice.addStudent(s);
+						System.out.println("Third");
 						System.out.println(choice.getDay() + "\n");
-						//If successful, assigned = true
 						assigned = true;
 						break;
 					}
@@ -179,10 +179,11 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//Try to add student to the chosen lab
-					if(choice.addStudent(s)){
+					//TODO: Ensure addStudents(s) is replaced with a check that lab isn't overfilled
+					if(!choice.isOverfilled()){
+						choice.addStudent(s);
 						System.out.println("Third");
 						System.out.println(choice.getDay() + "\n");
-						//If successful, assigned = true
 						assigned = true;
 						break;
 					}

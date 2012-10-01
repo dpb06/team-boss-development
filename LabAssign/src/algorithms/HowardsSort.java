@@ -72,7 +72,7 @@ public class HowardsSort {
 				if(currentStudent.getFirstChoices().size()>1){
 					for(Timeslot t:currentStudent.getFirstChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
-							if(!t.isOverFilled()){
+							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
 								labs.get(indexOverfilledLabs.get(a)).addStudent(currentStudent);
 							}
@@ -94,7 +94,7 @@ public class HowardsSort {
 				if(currentStudent.getSecondChoices().size()>1){
 					for(Timeslot t:currentStudent.getSecondChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
-							if(!t.isOverFilled()){
+							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
 								labs.get(indexOverfilledLabs.get(a)).addStudent(currentStudent);
 							}
@@ -116,7 +116,7 @@ public class HowardsSort {
 				if(currentStudent.getThirdChoices().size()>1){
 					for(Timeslot t:currentStudent.getThirdChoices()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
-							if(!t.isOverFilled()){
+							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
 								labs.get(indexOverfilledLabs.get(a)).addStudent(currentStudent);
 							}
@@ -140,7 +140,7 @@ public class HowardsSort {
 	public ArrayList<Integer> overFilledLabs(){
 		indexOverfilledLabs.clear();
 		for(int i=0;i<labs.size();i++){
-			if(labs.get(i).isOverFilled()){
+			if(labs.get(i).isOverfilled()){
 				System.out.println("over filled lab: "+labs.get(i).toString());
 				indexOverfilledLabs.add(i);				
 			}

@@ -1,12 +1,21 @@
 package algorithmDataStructures;
 import java.util.ArrayList;
 
-
+/**
+ * Stores information about a single lab or tutorial, including:
+ *   A unique ID.
+ *   The hour the lab/tut starts (in 24 hour time).
+ *   The hour the lab/tut ends.
+ *   The day the lab/tut is on.
+ *   The number of students that can/should be in this lab/tut.
+ *   The students assigned to this lab/tut.
+ */
 public abstract class Timeslot {
 	
+	//-----FIELDS-----\\
 	private int uID;
-	private int timeStart;
-	private int timeEnd;
+	private int startTime;
+	private int endTime;
 	private Day day;
 	private int minStudents = 0;
 	private int preferredMin = 0;
@@ -14,15 +23,17 @@ public abstract class Timeslot {
 	private int maxStudents = 20;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
-	//TODO: Check if range is okay as percentage and possibly refactor.
 
+	//-----CONSTRUCTOR-----\\
 	public Timeslot(int UID, int startTime, int endTime, Day day){
 		this.uID = UID;
-		this.timeStart = startTime;
-		this.timeEnd = endTime;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.day = day;
 	}
 
+	
+	//-----FUNCTIONALITIES-----\\
 	public void timeslotPrint() {
 		//Print time/day
 		System.out.printf("\n\n%s %d %d", getDay(), getStartTime(),getEndTime());
@@ -40,80 +51,29 @@ public abstract class Timeslot {
 		}
 	}
 	
-
+	@Override
 	public String toString(){
-		return uID +":  "+ timeStart+ " - "+timeEnd ;
+		return uID +":  "+ startTime+ " - "+endTime ;
+	}
+	
+	public boolean isOverfilled(){
+		return (assigned.size()>maxStudents);
 	}
 	
 	
-
-	
-	public int getStartTime() {
-		return timeStart;
-	}
-	public int getEndTime() {
-		return timeEnd;
-	}
-	public Day getDay() {
-		return day;
-	}
-	public ArrayList<Student> getAssigned() {
-		return assigned;
-	}
-
-
-	public boolean addStudent(Student s) {
-		if (assigned.size() >= maxStudents){
-			return false;
-		} else {
+	//-----ADD METHODS-----\\
+	public void addStudent(Student s) {
 		this.assigned.add(s);
-		return true;
-		}
-	}
-
-	public int getMinStudents() {
-		return minStudents;
-	}
-
-	public void setMinStudents(int minStudents) {
-		this.minStudents = minStudents;
-	}
-
-	public int getPreferredMax() {
-		return preferredMax;
-	}
-
-	public void setPreferredMax(int preferredMax) {
-		this.preferredMax = preferredMax;
-	}
-
-	public int getPreferredMin() {
-		return preferredMin;
-	}
-
-	public void setPreferredMin(int preferredMin) {
-		this.preferredMin = preferredMin;
 	}
 	
-	public int getMaxStudents() {
-		return maxStudents;
-	}
-
-	public void setMaxStudents(int maxStudents) {
-		this.maxStudents = maxStudents;
-	}
 	
-	public int getSize(){
-		return assigned.size();
-	}
-	public boolean isOverFilled(){
-		return assigned.size()>maxStudents;
-	}
+	//-----REMOVE METHODS-----\\
 	public void removeStudent(Student s){
-		assigned.remove(s);
+		this.assigned.remove(s);
 	}
 	
 	
+	//-----SET METHODS-----\\
 	public void setThresholds (int[] threshold){
 		this.minStudents = threshold[0];
 		this.preferredMin = threshold[1];
@@ -121,17 +81,57 @@ public abstract class Timeslot {
 		this.maxStudents = threshold[3];
 	}
 	
-
-	public void dataTimeslotPrint() {
-		//Print time/day
-		System.out.printf("\n\n%s %d %d", getDay(), getStartTime(),getEndTime());
-		//For every assigned student
+	public void setMinStudents(int minStudents) {
+		this.minStudents = minStudents;
 	}
 	
-	public boolean isOverfilled(){
-		return (assigned.size()>maxStudents);
+	public void setPreferredMin(int preferredMin) {
+		this.preferredMin = preferredMin;
 	}
+
+	public void setPreferredMax(int preferredMax) {
+		this.preferredMax = preferredMax;
+	}
+
+	public void setMaxStudents(int maxStudents) {
+		this.maxStudents = maxStudents;
+	}
+
+	
+	//-----GET METHODS-----\\
 	public int getuID(){
 		return uID;
 	}
+
+	public int getStartTime() {
+		return startTime;
+	}
+	public int getEndTime() {
+		return endTime;
+	}
+	
+	public Day getDay() {
+		return day;
+	}
+
+	public int getMinStudents() {
+		return minStudents;
+	}
+
+	public int getPreferredMin() {
+		return preferredMin;
+	}	
+
+	public int getPreferredMax() {
+		return preferredMax;
+	}
+	
+	public int getMaxStudents() {
+		return maxStudents;
+	}
+	
+	public ArrayList<Student> getAssigned() {
+		return assigned;
+	}
+
 }

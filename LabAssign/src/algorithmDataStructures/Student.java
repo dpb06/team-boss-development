@@ -2,200 +2,96 @@ package algorithmDataStructures;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import Deprecated.StaticTimeslotMap;
+/**
+ * Stores information about a single student, including:
+ *   Each of their choices.
+ *   The number of labs they can attend.
+ *   Their student number.
+ *   Their name (as entered with their lab selection, may differ from the one on their tutorial selection).
+ *   Their priority (used by BossSort).
+ *   The lab and tutorial they are assigned to. 
+ */
+public class Student implements Comparable<Object>{
 
-
-public class Student implements Comparable{
-
+	//TODO: verify the necessity of commented out values.
+	//-----VARIABLES-----\\
 	private	int studentNum;
-	private int Priority=0;
-	
 	private String name;
-
-	//final assigned lab slot
 	private	Timeslot assignedLab;
-	//final assigned tutorial Slot
-	private	Timeslot assignedTut;
-	//list of integers representing choices. (Timeslot correlates with index) 0 = cannot attend
+	//private	Timeslot assignedTut;
+	private int Priority = 0;
 	private ArrayList<Timeslot> firstChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> secondChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> thirdChoices = new ArrayList<Timeslot>();
-	private ArrayList<Timeslot> cannotAttend =new ArrayList<Timeslot>();
-	
-	private int choiceCount=0;
-	
-	public Student (int studentNum){
-		this.studentNum=studentNum;
-	}
+	private ArrayList<Timeslot> cannotAttend = new ArrayList<Timeslot>();
+	private int numCanAttend = 0;
 
-	
-	/**
-	 * adds a timeslot to the students list of first choices.
-	 * @param t
-	 * @return
-	 */
-	public boolean addFirstLab(Timeslot t){
-		if(firstChoices==null){
-			firstChoices=new ArrayList<Timeslot>();
-		}
-		if(firstChoices.contains(t)){
-			return false;
-		}
-		firstChoices.add(t);
-		choiceCount++;
-		return true;
-	}
-	
-/**
- * adds a timeslot to the list of students second choices.
- * @param t
- * @return
- */
-	public boolean addSecondLab(Timeslot t){
-		if(secondChoices==null){
-			secondChoices=new ArrayList<Timeslot>();
-		}
-		if(secondChoices.contains(t)){
-			return false;
-		}
-		secondChoices.add(t);
-		choiceCount++;
-		return true;
-	}
-/**
- * adds a timeslot to the list of students third choices.
- * @param t
- * @return
- */
-	public boolean addThirdLab(Timeslot t){
-		if(thirdChoices==null){
-			thirdChoices=new ArrayList<Timeslot>();
-		}
-		if(thirdChoices.contains(t)){
-			return false;
-		}
-		thirdChoices.add(t);
-		choiceCount++;
-		return true;
-	}
-/**
- * adds a timeslot to the list of students cannot attend.
- * @param t
- * @return
- */
-	public boolean addCannotAttend(Timeslot t){
-		if(cannotAttend==null){
-			cannotAttend=new ArrayList<Timeslot>();
-		}
-		if(cannotAttend.contains(t))
-			return false;
-		cannotAttend.add(t);
-		return true;
-	}
 
-	public int getPriority() {
-		return Priority;
-	}
-	
-	public void setPriority(int priority) {
-		Priority = priority;
-	}
-	
-	public void setAssignedLab(Timeslot t){
-		this.assignedLab = t;
-	}
-
-	public void setAssignedTut(Timeslot t){
-		this.assignedTut = t;
-	}
-
-	public int getStudentNum() {
-		return studentNum;
-	}
-	
-	public Timeslot getAssignedLab() {
-		return assignedLab;
-	}
-
-	public ArrayList<Timeslot> getFirstChoices() {
-		return firstChoices;
-	}
-	
-	public ArrayList<Timeslot> getSecondChoices() {
-		return secondChoices;
-	}
-	
-	public ArrayList<Timeslot> getThirdChoices() {
-		return thirdChoices;
-	}
-	
-	public ArrayList<Timeslot> getCannotAttend() {
-		return cannotAttend;
-	}
-	
-	public Timeslot getAssignedTut() {
-		return assignedTut;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	//-----CONSTRUCTOR-----\\
+	public Student (int studentNum, String name){
+		this.studentNum = studentNum;
 		this.name = name;
 	}
-	
-	public int getChoiceCount() {
-		return choiceCount;
-	}
 
 
+
+	//-----FUNCTIONALITIES-----\\
+	@Override
 	public String toString() {
 		return "Student: " + studentNum + "\n";
 	}
+
 	/**
-	 * prints out the student with all of its information that it holds
-	 * first choices,second choice,third choices and cannot attends
+	 * Prints out the student with all of its information that it holds
+	 * first choices, second choice, third choices and cannot attends.
 	 */
 	public void printDebug(){
-		StringBuilder firstLabTest=new StringBuilder();	
+		//Print student name and number
+		System.out.println(this.toString());
+		//Initialize a local StringBuilder
+		StringBuilder newString = new StringBuilder();
+		//For each first choice
+		newString.append("First Choices: \n");
 		for(Timeslot t:firstChoices){
-			firstLabTest.append("\t"+t.toString()+"\n");
+			//Append ID, start time and end time
+			newString.append("\t"+t.toString()+"\n");
 		}
-		firstLabTest.append("second choice: \n");
+		//For each second choice
+		newString.append("Second Choices: \n");
 		for(Timeslot t:secondChoices){
-			firstLabTest.append("\t"+t.toString()+"\n");
+			//Append ID, start time and end time
+			newString.append("\t"+t.toString()+"\n");
 		}
-		firstLabTest.append("thirdc choice: \n");
+		//For each third choice
+		newString.append("Third Choices: \n");
 		for(Timeslot t:thirdChoices){
-			firstLabTest.append("\t"+t.toString()+"\n");
+			//Append ID, start time and end time
+			newString.append("\t"+t.toString()+"\n");
 		}
-		firstLabTest.append("Cannot Attend: \n");
+		//For each cannot attend
+		newString.append("Cannot Attends: \n");
 		for(Timeslot t:cannotAttend){
-			firstLabTest.append("\t"+t.toString()+"\n");
+			//Append ID, start time and end time
+			newString.append("\t"+t.toString()+"\n");
 		}
-		System.out.println(toString());
-		System.out.println("First Choices: ");
-		System.out.println(firstLabTest.toString());
-	
+		//Print the stringbuilder's output
+		System.out.println(newString.toString());
+
 	}
-	
+
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Object o){
 		//Ensure object is a Student.
-		if( o instanceof Student){
+		if(o instanceof Student){
 			//Cast object.
-			Student s1= (Student)o;
+			Student otherStudent = (Student) o;
 			//If this has greater priority, return 1.
-			if(this.getPriority()>s1.getPriority()){
+			if(this.getPriority() > otherStudent.getPriority()){
 				return 1;
 			}
 			//If this has less priority, return -1.
-			else if(this.getPriority()<s1.getPriority()){
+			else if(this.getPriority() < otherStudent.getPriority()){
 				return -1;
 			}
 			//If priorities are even, return 0.
@@ -209,9 +105,98 @@ public class Student implements Comparable{
 	}
 
 
-	public int getTotalLabChoices() {
-		return firstChoices.size() + secondChoices.size() + thirdChoices.size();
+
+	//-----ADD METHODS-----\\
+	public boolean addFirstLab(Timeslot t){
+		if(firstChoices.contains(t)){
+			return false;
+		}
+		firstChoices.add(t);
+		numCanAttend++;
+		return true;
 	}
+
+	public boolean addSecondLab(Timeslot t){
+		if(secondChoices.contains(t)){
+			return false;
+		}
+		secondChoices.add(t);
+		numCanAttend++;
+		return true;
+	}
+
+	public boolean addThirdLab(Timeslot t){
+		if(thirdChoices.contains(t)){
+			return false;
+		}
+		thirdChoices.add(t);
+		numCanAttend++;
+		return true;
+	}
+
+	public boolean addCannotAttend(Timeslot t){
+		if(cannotAttend.contains(t))
+			return false;
+		cannotAttend.add(t);
+		return true;
+	}
+
+
+	//-----GET METHODS-----\\
+	public int getPriority() {
+		return Priority;
+	}
+
+	public int getStudentNum() {
+		return studentNum;
+	}
+
+	public ArrayList<Timeslot> getFirstChoices() {
+		return firstChoices;
+	}
+
+	public ArrayList<Timeslot> getSecondChoices() {
+		return secondChoices;
+	}
+
+	public ArrayList<Timeslot> getThirdChoices() {
+		return thirdChoices;
+	}
+
+	public ArrayList<Timeslot> getCannotAttend() {
+		return cannotAttend;
+	}
+
+	public int getNumCanAttend() {
+		return numCanAttend;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Timeslot getAssignedLab() {
+		return assignedLab;
+	}
+
+	//	public Timeslot getAssignedTut() {
+	//		return assignedTut;
+	//	}
+
+
+
+	//-----SET METHODS-----\\
+	public void setPriority(int priority) {
+		Priority = priority;
+	}
+
+	public void setAssignedLab(Timeslot t){
+		this.assignedLab = t;
+	}
+
+	//	public void setAssignedTut(Timeslot t){
+	//		this.assignedTut = t;
+	//	}
 
 
 }

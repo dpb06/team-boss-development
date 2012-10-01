@@ -39,6 +39,7 @@ public class CuttingSort implements Algorithm {
 			//Add to map, and initialize value
 			onlyAttends.put(t, new Integer(0));
 		}
+<<<<<<< HEAD
 		//for each student
 		for (Student s : students){
 			//if they have only one choice
@@ -50,13 +51,47 @@ public class CuttingSort implements Algorithm {
 					onlyAttends.put(s.getSecondChoices().get(0),(Integer) (onlyAttends.get(s.getSecondChoices()) + 1));
 				} else if (s.getThirdChoices().size() == 1){
 					onlyAttends.put(s.getThirdChoices().get(0),(Integer) (onlyAttends.get(s.getThirdChoices()) + 1));
+=======
+		for(Student s: students){
+			if(s.getFirstChoices()!=null){
+				for(Timeslot t:s.getFirstChoices()){
+					totals.get(t).increment(1);
+>>>>>>> refs/remotes/origin/master
 				}
 			}
+<<<<<<< HEAD
 		}
 		for(Timeslot t:onlyAttends.keySet()){
 			System.out.println(t+" has "+onlyAttends.get(t)+" unique attendees");
 			if (onlyAttends.get(t) == 0){
 				labs.remove(t);
+=======
+			if(s.getSecondChoices()!=null){
+				for(Timeslot t:s.getSecondChoices()){
+					totals.get(t).increment(2);
+				}
+			}
+			if(s.getThirdChoices()!=null){
+				for(Timeslot t:s.getThirdChoices()){
+					totals.get(t).increment(3);
+				}
+			}
+			if(s.getCannotAttend()!=null){
+				for(Timeslot t:s.getCannotAttend()){
+					totals.get(t).increment(0);
+				}
+			}
+			if(s.getNumCanAttend()==1){
+				if(s.getFirstChoices().size()==1){
+					totals.get(s.getFirstChoices().get(0)).increment(4);
+				}
+				else if(s.getSecondChoices().size()==1){
+					totals.get(s.getSecondChoices().get(0)).increment(4);
+				}
+				else if(s.getThirdChoices().size()==1){
+					totals.get(s.getThirdChoices().get(0)).increment(4);
+				}
+>>>>>>> refs/remotes/origin/master
 			}
 		}
 	}
