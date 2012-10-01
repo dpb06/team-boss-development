@@ -22,11 +22,16 @@ public class JUnitTestingData {
 		int[] threshThree = {2,4,10,15};
 		
 		//Create five labs, with maximums of 10,10,10,12,15.
-		Lab labOne = new Lab(1, 1310, 1410, Day.Monday);
-		Lab labTwo = new Lab(2, 1310, 1410, Day.Tuesday);
-		Lab labThree = new Lab(3, 900, 1000, Day.Wednesday);
+		Lab labOne = new Lab(1, 900, 1000, Day.Monday);
+		Lab labTwo = new Lab(2, 1000, 1100, Day.Tuesday);
+		Lab labThree = new Lab(3, 1100, 1200, Day.Wednesday);
 		Lab labFour = new Lab(4, 1310, 1410, Day.Thursday);
 		Lab labFive = new Lab(5, 1510, 1620, Day.Thursday);
+		labOne.setThresholds(threshOne);
+		labTwo.setThresholds(threshOne);
+		labThree.setThresholds(threshTwo);
+		labFour.setThresholds(threshTwo);
+		labFive.setThresholds(threshThree);
 
 		//Add the five labs to labs.
 		labs.add(labOne);
@@ -138,19 +143,19 @@ public class JUnitTestingData {
 				}
 				else if(asdf[ind] == 3){
 					switch(ind){
-					case 1:
+					case 0:
 						s.addThirdLab(labOne);
 						break;
-					case 2:
+					case 1:
 						s.addThirdLab(labTwo);
 						break;
-					case 3:
+					case 2:
 						s.addThirdLab(labThree);
 						break;
-					case 4:
+					case 3:
 						s.addThirdLab(labFour);
 						break;
-					case 5:
+					case 4:
 						s.addThirdLab(labFive);
 						break;
 					}

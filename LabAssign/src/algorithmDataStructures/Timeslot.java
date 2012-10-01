@@ -8,10 +8,10 @@ public abstract class Timeslot {
 	private int timeStart;
 	private int timeEnd;
 	private Day day;
-	private int minStudents;
-	private int preferredMin;
-	private int preferredMax;
-	private int maxStudents;
+	private int minStudents = 0;
+	private int preferredMin = 0;
+	private int preferredMax = 20;
+	private int maxStudents = 20;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
 	//TODO: Check if range is okay as percentage and possibly refactor.
@@ -21,11 +21,6 @@ public abstract class Timeslot {
 		this.timeStart = startTime;
 		this.timeEnd = endTime;
 		this.day = day;
-		this.maxStudents=20; //default value
-	//	this.minStudents = threshold[0];
-		//this.preferredMin = threshold[1];
-	//	this.preferredMax = threshold[2];
-	//	this.maxStudents = threshold[3];
 	}
 
 	public void timeslotPrint() {
@@ -62,9 +57,6 @@ public abstract class Timeslot {
 	public Day getDay() {
 		return day;
 	}
-	public int getMaxStudents() {
-		return maxStudents;
-	}
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}
@@ -79,29 +71,38 @@ public abstract class Timeslot {
 		}
 	}
 
-	public int getRangeMin() {
+	public int getMinStudents() {
 		return minStudents;
 	}
 
-	public void setRangeMin(int rangeMin) {
-		this.minStudents = rangeMin;
+	public void setMinStudents(int minStudents) {
+		this.minStudents = minStudents;
 	}
 
-	public int getRangePrefHigh() {
+	public int getPreferredMax() {
 		return preferredMax;
 	}
 
-	public void setRangePrefHigh(int rangePrefHigh) {
-		this.preferredMax = rangePrefHigh;
+	public void setPreferredMax(int preferredMax) {
+		this.preferredMax = preferredMax;
 	}
 
-	public int getRangePrefLow() {
+	public int getPreferredMin() {
 		return preferredMin;
 	}
 
-	public void setRangePrefLow(int rangePrefLow) {
-		this.preferredMin = rangePrefLow;
+	public void setPreferredMin(int preferredMin) {
+		this.preferredMin = preferredMin;
 	}
+	
+	public int getMaxStudents() {
+		return maxStudents;
+	}
+
+	public void setMaxStudents(int maxStudents) {
+		this.maxStudents = maxStudents;
+	}
+	
 	public int getSize(){
 		return assigned.size();
 	}
@@ -110,6 +111,14 @@ public abstract class Timeslot {
 	}
 	public void removeStudent(Student s){
 		assigned.remove(s);
+	}
+	
+	
+	public void setThresholds (int[] threshold){
+		this.minStudents = threshold[0];
+		this.preferredMin = threshold[1];
+		this.preferredMax = threshold[2];
+		this.maxStudents = threshold[3];
 	}
 	
 

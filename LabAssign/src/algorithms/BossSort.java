@@ -228,6 +228,7 @@ public class BossSort implements Algorithm{
 		System.out.println("Not Assigned:");
 		for(Student s: flagged){
 			System.out.println("\t "+s.getStudentNum());
+			output.addFlagged(s);
 		}
 	}
 

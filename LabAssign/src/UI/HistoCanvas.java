@@ -79,7 +79,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 			// Set color according to things
 			if (s.getSize() < s.getRangeMin() || s.getSize() > s.getMaxStudents())
 				g.setColor(Color.RED);
-			else if (s.getSize() < s.getRangePrefLow() || s.getSize() > s.getRangePrefHigh())
+			else if (s.getSize() < s.getPreferredMin() || s.getSize() > s.getPreferredMax())
 				g.setColor(Color.YELLOW);
 			else
 				g.setColor(Color.GREEN); 

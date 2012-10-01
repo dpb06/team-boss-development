@@ -21,10 +21,10 @@ public class Student implements Comparable{
 	//final assigned tutorial Slot
 	private	Timeslot assignedTut;
 	//list of integers representing choices. (Timeslot correlates with index) 0 = cannot attend
-	private ArrayList<Timeslot> firstChoices;
-	private ArrayList<Timeslot> secondChoices;
-	private ArrayList<Timeslot> thirdChoices;
-	private ArrayList<Timeslot> cannotAttend;
+	private ArrayList<Timeslot> firstChoices = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> secondChoices = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> thirdChoices = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> cannotAttend =new ArrayList<Timeslot>();
 	
 	private int choiceCount=0;
 	

@@ -43,12 +43,19 @@ public class BossSortJUnitSuite {
 			boolean found = true;
 			if (out.getFlagged().contains(s)) {}
 			else {
+				
 				for (Timeslot t : out.keySet()) {
 					if (t.getAssigned().contains(s)) {
 						found = true;
 						break;
-					} found = false;
+					} 
+					found = false;
+
 				}
+			}
+			if(!found){
+				System.out.println("--------------------NOT FOUND STUDENT-----------------------------------");
+				s.printDebug();
 			}
 			assertTrue(found);
 		}
