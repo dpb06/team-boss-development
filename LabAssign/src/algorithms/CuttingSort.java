@@ -37,33 +37,33 @@ public class CuttingSort implements Algorithm {
 		for(Student s: students){
 			if(s.getFirstChoices()!=null){
 				for(Timeslot t:s.getFirstChoices()){
-					totals.get(t).incrementFirst(1);
+					totals.get(t).increment(1);
 				}
 			}
 			if(s.getSecondChoices()!=null){
 				for(Timeslot t:s.getSecondChoices()){
-					totals.get(t).incrementFirst(2);
+					totals.get(t).increment(2);
 				}
 			}
 			if(s.getThirdChoices()!=null){
 				for(Timeslot t:s.getThirdChoices()){
-					totals.get(t).incrementFirst(3);
+					totals.get(t).increment(3);
 				}
 			}
 			if(s.getCannotAttend()!=null){
 				for(Timeslot t:s.getCannotAttend()){
-					totals.get(t).incrementFirst(0);
+					totals.get(t).increment(0);
 				}
 			}
-			if(s.getChoiceCount()==1){
+			if(s.getNumCanAttend()==1){
 				if(s.getFirstChoices().size()==1){
-					totals.get(s.getFirstChoices().get(0)).incrementFirst(4);
+					totals.get(s.getFirstChoices().get(0)).increment(4);
 				}
 				else if(s.getSecondChoices().size()==1){
-					totals.get(s.getSecondChoices().get(0)).incrementFirst(4);
+					totals.get(s.getSecondChoices().get(0)).increment(4);
 				}
 				else if(s.getThirdChoices().size()==1){
-					totals.get(s.getThirdChoices().get(0)).incrementFirst(4);
+					totals.get(s.getThirdChoices().get(0)).increment(4);
 				}
 			}
 		}

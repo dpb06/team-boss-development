@@ -226,7 +226,6 @@ public class StudentDataParser {
 				if(iTimeEnd == -1){
 					throw new IllegalArgumentException("Expected a time as the fourth token in: "+token);
 				}
-				//TODO: Make Timeslot construction match new constructor (takes int, int, int, int[4])
 			Timeslot t = new Lab(quID, iTimeStart, iTimeEnd, eDay);
 			//t.setMaxStudents(20);
 			timeslots.add(t);
@@ -316,7 +315,8 @@ public class StudentDataParser {
 				studentID = Integer.parseInt( iter.next().replace('\"', ' ') );
 				
 				//Student student = new Student(count, firstName, lastName, studentID);
-				Student student = new Student(studentID);
+				String name = firstName + " " + lastName;
+				Student student = new Student(studentID, name);
 				students.add(student);
 				
 				count++; // acting as unique ID

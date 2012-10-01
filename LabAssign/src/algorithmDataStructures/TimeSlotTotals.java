@@ -1,6 +1,11 @@
 package algorithmDataStructures;
 
+/**
+ * A data-storage class used to keep track of the number of choices, cannot attends, and can only attends for each Timeslot.
+ * Used by CuttingSort.
+ */
 public class TimeSlotTotals {
+	//-----FIELDS-----\\
 	private int numFirstChoice=0;
 	private int numSecondChoice=0;
 	private int numThirdChoice=0;
@@ -8,7 +13,22 @@ public class TimeSlotTotals {
 	private int numOnlyAttend=0;
 	private int total=0;
 	
-	public void incrementFirst(int choice){
+	
+	//-----FUNCTIONALITIES-----\\
+	public String toString(){
+		StringBuilder sb=new StringBuilder();
+		sb.append("First Choices: " + numFirstChoice + "\n");
+		sb.append("Second Choices: " + numSecondChoice + "\n");
+		sb.append("Third Choices: " + numThirdChoice + "\n");
+		sb.append("Cannot Attends: " + numCannotAttend + "\n");
+		sb.append("Can Only Attends: " + numOnlyAttend + "\n");
+		sb.append("Total Students :" + total + "\n");
+		return sb.toString();
+	}
+
+	
+	//-----ADD METHODS-----\\
+	public void increment(int choice){
 		switch(choice){
 		case 0:
 			numCannotAttend++;
@@ -32,6 +52,7 @@ public class TimeSlotTotals {
 		}
 	}
 
+	//-----GET METHODS-----\\
 	public int getNumFirstChoice() {
 		return numFirstChoice;
 	}
@@ -47,21 +68,15 @@ public class TimeSlotTotals {
 	public int getNumCannotAttend() {
 		return numCannotAttend;
 	}
+	
+	public int getNumOnlyAttend() {
+		return numOnlyAttend;
+	}
 
 	public int getTotal() {
 		return total;
 	}
 	
-	public String toString(){
-		StringBuilder sb=new StringBuilder();
-		sb.append("First Choices: "+numFirstChoice+"\n");
-		sb.append("Second Choices: "+numSecondChoice+"\n");
-		sb.append("Third Choices: "+numThirdChoice+"\n");
-		sb.append("Cannot attend: "+numCannotAttend+"\n");
-		sb.append("Can only attend: "+numOnlyAttend+"\n");
-		sb.append("Total Students :"+ total+"\n");
-		return sb.toString();
-	}
 	
 	
 }

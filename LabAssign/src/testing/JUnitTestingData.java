@@ -81,7 +81,7 @@ public class JUnitTestingData {
 			int index = i%14;
 			int[] asdf = choices.get(index);
 			//Create a student.
-			Student s = new Student(i);			
+			Student s = new Student(i, "");			
 			//TODO: UNUGLIFY THIS.
 			for(int ind=0; ind<asdf.length; ind++){
 				if(asdf[ind] == 0){
