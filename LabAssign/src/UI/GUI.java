@@ -149,8 +149,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		canvasPanel.add(new Box.Filler(d, d, d));
 		canvas = new HistoCanvas();
 		// canvas.setBackground(Color.red);
-		List<Timeslot> in = new ArrayList<Timeslot>();
-		canvas.setTimeslots(in);
 		canvasPanel.add(canvas);
 		frame.add(canvasPanel, BorderLayout.CENTER);
 		textArea = new JTextArea(1, 4);
@@ -252,7 +250,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),
 					new ArrayList<Timeslot>(), new ArrayList<Student>(students));
-			canvas.setTimeslots(new ArrayList<Timeslot>(bs.getOutput().keySet()));
+			canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
 			frame.repaint();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
