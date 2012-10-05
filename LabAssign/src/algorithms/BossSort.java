@@ -1,10 +1,8 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;

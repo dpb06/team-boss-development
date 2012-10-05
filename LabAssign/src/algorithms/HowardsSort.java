@@ -1,14 +1,8 @@
 package algorithms;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
-import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.AlgorithmOutput;
-import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
@@ -16,27 +10,38 @@ import algorithmDataStructures.Timeslot;
  * This is a Java implementation of howards original sorting algorithm he used using labview.
  * This is to have a benchmark to compare our newly implemented algorithm  boss sort.
  * @author phillijosh
- *
  */
-public class HowardsSort {
-	private ArrayList <Student>students;
-	private ArrayList<Student>assignedStudents;
-	private ArrayList<Integer> indexOverfilledLabs=new ArrayList<Integer>();
-	private ArrayList<Timeslot>labs;
-	private ArrayList<Student> flagged= new ArrayList<Student>();
-	private AlgorithmOutput output = new AlgorithmOutput();
+public class HowardsSort implements Algorithm{
+	
+	//-----FIELDS-----\\
+	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
+	private ArrayList<Student> students;
+	private ArrayList<Student> assignedStudents = new ArrayList<Student>();
+	private ArrayList<Integer> indexOverfilledLabs = new ArrayList<Integer>();
+	private ArrayList<Student> flagged = new ArrayList<Student>();
+	private AlgorithmOutput output = new AlgorithmOutput();
 
+	//-----CONSTRUCTOR-----\\
 	public HowardsSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
-		this.students=students;
-		this.labs=labs;
-		this.tutorials=tutorials;
+		this.students = students;
+		this.labs = labs;
+		this.tutorials = tutorials;
+	}
+	
+
+	//-----INTERFACE METHODS-----\\
+	@Override
+	public AlgorithmOutput start() {
 		sort((ArrayList<Student>) students.clone());
 		//TODO: Use new fitness function data structure
 		//new FitnessFunctions(tutorials, students, labs);
 		guiOutput();
+		return output;
 	}
 	
+	
+	//-----FUNCTIONALITIES-----\\
 	public void sort(ArrayList<Student> s){
 		ArrayList<Student>students=s;
 		Student currentStudent;
@@ -57,7 +62,7 @@ public class HowardsSort {
 			
 		}
 
-		//Irrerate over the labs that are overfilled and if move students into another one of there first choices if they have first choices.
+		//Iterate over the labs that are overfilled and if move students into another one of there first choices if they have first choices.
 
 		//List of overfilled Labs
 		ArrayList<Integer> indexOverfilledLabs=overFilledLabs();
@@ -174,10 +179,4 @@ public class HowardsSort {
 		}
 	}
 	
-	public AlgorithmOutput getOutput() {
-		return output;
-	}
-
-
-
 }

@@ -14,12 +14,11 @@ import java.util.ArrayList;
  */
 public class Student implements Comparable<Object>{
 
-	//TODO: verify the necessity of commented out values.
-	//-----VARIABLES-----\\
+	//-----FIELDS-----\\
 	private	int studentNum;
 	private String name;
 	private	Timeslot assignedLab;
-	//private	Timeslot assignedTut;
+	private	Timeslot assignedTut;
 	private int Priority = 0;
 	private ArrayList<Timeslot> firstChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> secondChoices = new ArrayList<Timeslot>();
@@ -179,9 +178,9 @@ public class Student implements Comparable<Object>{
 		return assignedLab;
 	}
 
-	//	public Timeslot getAssignedTut() {
-	//		return assignedTut;
-	//	}
+	public Timeslot getAssignedTut() {
+		return assignedTut;
+	}
 
 
 
@@ -194,9 +193,9 @@ public class Student implements Comparable<Object>{
 		this.assignedLab = t;
 	}
 
-	//	public void setAssignedTut(Timeslot t){
-	//		this.assignedTut = t;
-	//	}
+	public void setAssignedTut(Timeslot t){
+		this.assignedTut = t;
+	}
 
 
 }
