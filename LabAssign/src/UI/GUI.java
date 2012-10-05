@@ -268,11 +268,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 			if(selectedAlgorithm.equals("Boss Sort")){
                 BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(bs.getOutput().keySet()));
+                canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
                 HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(hs.getOutput().keySet()));
+                canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
             }
             else if(selectedAlgorithm.equals("Cutting Sort")){
                 CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
