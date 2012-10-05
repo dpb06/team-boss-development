@@ -51,15 +51,15 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		int largestSection = -Integer.MAX_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : timeslots) {
-			if (t.getMaxStudents() > largestSection) {
-				largestSection = t.getMaxStudents();
+			if (t.getAssigned().size() > largestSection) {
+				largestSection = t.getAssigned().size();
 			}
 		}
 		int student = height / largestSection;
 		for (int i = 0; i < timeslots.size(); i++) {
 			Timeslot t = timeslots.get(i);
 			rectangles.put(
-					new Rectangle(i * width, height- (t.getMaxStudents() * student), width, t.getMaxStudents() * student), t);
+					new Rectangle(i * width, height- (t.getAssigned().size() * student), width, t.getAssigned().size() * student), t);
 		}
 	}
 

@@ -20,8 +20,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,7 +30,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -38,11 +37,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import algorithmDataStructures.Day;
-import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
+import algorithms.CuttingSort;
+import algorithms.HowardsSort;
 import dataParsing.StudentDataParser;
 
 /**
@@ -61,6 +60,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private HistoCanvas canvas;
 	private ArrayList<Bounds> SessionBounds = new ArrayList<Bounds>();
 	boolean alreadyRUN = false;
+	
+	private String selectedAlgorithm = "Boss Sort";
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -87,28 +88,38 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		fileText = new JTextField("File Name here....", 10);
 		fileText.setMaximumSize(new Dimension(500, 20));
+		
 		JButton fileButton = new JButton("Browse");
-		JButton runButton = new JButton("Run");
+		fileButton.setBounds(0, 0, 50, 20);
+		
+		final JButton runButton = new JButton("Run");
+        runButton.setEnabled(false);
+        
+		fileButton.addActionListener(new ActionListener() {
+			 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Make this start in the text field path
+                //Handle open button action.
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(GUI.this);
+ 
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    fc.showOpenDialog(fileText);
+                    fileText.setText(fc.getSelectedFile().getAbsolutePath());
+                    runButton.setEnabled(true);
+                }
+            }
+        });
+		
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doRun();
 			}
 		});
-		fileButton.setBounds(0, 0, 50, 20);
-		fileButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO: Make this start in the text field path
-				// TODO: MAKE HANDLE NULL RETURNS
-				JFileChooser fc = new JFileChooser();
-				fc.showOpenDialog(fileText);
-				fileText.setText(fc.getSelectedFile().getAbsolutePath());
-
-			}
-		});
-
+		
 		fileAlgoPanel.add(new JLabel("File    "));
 		fileAlgoPanel.add(fileText);
 		fileAlgoPanel.add(fileButton);
@@ -116,17 +127,24 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
-		ButtonGroup algoGroup = new ButtonGroup();
-		JRadioButton[] algoRadios = new JRadioButton[3];
-		algoRadios[0] = new JRadioButton("Naive");
-		algoRadios[1] = new JRadioButton("Naive1");
-		algoRadios[2] = new JRadioButton("Naive3");
-		for (JRadioButton b : algoRadios) {
-			algoGroup.add(b);
-			algoSelect.add(b);
-		}
-		fileAlgoPanel.add(algoSelect);
-		fileAlgoPanel.add(runButton);
+		 // This array contains all algorithm options
+        String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
+        JComboBox algoGroup = new JComboBox(algoriths);
+ 
+ 
+        algoGroup.setSelectedIndex(0);
+        algoGroup.addActionListener(new ActionListener() {      
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox)e.getSource();
+                selectedAlgorithm = (String)cb.getSelectedItem();
+            }
+        });
+ 
+        algoGroup.setMaximumSize(new Dimension(200,25));
+        algoSelect.add(algoGroup);
+        fileAlgoPanel.add(algoSelect);
+        fileAlgoPanel.add(runButton);
 
 		// gridPanel contains the the text areas for maximum sizes
 		JPanel gridPanel = new JPanel();
@@ -208,7 +226,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					fileText.getText()));
 			List<Timeslot> slots = parser.getTimeslots();
 			List<Student> students = parser.parseSelections(slots);
-			if (SessionBounds.size() != slots.size() || alreadyRUN) {
+			if (SessionBounds.size() != slots.size() || !alreadyRUN) {
 				alreadyRUN = true;
 				// recreate bounds array
 
@@ -248,9 +266,19 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							"Session " + (i + 1));
 				}
 			}
-			BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),
-					new ArrayList<Timeslot>(), new ArrayList<Student>(students));
-			canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
+			if(selectedAlgorithm.equals("Boss Sort")){
+                BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+                canvas.setTimeslots(new ArrayList<Timeslot>(bs.getOutput().keySet()));
+			}
+			else if(selectedAlgorithm.equals("Howard Sort")){
+                HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+                canvas.setTimeslots(new ArrayList<Timeslot>(hs.getOutput().keySet()));
+            }
+            else if(selectedAlgorithm.equals("Cutting Sort")){
+                CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+                //TODO - add back when created canvas.setTimeslots(new ArrayList<Timeslot>(cs.getOutput().keySet()));
+            }
+			
 			frame.repaint();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
