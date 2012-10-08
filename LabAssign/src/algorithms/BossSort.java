@@ -11,7 +11,6 @@ public class BossSort implements Algorithm{
 
 	
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
-	//TODO: Make sure we can handle cases where a student has no choices AKA cannot attend and labs
 	
 	//-----FIELDS-----\\
 	private ArrayList<Student> students;
@@ -33,19 +32,24 @@ public class BossSort implements Algorithm{
 	//-----INTERFACE METHODS-----\\
 	public AlgorithmOutput start() {
 		priorityCalculator();
+		
 		System.out.println();
 		System.out.println("priorityCalculator() in BossSort");
-		sort();
+		
+		sortLabs();
+		modifyTuts();
+		sortTuts();
+		
 		System.out.println();
 		System.out.println("FitnessFunctions(tuts,stus,labs) in BossSort");
-		//TODO: Use new fitness function data structure
-		//new FitnessFunctions(tutorials, students, labs);
 
 		guiOutput();
 		return output;
 	}
-	
-	
+
+
+
+
 	//-----FUNCTIONALITIES-----\\
 	/**
 	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
@@ -62,7 +66,7 @@ public class BossSort implements Algorithm{
 			int firstPoints = 0;
 			
 			//Largest priority weighting is the number of labs the student can attend.
-			studentPriority = s.getNumCanAttend()*1000;
+			studentPriority = s.getNumCanAttendLabs()*1000;
 			//Next is the number of third choices the student has selected.
 			thirdPoints = s.getThirdChoices().size()*3;
 			//Next is the number of second choices the student has selected.
@@ -102,14 +106,19 @@ public class BossSort implements Algorithm{
 		//How many third choices do they have? (More = lower priority)
 
 	}
+	
+
+	private void modifyTuts() {
+		//For each student
+			//
+	}
 
 	/**
 	 * Places each student (in priority order) into a Timeslot, according to the fullness of each Timeslot
 	 * and the student's choices. The Timeslot object is altered to reflect the student's placement.
 	 * If the student cannot be assigned, they will be added to a list of flagged students.
 	 */
-	// TODO: Bump third choices up to second if first choices are full???
-	public void sort(){
+	public void sortLabs(){
 
 		//For every student (in priority order)
 		while(priority.size() > 0){
@@ -179,7 +188,6 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//Try to add student to the chosen lab
-					//TODO: Ensure addStudents(s) is replaced with a check that lab isn't overfilled
 					if(!choice.isOverfilled()){
 						choice.addStudent(s);
 						System.out.println("Third");
@@ -204,6 +212,46 @@ public class BossSort implements Algorithm{
 
 			}
 		}
+	}
+	
+
+	private void sortTuts() {
+		
+		
+
+		//For every student (in priority order)
+			//WHILE assigned = false
+				//Create a list of first choices
+				//Check if those choices are in the list of labs that aren't full
+				//If the list is now empty
+					//Randomly pick one of those choices and assign it to a variable
+					//Try to add student to the chosen lab
+					//If unsuccessful
+				//If assigned, break outer loop.
+				//Create a list of second choices
+				//Check if those choices are in the list of labs that aren't full
+				//If the list is now empty
+					//Randomly pick one of those choices and assign it to a variable
+					//Try to add student to the chosen lab
+					//If unsuccessful
+				//If assigned, break outer loop.
+
+				//Create a list of third choices
+				//Check if those choices are in the list of labs that aren't full
+				//Create a list of second choices
+				//Check if those choices are in the list of labs that aren't full
+				
+				//If the list is now empty
+					//Randomly pick one of those choices and assign it to a variable
+					//Try to add student to the chosen lab
+
+					//If unsuccessful
+
+				//If assigned, break outer loop.
+
+
+				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
+				
 	}
 
 	/**
