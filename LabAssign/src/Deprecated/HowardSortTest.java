@@ -1,11 +1,11 @@
-package algorithms;
+package Deprecated;
 
 import java.util.ArrayList;
 
-import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.Day;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
+import algorithms.HowardsSort;
 
 public class HowardSortTest {
 private StaticTimeslotMap stm= new StaticTimeslotMap();

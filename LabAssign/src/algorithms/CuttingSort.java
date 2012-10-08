@@ -21,17 +21,8 @@ public class CuttingSort implements Algorithm {
 		this.students=students;
 		this.labs=labs;
 		labSizeOverview();
-//		printTotals();
 	}
 
-//	private void printTotals() {
-//		//For each timeslot, print the titles
-//		for(Timeslot t:totals.keySet()){
-//			System.out.println(t.toString());
-//			System.out.println(totals.get(t).toString());
-//		}
-//
-//	}
 
 	public void labSizeOverview(){
 		//For each timeslot
@@ -39,81 +30,45 @@ public class CuttingSort implements Algorithm {
 			//Add to map, and initialize value
 			onlyAttends.put(t, new Integer(0));
 		}
-<<<<<<< HEAD
+
 		//for each student
 		for (Student s : students){
 			//if they have only one choice
-			if (s.getChoiceCount()==1){
+			if (s.getNumCanAttend()==1){
 				//increment the cannot attends for this lab
-				if (s.getFirstChoices().size() == 1){
-					onlyAttends.put(s.getFirstChoices().get(0),(Integer) (onlyAttends.get(s.getFirstChoices()) + 1));
-				} else if (s.getSecondChoices().size() == 1){
-					onlyAttends.put(s.getSecondChoices().get(0),(Integer) (onlyAttends.get(s.getSecondChoices()) + 1));
-				} else if (s.getThirdChoices().size() == 1){
-					onlyAttends.put(s.getThirdChoices().get(0),(Integer) (onlyAttends.get(s.getThirdChoices()) + 1));
-=======
-		for(Student s: students){
-			if(s.getFirstChoices()!=null){
-				for(Timeslot t:s.getFirstChoices()){
-					totals.get(t).increment(1);
->>>>>>> refs/remotes/origin/master
+				if (s.getFirstChoiceLabs().size() == 1){
+					onlyAttends.put(s.getFirstChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getFirstChoiceLabs()) + 1));
+				} else if (s.getSecondChoiceLabs().size() == 1){
+					onlyAttends.put(s.getSecondChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getSecondChoiceLabs()) + 1));
+				} else if (s.getThirdChoiceLabs().size() == 1){
+					onlyAttends.put(s.getThirdChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getThirdChoiceLabs()) + 1));
 				}
+
 			}
-<<<<<<< HEAD
 		}
 		for(Timeslot t:onlyAttends.keySet()){
 			System.out.println(t+" has "+onlyAttends.get(t)+" unique attendees");
-			if (onlyAttends.get(t) == 0){
-				labs.remove(t);
-=======
-			if(s.getSecondChoices()!=null){
-				for(Timeslot t:s.getSecondChoices()){
-					totals.get(t).increment(2);
-				}
-			}
-			if(s.getThirdChoices()!=null){
-				for(Timeslot t:s.getThirdChoices()){
-					totals.get(t).increment(3);
-				}
-			}
-			if(s.getCannotAttend()!=null){
-				for(Timeslot t:s.getCannotAttend()){
-					totals.get(t).increment(0);
-				}
-			}
-			if(s.getNumCanAttend()==1){
-				if(s.getFirstChoices().size()==1){
-					totals.get(s.getFirstChoices().get(0)).increment(4);
-				}
-				else if(s.getSecondChoices().size()==1){
-					totals.get(s.getSecondChoices().get(0)).increment(4);
-				}
-				else if(s.getThirdChoices().size()==1){
-					totals.get(s.getThirdChoices().get(0)).increment(4);
-				}
->>>>>>> refs/remotes/origin/master
-			}
 		}
 	}
-	
-	public static void main(String[] args){
-		JUnitTestingData j= new JUnitTestingData();
-		CuttingSort cs = new CuttingSort(j.getLabs(), j.getTutorials(), j.getStudents());
-		cs.useTestData();
+
+		public static void main(String[] args){
+			JUnitTestingData j= new JUnitTestingData();
+			CuttingSort cs = new CuttingSort(j.getLabs(), j.getTutorials(), j.getStudents());
+			cs.useTestData();
+		}
+
+		public void useTestData(){
+			labSizeOverview();
+		}
+
+		@Override
+		public AlgorithmOutput start() {
+			// TODO Auto-generated method stub
+
+			return null;
+		}
+
+
+
+
 	}
-	
-	public void useTestData(){
-		labSizeOverview();
-	}
-
-	@Override
-	public AlgorithmOutput start() {
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-
-
-
-}

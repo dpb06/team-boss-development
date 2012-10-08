@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *   The number of students that can/should be in this lab/tut.
  *   The students assigned to this lab/tut.
  */
-public abstract class Timeslot {
+public abstract class Timeslot implements Comparable<Object>{
 	
 	//-----FIELDS-----\\
 	private int uID;
@@ -52,6 +52,30 @@ public abstract class Timeslot {
 	}
 	
 	@Override
+	public int compareTo(Object o){
+		//Ensure object is a Timeslot.
+		if(o instanceof Timeslot){
+			//Cast object.
+			Timeslot otherTimeslot = (Timeslot) o;
+			//If this ends before the other begins, return 1.
+			if(this.endTime < otherTimeslot.getStartTime()){
+				return 1;
+			}
+			//If this begins after the other ends, return -1.
+			else if(this.startTime > otherTimeslot.getEndTime()){
+				return -1;
+			}
+			//If the times intersect, return 0.
+			else{
+				return 0;
+			}
+		}
+		//If object is not a Timeslot, throw exception.
+		//TODO: put exception here.
+		return 0;
+	}
+	
+	@Override
 	public String toString(){
 		return uID +":  "+ startTime+ " - "+endTime ;
 	}
@@ -81,21 +105,21 @@ public abstract class Timeslot {
 		this.maxStudents = threshold[3];
 	}
 	
-	public void setMinStudents(int minStudents) {
-		this.minStudents = minStudents;
-	}
-	
-	public void setPreferredMin(int preferredMin) {
-		this.preferredMin = preferredMin;
-	}
-
-	public void setPreferredMax(int preferredMax) {
-		this.preferredMax = preferredMax;
-	}
-
-	public void setMaxStudents(int maxStudents) {
-		this.maxStudents = maxStudents;
-	}
+//	public void setMinStudents(int minStudents) {
+//		this.minStudents = minStudents;
+//	}
+//	
+//	public void setPreferredMin(int preferredMin) {
+//		this.preferredMin = preferredMin;
+//	}
+//
+//	public void setPreferredMax(int preferredMax) {
+//		this.preferredMax = preferredMax;
+//	}
+//
+//	public void setMaxStudents(int maxStudents) {
+//		this.maxStudents = maxStudents;
+//	}
 
 	
 	//-----GET METHODS-----\\
