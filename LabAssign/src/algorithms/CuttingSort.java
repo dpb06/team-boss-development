@@ -21,17 +21,8 @@ public class CuttingSort implements Algorithm {
 		this.students=students;
 		this.labs=labs;
 		labSizeOverview();
-		//		printTotals();
 	}
 
-	//	private void printTotals() {
-	//		//For each timeslot, print the titles
-	//		for(Timeslot t:totals.keySet()){
-	//			System.out.println(t.toString());
-	//			System.out.println(totals.get(t).toString());
-	//		}
-	//
-	//	}
 
 	public void labSizeOverview(){
 		//For each timeslot
@@ -55,47 +46,10 @@ public class CuttingSort implements Algorithm {
 
 			}
 		}
-		for(Student s: students){
-			if(s.getFirstChoices()!=null){
-				for(Timeslot t:s.getFirstChoices()){
-					totals.get(t).increment(1);
-				}
-			}
-
-		}
 		for(Timeslot t:onlyAttends.keySet()){
 			System.out.println(t+" has "+onlyAttends.get(t)+" unique attendees");
-			if (onlyAttends.get(t) == 0){
-				labs.remove(t);
-				if(s.getSecondChoices()!=null){
-					for(Timeslot t:s.getSecondChoices()){
-						totals.get(t).increment(2);
-					}
-				}
-				if(s.getThirdChoices()!=null){
-					for(Timeslot t:s.getThirdChoices()){
-						totals.get(t).increment(3);
-					}
-				}
-				if(s.getCannotAttend()!=null){
-					for(Timeslot t:s.getCannotAttend()){
-						totals.get(t).increment(0);
-					}
-				}
-				if(s.getNumCanAttend()==1){
-					if(s.getFirstChoices().size()==1){
-						totals.get(s.getFirstChoices().get(0)).increment(4);
-					}
-					else if(s.getSecondChoices().size()==1){
-						totals.get(s.getSecondChoices().get(0)).increment(4);
-					}
-					else if(s.getThirdChoices().size()==1){
-						totals.get(s.getThirdChoices().get(0)).increment(4);
-					}
-
-				}
-			}
 		}
+	}
 
 		public static void main(String[] args){
 			JUnitTestingData j= new JUnitTestingData();
