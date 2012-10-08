@@ -11,7 +11,9 @@ public class BossSort implements Algorithm{
 
 
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
-
+	//TODO: Javadoc all tutorial functionalities
+	
+	
 	//-----FIELDS-----\\
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
@@ -56,7 +58,7 @@ public class BossSort implements Algorithm{
 
 	//-----FUNCTIONALITIES-----\\
 	/**
-	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
+	 * Prioritizes students according to the number and types of lab choices they didn't mark
 	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
 	 */
 	private void priorityCalculator() {
@@ -111,6 +113,10 @@ public class BossSort implements Algorithm{
 
 	}
 
+	/**
+	 * Prioritizes students according to the number and types of tutorial choices they didn't mark
+	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
+	 */
 	private void tutPriorityCalculator() {
 		//Initialize integer values to represent priority, and factors that affect it. 
 		int studentPriority;
@@ -144,6 +150,9 @@ public class BossSort implements Algorithm{
 	}
 
 
+	/**
+	 * Removes student's tutorial choices that clash with the lab they are assigned to. 
+	 */
 	private void modifyTuts() {
 		//For each student
 		for (Student s : students){
@@ -278,6 +287,11 @@ public class BossSort implements Algorithm{
 	}
 
 
+	/**
+	 * Places each student (in priority order) into a Timeslot, according to the fullness of each Timeslot
+	 * and the student's choices. The Timeslot object is altered to reflect the student's placement.
+	 * If the student cannot be assigned, they will be added to a list of flagged students.
+	 */
 	private void sortTuts() {
 		//For every student (in priority order)
 		while(priority.size()>0){
