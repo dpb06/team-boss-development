@@ -79,7 +79,7 @@ public class HowardSortJUnitSuite {
 		labos.add(ts1);
 		labos.add(ts2);
 		labos.add(ts3);
-		BossSort bs = new BossSort(labos, new ArrayList<Timeslot>(), studs);
+		HowardsSort bs = new HowardsSort(labos, new ArrayList<Timeslot>(), studs);
 		AlgorithmOutput out = bs.start();
 		assertTrue(out.get(ts1).contains(s1) && out.get(ts1).size() == 1);
 		assertTrue(out.get(ts2).contains(s2) && out.get(ts2).size() == 1);

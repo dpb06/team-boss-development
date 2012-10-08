@@ -11,15 +11,15 @@ import algorithmDataStructures.Timeslot;
  * This is to have a benchmark to compare our newly implemented algorithm  boss sort.
  * @author phillijosh
  */
-<<<<<<< HEAD
+
 public class HowardsSort implements Algorithm {
-	private ArrayList <Student>students;
-	private ArrayList<Student>assignedStudents;
-	private ArrayList<Integer> indexOverfilledLabs=new ArrayList<Integer>();
-	private ArrayList<Timeslot>labs;
-	private ArrayList<Student> flagged= new ArrayList<Student>();
-=======
-public class HowardsSort implements Algorithm{
+//	private ArrayList <Student>students;
+//	private ArrayList<Student>assignedStudents;
+//	private ArrayList<Integer> indexOverfilledLabs=new ArrayList<Integer>();
+//	private ArrayList<Timeslot>labs;
+//	private ArrayList<Student> flagged= new ArrayList<Student>();
+//
+//public class HowardsSort implements Algorithm{
 	
 	//-----FIELDS-----\\
 	private ArrayList<Timeslot> labs;
@@ -28,7 +28,6 @@ public class HowardsSort implements Algorithm{
 	private ArrayList<Student> assignedStudents = new ArrayList<Student>();
 	private ArrayList<Integer> indexOverfilledLabs = new ArrayList<Integer>();
 	private ArrayList<Student> flagged = new ArrayList<Student>();
->>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
 	private AlgorithmOutput output = new AlgorithmOutput();
 
 	//-----CONSTRUCTOR-----\\
@@ -188,19 +187,12 @@ public class HowardsSort implements Algorithm{
 		}
 	}
 	
-<<<<<<< HEAD
+
 	public AlgorithmOutput getOutput() {
 		return output;
 	}
 
-	@Override
-	public AlgorithmOutput start() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 
-=======
->>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
 }

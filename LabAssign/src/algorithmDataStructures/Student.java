@@ -25,7 +25,7 @@ public class Student implements Comparable<Object>{
 	private ArrayList<Timeslot> thirdChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> cannotAttend = new ArrayList<Timeslot>();
 	private int numCanAttend = 0;
-	
+
 	private boolean flagged=false;
 	private boolean changedChoices=false;
 
@@ -195,7 +195,7 @@ public class Student implements Comparable<Object>{
 	public void setAssignedLab(Timeslot t){
 		this.assignedLab = t;
 	}
-	
+
 
 	/**
 	 * for rearrangeing the order of students choices
@@ -204,7 +204,7 @@ public class Student implements Comparable<Object>{
 	 */
 	public void setFirst(ArrayList<Timeslot> choices) {
 		if(this.firstChoices.isEmpty()){
-		this.firstChoices=choices;
+			this.firstChoices=choices;
 		}
 	}
 	public void setSecond(ArrayList<Timeslot> choices) {
@@ -214,10 +214,10 @@ public class Student implements Comparable<Object>{
 	}
 	public void setThird(ArrayList<Timeslot> choices) {
 		if(this.thirdChoices.isEmpty()){
-		this.thirdChoices=choices;
+			this.thirdChoices=choices;
 		}
 	}
-	
+
 	/**
 	 * clears students choices after they have been rearranged.
 	 * @param i
@@ -238,11 +238,11 @@ public class Student implements Comparable<Object>{
 		}
 		}
 	}
-	
+
 	public void setFlagged(){
 		this.flagged=true;
 	}
-	
+
 	public void setChangedChoices(){
 		this.changedChoices=true;
 	}
@@ -250,12 +250,11 @@ public class Student implements Comparable<Object>{
 	public boolean getFlagged(){
 		return flagged;
 	}
-	
+
 	public boolean getChangedChoices(){
 		return changedChoices;
 	}
-=======
->>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
+
 	public void setAssignedTut(Timeslot t){
 		this.assignedTut = t;
 	}
