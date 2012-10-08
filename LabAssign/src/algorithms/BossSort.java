@@ -68,11 +68,11 @@ public class BossSort implements Algorithm{
 			//Largest priority weighting is the number of labs the student can attend.
 			studentPriority = s.getNumCanAttendLabs()*1000;
 			//Next is the number of third choices the student has selected.
-			thirdPoints = s.getThirdChoices().size()*3;
+			thirdPoints = s.getThirdChoiceLabs().size()*3;
 			//Next is the number of second choices the student has selected.
-			secondPoints = s.getSecondChoices().size()*2;
+			secondPoints = s.getSecondChoiceLabs().size()*2;
 			//Next is the number of first choices the student has selected.
-			firstPoints = s.getFirstChoices().size();
+			firstPoints = s.getFirstChoiceLabs().size();
 			
 			//Combine priority values by multiplying the lab choices using the number of labs as a factor.
 			studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
@@ -110,7 +110,34 @@ public class BossSort implements Algorithm{
 
 	private void modifyTuts() {
 		//For each student
-			//
+		for (Student s : students){
+			//Find assigned lab timeslot
+			Timeslot assignedLab = s.getAssignedLab();
+			//For each of the student's tutorial first choices
+			for (Timeslot tut : s.getFirstChoiceTuts()){
+				//If assigned lab time intersects with a time of a tutorial
+				if(tut.compareTo(assignedLab) != 0){
+					//Remove that tutorial from student's first choices
+					s.removeFirstChoiceTut(tut);
+				}
+			}
+			//For each of the student's tutorial second choices
+			for (Timeslot tut : s.getSecondChoiceTuts()){
+				//If assigned lab time intersects with a time of a tutorial
+				if(tut.compareTo(assignedLab) != 0){
+					//Remove that tutorial from student's second choices
+					s.removeSecondChoiceTut(tut);
+				}
+			}
+			//For each of the student's tutorial third choices
+			for (Timeslot tut : s.getThirdChoiceTuts()){
+				//If assigned lab time intersects with a time of a tutorial
+				if(tut.compareTo(assignedLab) != 0){
+					//Remove that tutorial from student's third choices
+					s.removeThirdChoiceTut(tut);
+				}
+			}
+		}
 	}
 
 	/**
@@ -129,7 +156,7 @@ public class BossSort implements Algorithm{
 			while(!assigned ){
 				//Create a list of first choices
 				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> firsts = s.getFirstChoices();
+				ArrayList<Timeslot> firsts = s.getFirstChoiceLabs();
 				//If the list is now empty
 				while(firsts.size() > 0){
 					//Randomly pick one of those choices and assign it to a variable
@@ -153,7 +180,7 @@ public class BossSort implements Algorithm{
 				}
 
 				//Create a list of second choices
-				ArrayList<Timeslot> seconds = s.getSecondChoices();
+				ArrayList<Timeslot> seconds = s.getSecondChoiceLabs();
 				//Check if those choices are in the list of labs that aren't full
 				//If the list is now empty
 				while(seconds.size() > 0){
@@ -180,7 +207,7 @@ public class BossSort implements Algorithm{
 				//Create a list of third choices
 				//Check if those choices are in the list of labs that aren't full
 				//Create a list of second choices
-				ArrayList<Timeslot> thirds = s.getThirdChoices();
+				ArrayList<Timeslot> thirds = s.getThirdChoiceLabs();
 				//Check if those choices are in the list of labs that aren't full
 				
 				//If the list is now empty

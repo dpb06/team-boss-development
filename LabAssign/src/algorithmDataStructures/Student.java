@@ -198,6 +198,32 @@ public class Student implements Comparable<Object>{
 		return true;
 	}
 
+	
+	//-----REMOVE METHODS-----\\
+	public boolean removeFirstChoiceTut(Timeslot t){
+		if(firstChoicesTuts.contains(t)){
+			firstChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeSecondChoiceTut(Timeslot t){
+		if(secondChoicesTuts.contains(t)){
+			secondChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeThirdChoiceTut(Timeslot t){
+		if(thirdChoicesTuts.contains(t)){
+			thirdChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
 
 	//-----GET METHODS-----\\
 	public int getPriority() {
@@ -208,22 +234,39 @@ public class Student implements Comparable<Object>{
 		return studentNum;
 	}
 
-	public ArrayList<Timeslot> getFirstChoices() {
+	public ArrayList<Timeslot> getFirstChoiceLabs() {
 		return firstChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getSecondChoices() {
+	public ArrayList<Timeslot> getSecondChoiceLabs() {
 		return secondChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getThirdChoices() {
+	public ArrayList<Timeslot> getThirdChoiceLabs() {
 		return thirdChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getCannotAttend() {
+	public ArrayList<Timeslot> getCannotAttendLabs() {
 		return cannotAttendLabs;
 	}
 
+
+	public ArrayList<Timeslot> getFirstChoiceTuts() {
+		return firstChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getSecondChoiceTuts() {
+		return secondChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getThirdChoiceTuts() {
+		return thirdChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getCannotAttendTuts() {
+		return cannotAttendTuts;
+	}
+	
 	public int getNumCanAttendLabs() {
 		return numCanAttendLabs;
 	}

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *   The number of students that can/should be in this lab/tut.
  *   The students assigned to this lab/tut.
  */
-public abstract class Timeslot {
+public abstract class Timeslot implements Comparable<Object>{
 	
 	//-----FIELDS-----\\
 	private int uID;
@@ -49,6 +49,30 @@ public abstract class Timeslot {
 			//Print student details
 			System.out.println(assigned.get(i).getStudentNum());
 		}
+	}
+	
+	@Override
+	public int compareTo(Object o){
+		//Ensure object is a Timeslot.
+		if(o instanceof Timeslot){
+			//Cast object.
+			Timeslot otherTimeslot = (Timeslot) o;
+			//If this ends before the other begins, return 1.
+			if(this.endTime < otherTimeslot.getStartTime()){
+				return 1;
+			}
+			//If this begins after the other ends, return -1.
+			else if(this.startTime > otherTimeslot.getEndTime()){
+				return -1;
+			}
+			//If the times intersect, return 0.
+			else{
+				return 0;
+			}
+		}
+		//If object is not a Timeslot, throw exception.
+		//TODO: put exception here.
+		return 0;
 	}
 	
 	@Override

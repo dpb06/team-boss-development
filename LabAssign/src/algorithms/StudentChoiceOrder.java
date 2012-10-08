@@ -19,28 +19,28 @@ public class StudentChoiceOrder {
 		final int SECONDCHOICE=1;
 		
 		for(Student s:students){
-			if(s.getFirstChoices().isEmpty()&& s.getSecondChoices().isEmpty() && !s.getThirdChoices().isEmpty()){
-				s.setFirst(s.getThirdChoices());			
+			if(s.getFirstChoiceLabs().isEmpty()&& s.getSecondChoiceLabs().isEmpty() && !s.getThirdChoiceLabs().isEmpty()){
+				s.setFirst(s.getThirdChoiceLabs());			
 				s.clearChoice(THIRDCHOICE);
 				s.setChangedChoices();
 			}
-			else if(s.getFirstChoices().isEmpty()&& !s.getSecondChoices().isEmpty() && s.getThirdChoices().isEmpty()){
-				s.setFirst(s.getSecondChoices());
+			else if(s.getFirstChoiceLabs().isEmpty()&& !s.getSecondChoiceLabs().isEmpty() && s.getThirdChoiceLabs().isEmpty()){
+				s.setFirst(s.getSecondChoiceLabs());
 				s.clearChoice(SECONDCHOICE);
 				s.setChangedChoices();
 			}
-			else if(s.getFirstChoices().isEmpty()&& !s.getSecondChoices().isEmpty() && !s.getThirdChoices().isEmpty()){
-				s.setFirst(s.getSecondChoices());
-				s.setSecond(s.getThirdChoices());
+			else if(s.getFirstChoiceLabs().isEmpty()&& !s.getSecondChoiceLabs().isEmpty() && !s.getThirdChoiceLabs().isEmpty()){
+				s.setFirst(s.getSecondChoiceLabs());
+				s.setSecond(s.getThirdChoiceLabs());
 				s.clearChoice(THIRDCHOICE);
 				s.setChangedChoices();
 			}
-			else if(!s.getFirstChoices().isEmpty()&& s.getSecondChoices().isEmpty() && !s.getThirdChoices().isEmpty()){
-				s.setSecond(s.getThirdChoices());
+			else if(!s.getFirstChoiceLabs().isEmpty()&& s.getSecondChoiceLabs().isEmpty() && !s.getThirdChoiceLabs().isEmpty()){
+				s.setSecond(s.getThirdChoiceLabs());
 				s.clearChoice(THIRDCHOICE);
 				s.setChangedChoices();
 			}
-			else if(s.getFirstChoices().isEmpty()&& s.getSecondChoices().isEmpty() && s.getThirdChoices().isEmpty()){
+			else if(s.getFirstChoiceLabs().isEmpty()&& s.getSecondChoiceLabs().isEmpty() && s.getThirdChoiceLabs().isEmpty()){
 				s.setFlagged();
 			}
 		}

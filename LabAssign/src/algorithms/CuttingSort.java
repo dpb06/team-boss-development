@@ -36,12 +36,12 @@ public class CuttingSort implements Algorithm {
 			//if they have only one choice
 			if (s.getNumCanAttend()==1){
 				//increment the cannot attends for this lab
-				if (s.getFirstChoices().size() == 1){
-					onlyAttends.put(s.getFirstChoices().get(0),(Integer) (onlyAttends.get(s.getFirstChoices()) + 1));
-				} else if (s.getSecondChoices().size() == 1){
-					onlyAttends.put(s.getSecondChoices().get(0),(Integer) (onlyAttends.get(s.getSecondChoices()) + 1));
-				} else if (s.getThirdChoices().size() == 1){
-					onlyAttends.put(s.getThirdChoices().get(0),(Integer) (onlyAttends.get(s.getThirdChoices()) + 1));
+				if (s.getFirstChoiceLabs().size() == 1){
+					onlyAttends.put(s.getFirstChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getFirstChoiceLabs()) + 1));
+				} else if (s.getSecondChoiceLabs().size() == 1){
+					onlyAttends.put(s.getSecondChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getSecondChoiceLabs()) + 1));
+				} else if (s.getThirdChoiceLabs().size() == 1){
+					onlyAttends.put(s.getThirdChoiceLabs().get(0),(Integer) (onlyAttends.get(s.getThirdChoiceLabs()) + 1));
 				}
 
 			}
