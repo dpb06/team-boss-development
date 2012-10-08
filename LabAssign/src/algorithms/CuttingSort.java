@@ -23,10 +23,10 @@ public class CuttingSort implements Algorithm {
 			ArrayList<Student> students) {
 		this.students = students;
 		this.labs = labs;
-		labSizeOverview();
+		this.tutorials = tutorials;
 	}
 
-	public void labSizeOverview() {
+	public AlgorithmOutput start() {
 		// For each timeslot
 		for (Timeslot t : labs) {
 			// Add to map, and initialize value
@@ -59,38 +59,54 @@ public class CuttingSort implements Algorithm {
 		}
 		//Run bossSort on the data, and converts the timeslots to a list
 		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+		//Sort the output of BossSort according to timeslot fullness (emptiest timeslots first)
 		Collections.sort(temp, new TimeslotSizeComparator());
 		for(Timeslot t: temp){
-			System.out.println(t.getAssigned().size());
+			System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
+			if(potentialRemovals.contains(t) && allLabsBelowPreferred(temp)){
+				labs.remove(t);
+				temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+			}
 		}
+		
+		
+		return new BossSort(labs, tutorials, students).start();
+	}
+
+	private boolean allLabsBelowPreferred(List<Timeslot> timeslots) {
+		//For each
+		for (Timeslot t: timeslots){
+			if (t.getAssigned().size()>t.getPreferredMax()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static void main(String[] args) {
 		JUnitTestingData j = new JUnitTestingData();
 		CuttingSort cs = new CuttingSort(j.getLabs(), j.getTutorials(),
 				j.getStudents());
-		cs.useTestData();
+		cs.start();
 	}
 
-	public void useTestData() {
-		labSizeOverview();
-	}
 
-	@Override
-	public AlgorithmOutput start() {
-		// TODO Auto-generated method stub
-
-		return null;
-	}
+//	@Override
+//	public AlgorithmOutput start() {
+//		// TODO Auto-generated method stub
+//
+//		return null;
+//	}
 	
+	/**
+	 * Compare timeslots according the what percentage full they are.
+	 * When used in a sort, this will cause the timeslots to be ordered emptiest to fullest
+	 */	
 	private class TimeslotSizeComparator implements Comparator<Timeslot>{
 
 		@Override
-		/**
-		 * Compare the two timeslots according the what percentage full they are
-		 */
 		public int compare(Timeslot o1, Timeslot o2) {
-			return o1.getAssigned().size()/o1.getMaxStudents() - o2.getAssigned().size()/o2.getMaxStudents();
+			return o2.getAssigned().size()*100 /o2.getMaxStudents()- o1.getAssigned().size()*100 /o1.getMaxStudents();
 		}
 		
 	}
