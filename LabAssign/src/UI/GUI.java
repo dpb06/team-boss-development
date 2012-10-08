@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -84,6 +85,17 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		fileText = new JTextField("File Name here....", 10);
 		fileText.setMaximumSize(new Dimension(500, 20));
+		fileText.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
+		});
 		
 		JButton fileButton = new JButton("Browse");
 		fileButton.setBounds(0, 0, 50, 20);
@@ -216,25 +228,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				c.weightx = 0.5;
 				c.gridx = 0;
 				c.gridy = 0;
-				eastPanel.add(new JLabel("Session"));
-				c.gridy = 1;
-				eastPanel.add(new JLabel("Name"));
+				eastPanel.add(new JLabel("Session Name  "));
 				c.gridx = 1;
 				c.gridy = 0;
-				eastPanel.add(new JLabel("Min"));
+				eastPanel.add(new JLabel("Min  "));
 				c.gridx = 2;
 				c.gridy = 0;
 				eastPanel.add(new JLabel("Max"));
 				c.gridx = 3;
 				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref."));
-				c.gridy = 1;
-				eastPanel.add(new JLabel("Min"));
+				eastPanel.add(new JLabel("Pref. Min  "));
+
 				c.gridx = 4;
 				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref."));
-				c.gridy = 1;
-				eastPanel.add(new JLabel("Max"));
+				eastPanel.add(new JLabel("Pref. Max  "));
+
+				eastPanel.add(new JLabel());
 				for (int i = 0; i < slots.size(); i++) {
 					Bounds timeslotBounds = new Bounds(slots.get(i));
 					SessionBounds.add(timeslotBounds);
