@@ -105,21 +105,21 @@ public abstract class Timeslot implements Comparable<Object>{
 		this.maxStudents = threshold[3];
 	}
 	
-//	public void setMinStudents(int minStudents) {
-//		this.minStudents = minStudents;
-//	}
-//	
-//	public void setPreferredMin(int preferredMin) {
-//		this.preferredMin = preferredMin;
-//	}
-//
-//	public void setPreferredMax(int preferredMax) {
-//		this.preferredMax = preferredMax;
-//	}
-//
-//	public void setMaxStudents(int maxStudents) {
-//		this.maxStudents = maxStudents;
-//	}
+	public void setMinStudents(int minStudents) {
+		this.minStudents = minStudents;
+	}
+	
+	public void setPreferredMin(int preferredMin) {
+		this.preferredMin = preferredMin;
+	}
+
+	public void setPreferredMax(int preferredMax) {
+		this.preferredMax = preferredMax;
+	}
+
+	public void setMaxStudents(int maxStudents) {
+		this.maxStudents = maxStudents;
+	}
 
 	
 	//-----GET METHODS-----\\
