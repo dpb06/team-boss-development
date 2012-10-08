@@ -36,15 +36,15 @@ public class CuttingSort implements Algorithm {
 		// for each student
 		for (Student s : students) {
 			// if they have only one choice
-			if (s.getNumCanAttend() == 1) {
+			if (s.getNumCanAttendLabs() == 1) {
 				// Find which timeslot was chosen
 				Timeslot choice = null;
-				if (s.getFirstChoices().size() == 1) {
-					choice = s.getFirstChoices().get(0);
-				} else if (s.getSecondChoices().size() == 1) {
-					choice = s.getSecondChoices().get(0);
-				} else if (s.getThirdChoices().size() == 1) {
-					choice = s.getThirdChoices().get(0);
+				if (s.getFirstChoiceLabs().size() == 1) {
+					choice = s.getFirstChoiceLabs().get(0);
+				} else if (s.getSecondChoiceLabs().size() == 1) {
+					choice = s.getSecondChoiceLabs().get(0);
+				} else if (s.getThirdChoiceLabs().size() == 1) {
+					choice = s.getThirdChoiceLabs().get(0);
 				}
 				//Increment the onlyAttends value for this timeslot
 				onlyAttends.put(choice, onlyAttends.get(choice) + 1);

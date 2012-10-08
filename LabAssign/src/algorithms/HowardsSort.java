@@ -59,7 +59,7 @@ public class HowardsSort implements Algorithm {
 		for (int i=0;i<numStudents;i++){
 			currentStudent=students.get((int)(Math.random()*students.size()));
 			students.remove(currentStudent);
-			firstChoiceLab=currentStudent.getFirstChoices();
+			firstChoiceLab=currentStudent.getFirstChoiceLabs();
 			int lowestLabSize=0;
 			for(int z=0;z<firstChoiceLab.size();z++){
 				if(firstChoiceLab.get(z).getAssigned().size()<firstChoiceLab.get(lowestLabSize).getAssigned().size()){
@@ -82,8 +82,8 @@ public class HowardsSort implements Algorithm {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(currentStudent.getFirstChoices().size()>1){
-					for(Timeslot t:currentStudent.getFirstChoices()){
+				if(currentStudent.getFirstChoiceLabs().size()>1){
+					for(Timeslot t:currentStudent.getFirstChoiceLabs()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
@@ -104,8 +104,8 @@ public class HowardsSort implements Algorithm {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(currentStudent.getSecondChoices().size()>1){
-					for(Timeslot t:currentStudent.getSecondChoices()){
+				if(currentStudent.getSecondChoiceLabs().size()>1){
+					for(Timeslot t:currentStudent.getSecondChoiceLabs()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);
@@ -126,8 +126,8 @@ public class HowardsSort implements Algorithm {
 			for(int d=labs.get(indexOverfilledLabs.get(a)).getMaxStudents();d<size;d++){
 				//if a student who is in the overfilled category for this lab then look to see if they have anymore first choices.
 				currentStudent=labs.get(indexOverfilledLabs.get(a)).getAssigned().get(d);
-				if(currentStudent.getThirdChoices().size()>1){
-					for(Timeslot t:currentStudent.getThirdChoices()){
+				if(currentStudent.getThirdChoiceLabs().size()>1){
+					for(Timeslot t:currentStudent.getThirdChoiceLabs()){
 						if(t!=(labs.get(indexOverfilledLabs.get(a)))){
 							if(!t.isOverfilled()){
 								labs.get(indexOverfilledLabs.get(a)).removeStudent(currentStudent);

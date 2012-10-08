@@ -20,11 +20,16 @@ public class Student implements Comparable<Object>{
 	private	Timeslot assignedLab;
 	private	Timeslot assignedTut;
 	private int Priority = 0;
-	private ArrayList<Timeslot> firstChoices = new ArrayList<Timeslot>();
-	private ArrayList<Timeslot> secondChoices = new ArrayList<Timeslot>();
-	private ArrayList<Timeslot> thirdChoices = new ArrayList<Timeslot>();
-	private ArrayList<Timeslot> cannotAttend = new ArrayList<Timeslot>();
-	private int numCanAttend = 0;
+	private ArrayList<Timeslot> firstChoicesLabs = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> secondChoicesLabs = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> thirdChoicesLabs = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> cannotAttendLabs = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> firstChoicesTuts = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> secondChoicesTuts = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> thirdChoicesTuts = new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> cannotAttendTuts = new ArrayList<Timeslot>();
+	private int numCanAttendLabs = 0;
+	private int numCanAttendTuts = 0;
 
 	private boolean flagged=false;
 	private boolean changedChoices=false;
@@ -55,25 +60,25 @@ public class Student implements Comparable<Object>{
 		StringBuilder newString = new StringBuilder();
 		//For each first choice
 		newString.append("First Choices: \n");
-		for(Timeslot t:firstChoices){
+		for(Timeslot t:firstChoicesLabs){
 			//Append ID, start time and end time
 			newString.append("\t"+t.toString()+"\n");
 		}
 		//For each second choice
 		newString.append("Second Choices: \n");
-		for(Timeslot t:secondChoices){
+		for(Timeslot t:secondChoicesLabs){
 			//Append ID, start time and end time
 			newString.append("\t"+t.toString()+"\n");
 		}
 		//For each third choice
 		newString.append("Third Choices: \n");
-		for(Timeslot t:thirdChoices){
+		for(Timeslot t:thirdChoicesLabs){
 			//Append ID, start time and end time
 			newString.append("\t"+t.toString()+"\n");
 		}
 		//For each cannot attend
 		newString.append("Cannot Attends: \n");
-		for(Timeslot t:cannotAttend){
+		for(Timeslot t:cannotAttendLabs){
 			//Append ID, start time and end time
 			newString.append("\t"+t.toString()+"\n");
 		}
@@ -106,43 +111,119 @@ public class Student implements Comparable<Object>{
 		return 0;
 	}
 
-
+	/**
+	 * clears students choices after they have been rearranged.
+	 * @param i
+	 */
+	public void clearChoice(int i ){
+		switch(i){
+		case(0):
+			this.firstChoicesLabs.clear();
+			break;
+		case(1):
+			this.secondChoicesLabs.clear();
+			break;
+		case(2):
+			this.thirdChoicesLabs.clear();
+			break;
+		}
+	}
 
 	//-----ADD METHODS-----\\
 	public boolean addFirstLab(Timeslot t){
-		if(firstChoices.contains(t)){
+		if(firstChoicesLabs.contains(t)){
 			return false;
 		}
-		firstChoices.add(t);
-		numCanAttend++;
+		firstChoicesLabs.add(t);
+		numCanAttendLabs++;
 		return true;
 	}
 
 	public boolean addSecondLab(Timeslot t){
-		if(secondChoices.contains(t)){
+		if(secondChoicesLabs.contains(t)){
 			return false;
 		}
-		secondChoices.add(t);
-		numCanAttend++;
+		secondChoicesLabs.add(t);
+		numCanAttendLabs++;
 		return true;
 	}
 
 	public boolean addThirdLab(Timeslot t){
-		if(thirdChoices.contains(t)){
+		if(thirdChoicesLabs.contains(t)){
 			return false;
 		}
-		thirdChoices.add(t);
-		numCanAttend++;
+		thirdChoicesLabs.add(t);
+		numCanAttendLabs++;
 		return true;
 	}
 
 	public boolean addCannotAttend(Timeslot t){
-		if(cannotAttend.contains(t))
+		if(cannotAttendLabs.contains(t))
 			return false;
-		cannotAttend.add(t);
+		cannotAttendLabs.add(t);
+		return true;
+	}
+	
+	public boolean addFirstTut(Timeslot t){
+		if(firstChoicesTuts.contains(t)){
+			return false;
+		}
+		firstChoicesTuts.add(t);
+		numCanAttendTuts++;
 		return true;
 	}
 
+	public boolean addSecondTut(Timeslot t){
+		if(secondChoicesTuts.contains(t)){
+			return false;
+		}
+		secondChoicesTuts.add(t);
+		numCanAttendTuts++;
+		return true;
+	}
+
+	public boolean addThirdTut(Timeslot t){
+		if(thirdChoicesTuts.contains(t)){
+			return false;
+		}
+		thirdChoicesTuts.add(t);
+		numCanAttendTuts++;
+		return true;
+	}
+
+	public boolean addCannotAttendTut(Timeslot t){
+		if(cannotAttendTuts.contains(t))
+			return false;
+		cannotAttendTuts.add(t);
+		return true;
+	}
+
+	
+	//-----REMOVE METHODS-----\\
+	public boolean removeFirstChoiceTut(Timeslot t){
+		if(firstChoicesTuts.contains(t)){
+			firstChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeSecondChoiceTut(Timeslot t){
+		if(secondChoicesTuts.contains(t)){
+			secondChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeThirdChoiceTut(Timeslot t){
+		if(thirdChoicesTuts.contains(t)){
+			thirdChoicesTuts.remove(t);
+			return true;
+		}
+		return false;
+	}
+	
 
 	//-----GET METHODS-----\\
 	public int getPriority() {
@@ -153,24 +234,45 @@ public class Student implements Comparable<Object>{
 		return studentNum;
 	}
 
-	public ArrayList<Timeslot> getFirstChoices() {
-		return firstChoices;
+	public ArrayList<Timeslot> getFirstChoiceLabs() {
+		return firstChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getSecondChoices() {
-		return secondChoices;
+	public ArrayList<Timeslot> getSecondChoiceLabs() {
+		return secondChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getThirdChoices() {
-		return thirdChoices;
+	public ArrayList<Timeslot> getThirdChoiceLabs() {
+		return thirdChoicesLabs;
 	}
 
-	public ArrayList<Timeslot> getCannotAttend() {
-		return cannotAttend;
+	public ArrayList<Timeslot> getCannotAttendLabs() {
+		return cannotAttendLabs;
 	}
 
-	public int getNumCanAttend() {
-		return numCanAttend;
+
+	public ArrayList<Timeslot> getFirstChoiceTuts() {
+		return firstChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getSecondChoiceTuts() {
+		return secondChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getThirdChoiceTuts() {
+		return thirdChoicesTuts;
+	}
+
+	public ArrayList<Timeslot> getCannotAttendTuts() {
+		return cannotAttendTuts;
+	}
+	
+	public int getNumCanAttendLabs() {
+		return numCanAttendLabs;
+	}
+	
+	public int getNumCanAttendTuts() {
+		return numCanAttendTuts;
 	}
 
 	public String getName() {
@@ -185,6 +287,13 @@ public class Student implements Comparable<Object>{
 		return assignedTut;
 	}
 
+	public boolean getFlagged(){
+		return flagged;
+	}
+
+	public boolean getChangedChoices(){
+		return changedChoices;
+	}
 
 
 	//-----SET METHODS-----\\
@@ -196,46 +305,21 @@ public class Student implements Comparable<Object>{
 		this.assignedLab = t;
 	}
 
-
-	/**
-	 * for rearrangeing the order of students choices
-	 * sets a students choice to an array of another of their choices.
-	 * @param choices
-	 */
+	// for rearranging the order of students choices sets a students choice to an array of
+	// another of their choices. Used by StudentChoiceOrder class.
 	public void setFirst(ArrayList<Timeslot> choices) {
-		if(this.firstChoices.isEmpty()){
-			this.firstChoices=choices;
+		if(this.firstChoicesLabs.isEmpty()){
+			this.firstChoicesLabs=choices;
 		}
 	}
 	public void setSecond(ArrayList<Timeslot> choices) {
-		if(this.secondChoices.isEmpty()){
-			this.secondChoices=choices;
+		if(this.secondChoicesLabs.isEmpty()){
+			this.secondChoicesLabs=choices;
 		}
 	}
 	public void setThird(ArrayList<Timeslot> choices) {
-		if(this.thirdChoices.isEmpty()){
-			this.thirdChoices=choices;
-		}
-	}
-
-	/**
-	 * clears students choices after they have been rearranged.
-	 * @param i
-	 */
-	public void clearChoice(int i ){
-		switch(i){
-		case(0):{
-			this.firstChoices.clear();
-			break;
-		}
-		case(1):{
-			this.secondChoices.clear();
-			break;
-		}
-		case(2):{
-			this.thirdChoices.clear();
-			break;
-		}
+		if(this.thirdChoicesLabs.isEmpty()){
+			this.thirdChoicesLabs=choices;
 		}
 	}
 
@@ -245,14 +329,6 @@ public class Student implements Comparable<Object>{
 
 	public void setChangedChoices(){
 		this.changedChoices=true;
-	}
-
-	public boolean getFlagged(){
-		return flagged;
-	}
-
-	public boolean getChangedChoices(){
-		return changedChoices;
 	}
 
 	public void setAssignedTut(Timeslot t){
