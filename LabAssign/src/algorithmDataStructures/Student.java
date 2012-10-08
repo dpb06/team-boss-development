@@ -195,7 +195,7 @@ public class Student implements Comparable<Object>{
 	public void setAssignedLab(Timeslot t){
 		this.assignedLab = t;
 	}
-
+	
 
 	/**
 	 * for rearrangeing the order of students choices
@@ -254,6 +254,8 @@ public class Student implements Comparable<Object>{
 	public boolean getChangedChoices(){
 		return changedChoices;
 	}
+=======
+>>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
 	public void setAssignedTut(Timeslot t){
 		this.assignedTut = t;
 	}

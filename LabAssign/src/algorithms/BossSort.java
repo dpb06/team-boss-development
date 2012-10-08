@@ -1,10 +1,8 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import Deprecated.StaticTimeslotMap;
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
@@ -15,7 +13,7 @@ public class BossSort implements Algorithm{
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
 	//TODO: Make sure we can handle cases where a student has no choices AKA cannot attend and labs
 	
-	
+	//-----FIELDS-----\\
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
@@ -23,7 +21,8 @@ public class BossSort implements Algorithm{
 	private ArrayList<Student> flagged= new ArrayList<Student>();
 	private AlgorithmOutput output = new AlgorithmOutput();
 
-
+	
+	//-----CONSTRUCTOR-----\\
 	public BossSort (ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
@@ -31,6 +30,7 @@ public class BossSort implements Algorithm{
 	}
 	
 
+	//-----INTERFACE METHODS-----\\
 	public AlgorithmOutput start() {
 		priorityCalculator();
 		System.out.println();
@@ -46,7 +46,7 @@ public class BossSort implements Algorithm{
 	}
 	
 	
-
+	//-----FUNCTIONALITIES-----\\
 	/**
 	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
 	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
@@ -235,11 +235,6 @@ public class BossSort implements Algorithm{
 
 	//Before finding priority, if a Student has no first choices, bump up all their choices.
 	//Flag every Student that has their choices bumped.
-
-	public AlgorithmOutput getOutput() {
-		return output;
-	}
-
 
 
 
