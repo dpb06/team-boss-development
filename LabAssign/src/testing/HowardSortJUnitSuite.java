@@ -65,11 +65,11 @@ public class HowardSortJUnitSuite {
 		Timeslot ts1 = new Lab(10, 1000, 1100, Day.Wednesday);
 		Timeslot ts2 = new Lab(11, 1100, 1200, Day.Wednesday);
 		Timeslot ts3 = new Lab(12, 1200, 1300, Day.Wednesday);
-		Student s1 = new Student(1);
+		Student s1 = new Student(1, "");
 		s1.addFirstLab(ts1);
-		Student s2 = new Student(2);
+		Student s2 = new Student(2, "");
 		s2.addFirstLab(ts2);
-		Student s3 = new Student(3);
+		Student s3 = new Student(3, "");
 		s3.addFirstLab(ts3);
 		ArrayList<Student> studs = new ArrayList<Student>();
 		studs.add(s1);

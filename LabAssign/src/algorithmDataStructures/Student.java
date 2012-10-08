@@ -14,18 +14,20 @@ import java.util.ArrayList;
  */
 public class Student implements Comparable<Object>{
 
-	//TODO: verify the necessity of commented out values.
-	//-----VARIABLES-----\\
+	//-----FIELDS-----\\
 	private	int studentNum;
 	private String name;
 	private	Timeslot assignedLab;
-	//private	Timeslot assignedTut;
+	private	Timeslot assignedTut;
 	private int Priority = 0;
 	private ArrayList<Timeslot> firstChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> secondChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> thirdChoices = new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> cannotAttend = new ArrayList<Timeslot>();
 	private int numCanAttend = 0;
+	
+	private boolean flagged=false;
+	private boolean changedChoices=false;
 
 
 	//-----CONSTRUCTOR-----\\
@@ -179,9 +181,9 @@ public class Student implements Comparable<Object>{
 		return assignedLab;
 	}
 
-	//	public Timeslot getAssignedTut() {
-	//		return assignedTut;
-	//	}
+	public Timeslot getAssignedTut() {
+		return assignedTut;
+	}
 
 
 
@@ -194,9 +196,67 @@ public class Student implements Comparable<Object>{
 		this.assignedLab = t;
 	}
 
-	//	public void setAssignedTut(Timeslot t){
-	//		this.assignedTut = t;
-	//	}
+
+	/**
+	 * for rearrangeing the order of students choices
+	 * sets a students choice to an array of another of their choices.
+	 * @param choices
+	 */
+	public void setFirst(ArrayList<Timeslot> choices) {
+		if(this.firstChoices.isEmpty()){
+		this.firstChoices=choices;
+		}
+	}
+	public void setSecond(ArrayList<Timeslot> choices) {
+		if(this.secondChoices.isEmpty()){
+			this.secondChoices=choices;
+		}
+	}
+	public void setThird(ArrayList<Timeslot> choices) {
+		if(this.thirdChoices.isEmpty()){
+		this.thirdChoices=choices;
+		}
+	}
+	
+	/**
+	 * clears students choices after they have been rearranged.
+	 * @param i
+	 */
+	public void clearChoice(int i ){
+		switch(i){
+		case(0):{
+			this.firstChoices.clear();
+			break;
+		}
+		case(1):{
+			this.secondChoices.clear();
+			break;
+		}
+		case(2):{
+			this.thirdChoices.clear();
+			break;
+		}
+		}
+	}
+	
+	public void setFlagged(){
+		this.flagged=true;
+	}
+	
+	public void setChangedChoices(){
+		this.changedChoices=true;
+	}
+
+	public boolean getFlagged(){
+		return flagged;
+	}
+	
+	public boolean getChangedChoices(){
+		return changedChoices;
+	}
+	public void setAssignedTut(Timeslot t){
+		this.assignedTut = t;
+	}
 
 
 }
