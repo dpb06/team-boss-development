@@ -76,15 +76,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		// call method to create the menu
 		createMenu();
 
-		// section for graphics
-
-		// section for dice
 		JPanel fileAlgoPanel = new JPanel();
 		fileAlgoPanel.setLayout(new BoxLayout(fileAlgoPanel, BoxLayout.X_AXIS));
 		int width = 500;
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
-		// fileAlgoPanel.setBackground(Color.CYAN);
 
 		fileText = new JTextField("File Name here....", 10);
 		fileText.setMaximumSize(new Dimension(500, 20));
@@ -95,18 +91,16 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		final JButton runButton = new JButton("Run");
         runButton.setEnabled(false);
         
-		fileButton.addActionListener(new ActionListener() {
-			 
+		fileButton.addActionListener(new ActionListener() {			 
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: Make this start in the text field path
-                //Handle open button action.
+                //Handle 'Browse' button action.
                 JFileChooser fc = new JFileChooser();
                 int returnVal = fc.showOpenDialog(GUI.this);
  
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
-                    fc.showOpenDialog(fileText);
                     fileText.setText(fc.getSelectedFile().getAbsolutePath());
                     runButton.setEnabled(true);
                 }
@@ -146,22 +140,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
         fileAlgoPanel.add(algoSelect);
         fileAlgoPanel.add(runButton);
 
-		// gridPanel contains the the text areas for maximum sizes
-		JPanel gridPanel = new JPanel();
-		gridPanel.setBackground(Color.GRAY);
-		gridPanel.setLayout(new GridLayout(2, NUM_SESSIONS, 2, 2));
-		gridPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		JTextArea[] maxSizes = new JTextArea[NUM_SESSIONS];
-		for (int session = 0; session < NUM_SESSIONS; session++) {
-			(maxSizes[session] = new JTextArea(1, 1)).setEditable(true);
-			// Possible initial value?
-			// maxSizes[session].setText(val);
-			gridPanel.add(maxSizes[session]);
-		}
-		// Add labels to inputs
-		for (int session = 0; session < NUM_SESSIONS; session++) {
-			gridPanel.add(new JLabel("Session " + (session + 1)));
-		}
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
 		canvasPanel.add(new Box.Filler(d, d, d));
@@ -178,10 +156,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);
-		topPanel.add(gridPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
-		frame.pack();
+		
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.pack();		
 		frame.setVisible(true);
 	}
 
@@ -266,17 +245,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							"Session " + (i + 1));
 				}
 			}
+			frame.validate();
 			if(selectedAlgorithm.equals("Boss Sort")){
                 BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(bs.getOutput().keySet()));
+                canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
                 HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(hs.getOutput().keySet()));
+                canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
             }
             else if(selectedAlgorithm.equals("Cutting Sort")){
                 CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                //TODO - add back when created canvas.setTimeslots(new ArrayList<Timeslot>(cs.getOutput().keySet()));
+                canvas.setTimeslots(new ArrayList<Timeslot>(cs.start().keySet()));
             }
 			
 			frame.repaint();
