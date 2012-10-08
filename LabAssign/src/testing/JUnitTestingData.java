@@ -6,6 +6,7 @@ import algorithmDataStructures.Day;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
+import algorithmDataStructures.Tutorial;
 import algorithms.CuttingSort;
 
 public class JUnitTestingData {
@@ -39,6 +40,26 @@ public class JUnitTestingData {
 		labs.add(labThree);
 		labs.add(labFour);
 		labs.add(labFive);
+		
+		
+		//Create five tuts, with maximums of 10,10,10,12,15.
+		Tutorial tutOne = new Tutorial(1, 900, 1000, Day.Tuesday);
+		Tutorial tutTwo = new Tutorial(2, 1130, 1230, Day.Wednesday);
+		Tutorial tutThree = new Tutorial(3, 900, 1000, Day.Thursday);
+		Tutorial tutFour = new Tutorial(4, 1310, 1410, Day.Thursday);
+		Tutorial tutFive = new Tutorial(5, 1310, 1410, Day.Friday);
+		tutOne.setThresholds(threshOne);
+		tutTwo.setThresholds(threshOne);
+		tutThree.setThresholds(threshTwo);
+		tutFour.setThresholds(threshTwo);
+		tutFive.setThresholds(threshThree);
+
+		//Add the five tuts to tutorials.
+		tutorials.add(tutOne);
+		tutorials.add(tutTwo);
+		tutorials.add(tutThree);
+		tutorials.add(tutFour);
+		tutorials.add(tutFive);
 		
 		//Create a selection of possible choices.
 		int[] choicesOne = {0,2,1,3,0};
@@ -77,34 +98,48 @@ public class JUnitTestingData {
 		
 		//Create fifty students, with choices for the five labs.
 		for(int i = 300213937; i < 300213987; i++){
-			//Pick a choice for the student.
+			//Pick a set of lab and tutorial choices for the student.
 			int index = i%14;
-			int[] asdf = choices.get(index);
+			int[] studentLabChoices = choices.get(index);
+			int[] studentTutChoices = {};
+			if(index == 14){
+				studentTutChoices = choicesOne;
+			}
+			else {
+				studentTutChoices = choices.get(index + 1);
+			}
 			//Create a student.
 			Student s = new Student(i, "");			
 			//TODO: UNUGLIFY THIS.
-			for(int ind=0; ind<asdf.length; ind++){
-				if(asdf[ind] == 0){
+			//For each integer in the student's lab choices
+			for(int ind=0; ind < studentLabChoices.length; ind++){
+				//If the choice is 0
+				if(studentLabChoices[ind] == 0){
+					//Map the index to a Timeslot
 					switch(ind){
+					//Set that Timeslot to a cannotattend
 					case 0:
-						s.addCannotAttend(labOne);
+						s.addCannotAttendLab(labOne);
 						break;
 					case 1:
-						s.addCannotAttend(labTwo);
+						s.addCannotAttendLab(labTwo);
 						break;
 					case 2:
-						s.addCannotAttend(labThree);
+						s.addCannotAttendLab(labThree);
 						break;
 					case 3:
-						s.addCannotAttend(labFour);
+						s.addCannotAttendLab(labFour);
 						break;
 					case 4:
-						s.addCannotAttend(labFive);
+						s.addCannotAttendLab(labFive);
 						break;
 					}					
 				}
-				else if(asdf[ind] == 1){
+				//If the choice is 1
+				else if(studentLabChoices[ind] == 1){
+					//Map the index to a Timeslot
 					switch(ind){
+					//Set that Timeslot to a first lab
 					case 0:
 						s.addFirstLab(labOne);
 						break;
@@ -122,8 +157,11 @@ public class JUnitTestingData {
 						break;
 					}
 				}
-				else if(asdf[ind] == 2){
+				//If the choice is 2
+				else if(studentLabChoices[ind] == 2){
+					//Map the index to a Timeslot
 					switch(ind){
+					//Set that Timeslot to a second lab
 					case 0:
 						s.addSecondLab(labOne);
 						break;
@@ -141,8 +179,11 @@ public class JUnitTestingData {
 						break;
 					}
 				}
-				else if(asdf[ind] == 3){
+				//If the choice is 3
+				else if(studentLabChoices[ind] == 3){
+					//Map the index to a Timeslot
 					switch(ind){
+					//Set that Timeslot to a third lab
 					case 0:
 						s.addThirdLab(labOne);
 						break;
@@ -161,12 +202,108 @@ public class JUnitTestingData {
 					}
 				}
 			}
+			
+			
+			//For each integer in the student's Tut choices
+			for(int ind=0; ind < studentTutChoices.length; ind++){
+				//If the choice is 0
+				if(studentTutChoices[ind] == 0){
+					//Map the index to a Timeslot
+					switch(ind){
+					//Set that Timeslot to a cannotattend
+					case 0:
+						s.addCannotAttendTut(tutOne);
+						break;
+					case 1:
+						s.addCannotAttendTut(tutTwo);
+						break;
+					case 2:
+						s.addCannotAttendTut(tutThree);
+						break;
+					case 3:
+						s.addCannotAttendTut(tutFour);
+						break;
+					case 4:
+						s.addCannotAttendTut(tutFive);
+						break;
+					}					
+				}
+				//If the choice is 1
+				else if(studentTutChoices[ind] == 1){
+					//Map the index to a Timeslot
+					switch(ind){
+					//Set that Timeslot to a first Tut
+					case 0:
+						s.addFirstTut(tutOne);
+						break;
+					case 1:
+						s.addFirstTut(tutTwo);
+						break;
+					case 2:
+						s.addFirstTut(tutThree);
+						break;
+					case 3:
+						s.addFirstTut(tutFour);
+						break;
+					case 4:
+						s.addFirstTut(tutFive);
+						break;
+					}
+				}
+				//If the choice is 2
+				else if(studentTutChoices[ind] == 2){
+					//Map the index to a Timeslot
+					switch(ind){
+					//Set that Timeslot to a second Tut
+					case 0:
+						s.addSecondTut(tutOne);
+						break;
+					case 1:
+						s.addSecondTut(tutTwo);
+						break;
+					case 2:
+						s.addSecondTut(tutThree);
+						break;
+					case 3:
+						s.addSecondTut(tutFour);
+						break;
+					case 4:
+						s.addSecondTut(tutFive);
+						break;
+					}
+				}
+				//If the choice is 3
+				else if(studentTutChoices[ind] == 3){
+					//Map the index to a Timeslot
+					switch(ind){
+					//Set that Timeslot to a third Tut
+					case 0:
+						s.addThirdTut(tutOne);
+						break;
+					case 1:
+						s.addThirdTut(tutTwo);
+						break;
+					case 2:
+						s.addThirdTut(tutThree);
+						break;
+					case 3:
+						s.addThirdTut(tutFour);
+						break;
+					case 4:
+						s.addThirdTut(tutFive);
+						break;
+					}
+				}
+			}
+			
+			
 			//Add student to students.
 			students.add(s);
 		}
 		
+
 		
-		//TODO: Add test data to represent tutorials
+		
 	}
 	
 	

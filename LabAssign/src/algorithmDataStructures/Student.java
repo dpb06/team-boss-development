@@ -157,7 +157,7 @@ public class Student implements Comparable<Object>{
 		return true;
 	}
 
-	public boolean addCannotAttend(Timeslot t){
+	public boolean addCannotAttendLab(Timeslot t){
 		if(cannotAttendLabs.contains(t))
 			return false;
 		cannotAttendLabs.add(t);
