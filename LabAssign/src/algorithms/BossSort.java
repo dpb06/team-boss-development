@@ -143,7 +143,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(labs.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
@@ -171,7 +171,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(labs.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
@@ -199,7 +199,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(labs.contains(choice) && !choice.isOverfilled()){
 						//Add student to chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
@@ -372,7 +372,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(tutorials.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
@@ -400,7 +400,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(tutorials.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
@@ -428,7 +428,7 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(tutorials.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
 						//Set assigned lab in student object
