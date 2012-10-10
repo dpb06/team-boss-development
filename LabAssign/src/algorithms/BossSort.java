@@ -317,6 +317,8 @@ public class BossSort implements Algorithm{
 		System.out.println("tutPriorityCalculator() in BossSort");
 		//Initialize integer values to represent priority, and factors that affect it. 
 		int studentPriority;
+		//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
+		priority = new PriorityQueue<Student>();
 		//Iterate list of students.
 		for(Student s:students){
 			//Initialise variables for assigning priority points for each choice.

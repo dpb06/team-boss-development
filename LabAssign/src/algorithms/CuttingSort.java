@@ -57,14 +57,14 @@ public class CuttingSort implements Algorithm {
 			}
 		}
 		//Run bossSort on the data, and converts the timeslots to a list
-		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start().keySet());
 		//Sort the output of BossSort according to timeslot fullness (emptiest timeslots first)
 		Collections.sort(temp, new TimeslotSizeComparator());
-		for (ArrayList<Student> s: new BossSort(labs, tutorials, students).start().values()){
-			for(Student t : s)
-			System.out.print(t);
-		}
-		System.exit(0);
+//					for (ArrayList<Student> s: new BossSort(labs, tutorials, students).start().values()){
+//						for(Student t : s)
+//						System.out.print(t);
+//					}
+//					System.exit(0);
 		//For each timeslot
 		for(Timeslot t: temp){
 			//System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
@@ -73,13 +73,13 @@ public class CuttingSort implements Algorithm {
 				//Remove the slot from labs
 				labs.remove(t);
 				//And then re-run bossSort on the outcome
-				temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+				temp = new ArrayList<Timeslot>(new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start().keySet());
 				//Re-sort the list
 				Collections.sort(temp, new TimeslotSizeComparator());
 			}
 		}
 		//Return the outcome of a BossSort on the reduced lab list		
-		return new BossSort(labs, tutorials, students).start();
+		return new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start();
 	}
 
 	private boolean allLabsBelowPreferred(List<Timeslot> timeslots) {
