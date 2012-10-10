@@ -305,23 +305,41 @@ public class Student implements Comparable<Object>{
 		this.assignedLab = t;
 	}
 
-	// for rearranging the order of students choices sets a students choice to an array of
+	// For rearranging the order of students choices. Sets a students choice to an array of
 	// another of their choices. Used by StudentChoiceOrder class.
-	public void setFirst(ArrayList<Timeslot> choices) {
+	public void setFirstChoiceLabs(ArrayList<Timeslot> choices) {
 		if(this.firstChoicesLabs.isEmpty()){
 			this.firstChoicesLabs=choices;
 		}
 	}
-	public void setSecond(ArrayList<Timeslot> choices) {
+	public void setSecondChoiceLabs(ArrayList<Timeslot> choices) {
 		if(this.secondChoicesLabs.isEmpty()){
 			this.secondChoicesLabs=choices;
 		}
 	}
-	public void setThird(ArrayList<Timeslot> choices) {
+	public void setThirdChoiceLabs(ArrayList<Timeslot> choices) {
 		if(this.thirdChoicesLabs.isEmpty()){
 			this.thirdChoicesLabs=choices;
 		}
 	}
+	
+	// For removing tutorial choices without causing a concurrent modification exception.
+	// Sets a students choice to an array of choices. Used by BossSort.modifyTuts().
+		public void setFirstChoiceTuts(ArrayList<Timeslot> choices) {
+			if(this.firstChoicesTuts.isEmpty()){
+				this.firstChoicesTuts=choices;
+			}
+		}
+		public void setSecondChoiceTuts(ArrayList<Timeslot> choices) {
+			if(this.secondChoicesTuts.isEmpty()){
+				this.secondChoicesTuts=choices;
+			}
+		}
+		public void setThirdChoiceTuts(ArrayList<Timeslot> choices) {
+			if(this.thirdChoicesTuts.isEmpty()){
+				this.thirdChoicesTuts=choices;
+			}
+		}
 
 	public void setFlagged(){
 		this.flagged=true;

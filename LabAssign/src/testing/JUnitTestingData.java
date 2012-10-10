@@ -109,7 +109,7 @@ public class JUnitTestingData {
 				studentTutChoices = choices.get(index + 1);
 			}
 			//Create a student.
-			Student s = new Student(i, "");			
+			Student s = new Student(i, "name");			
 			//TODO: UNUGLIFY THIS.
 			//For each integer in the student's lab choices
 			for(int ind=0; ind < studentLabChoices.length; ind++){
