@@ -32,7 +32,6 @@ public class CuttingSort implements Algorithm {
 			// Add to map, and initialize value
 			onlyAttends.put(t, new Integer(0));
 		}
-
 		// for each student
 		for (Student s : students) {
 			// if they have only one choice
@@ -61,25 +60,37 @@ public class CuttingSort implements Algorithm {
 		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
 		//Sort the output of BossSort according to timeslot fullness (emptiest timeslots first)
 		Collections.sort(temp, new TimeslotSizeComparator());
+		for (ArrayList<Student> s: new BossSort(labs, tutorials, students).start().values()){
+			for(Student t : s)
+			System.out.print(t);
+		}
+		System.exit(0);
+		//For each timeslot
 		for(Timeslot t: temp){
-			System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
+			//System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
+			//If the timeslot has no persons who can only attend that slot
 			if(potentialRemovals.contains(t) && allLabsBelowPreferred(temp)){
+				//Remove the slot from labs
 				labs.remove(t);
+				//And then re-run bossSort on the outcome
 				temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+				//Re-sort the list
+				Collections.sort(temp, new TimeslotSizeComparator());
 			}
 		}
-		
-		
+		//Return the outcome of a BossSort on the reduced lab list		
 		return new BossSort(labs, tutorials, students).start();
 	}
 
 	private boolean allLabsBelowPreferred(List<Timeslot> timeslots) {
-		//For each
+		//For each timeslot
 		for (Timeslot t: timeslots){
+			//If the lab is currently above preferred max
 			if (t.getAssigned().size()>t.getPreferredMax()){
 				return false;
 			}
 		}
+		//Else if they are all under preferredMax, return true
 		return true;
 	}
 
@@ -90,14 +101,6 @@ public class CuttingSort implements Algorithm {
 		cs.start();
 	}
 
-
-//	@Override
-//	public AlgorithmOutput start() {
-//		// TODO Auto-generated method stub
-//
-//		return null;
-//	}
-	
 	/**
 	 * Compare timeslots according the what percentage full they are.
 	 * When used in a sort, this will cause the timeslots to be ordered emptiest to fullest
