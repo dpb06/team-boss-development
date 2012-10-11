@@ -133,37 +133,33 @@ public class BossSort implements Algorithm{
 			Student s=priority.poll();
 			//Printspam the priority of each student.
 			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
-			//While student is not assigned
+			//Assert student is not assigned
 			boolean assigned = false;
-			while(!assigned ){
-				//Create a list of first choices
-				ArrayList<Timeslot> firsts = s.getFirstChoiceLabs();
-				//Iterate the list
-				while(firsts.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
-					//If the Timeslot is not full
-					if(labs.contains(choice) && !choice.isOverfilled()){
-						//Add student to the chosen lab
-						choice.addStudent(s);
-						//Set assigned lab in student object
-						s.setAssignedLab(choice);
-						assigned = true;
-						//Printspam the lab this student is assigned to
-						System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-						break;
-					}
-					//If Timeslot is full
-					else {
-						//Remove Timeslot from list of first choices
-						firsts.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
+
+			//Create a list of first choices
+			ArrayList<Timeslot> firsts = s.getFirstChoiceLabs();
+			//Iterate the list
+			while(firsts.size() > 0){
+				//Randomly pick one of those choices and assign it to a variable
+				Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
+				//If the Timeslot is not full
+				if(labs.contains(choice) && !choice.isOverfilled()){
+					//Add student to the chosen lab
+					choice.addStudent(s);
+					//Set assigned lab in student object
+					s.setAssignedLab(choice);
+					assigned = true;
+					//Printspam the lab this student is assigned to
+					System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
 					break;
 				}
-
+				//If Timeslot is full
+				else {
+					//Remove Timeslot from list of first choices
+					firsts.remove(choice);
+				}
+			}
+			if(!assigned){
 				//Create a list of second choices
 				ArrayList<Timeslot> seconds = s.getSecondChoiceLabs();
 				//Iterate the list
@@ -187,11 +183,9 @@ public class BossSort implements Algorithm{
 						seconds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
+			}
 
+			if(!assigned){
 				//Create a list of third choices
 				ArrayList<Timeslot> thirds = s.getThirdChoiceLabs();
 				//Iterate the list
@@ -215,18 +209,13 @@ public class BossSort implements Algorithm{
 						thirds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
+			}
 
-				else {
-					//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
-					flagged.add(s);
-					//Printspam that student is not assigned.
-					System.out.println("Not Assigned");
-					break;
-				}
+			if(!assigned) {
+				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
+				flagged.add(s);
+				//Printspam that student is not assigned.
+				System.out.println("Not Assigned");
 			}
 		}
 		System.out.println("\n");
@@ -366,35 +355,31 @@ public class BossSort implements Algorithm{
 			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 			//While student is not assigned
 			boolean assigned = false;
-			while(!assigned){
-				//Create a list of first choices
-				ArrayList<Timeslot> firsts = s.getFirstChoiceTuts();
-				//Iterate the list
-				while(firsts.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
-					//If the Timeslot is not full
-					if(tutorials.contains(choice) && !choice.isOverfilled()){
-						//Add student to the chosen lab
-						choice.addStudent(s);
-						//Set assigned lab in student object
-						s.setAssignedTut(choice);
-						assigned = true;
-						//Printspam the tut this student is assigned to
-						System.out.println("Assigned to first choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-						break;
-					}
-					//If Timeslot is full
-					else {
-						//Remove Timeslot from list of first choices
-						firsts.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
+
+			//Create a list of first choices
+			ArrayList<Timeslot> firsts = s.getFirstChoiceTuts();
+			//Iterate the list
+			while(firsts.size() > 0){
+				//Randomly pick one of those choices and assign it to a variable
+				Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
+				//If the Timeslot is not full
+				if(tutorials.contains(choice) && !choice.isOverfilled()){
+					//Add student to the chosen lab
+					choice.addStudent(s);
+					//Set assigned lab in student object
+					s.setAssignedTut(choice);
+					assigned = true;
+					//Printspam the tut this student is assigned to
+					System.out.println("Assigned to first choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
 					break;
 				}
-
+				//If Timeslot is full
+				else {
+					//Remove Timeslot from list of first choices
+					firsts.remove(choice);
+				}
+			}
+			if(!assigned){
 				//Create a list of second choices
 				ArrayList<Timeslot> seconds = s.getSecondChoiceTuts();
 				//Iterate the list
@@ -418,11 +403,8 @@ public class BossSort implements Algorithm{
 						seconds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
-
+			}
+			if(!assigned){
 				//Create a list of third choices
 				ArrayList<Timeslot> thirds = s.getThirdChoiceTuts();
 				//Iterate the list
@@ -446,17 +428,12 @@ public class BossSort implements Algorithm{
 						thirds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
+			}
+			if(!assigned){
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
-				else{
-					flagged.add(s);
-					//Printspam that student is not assigned.
-					System.out.println("Not Assigned");
-					break;
-				}
+				flagged.add(s);
+				//Printspam that student is not assigned.
+				System.out.println("Not Assigned");
 			}
 		}
 		System.out.println("\n");
@@ -484,7 +461,7 @@ public class BossSort implements Algorithm{
 			}
 		}
 		System.out.println();
-		
+
 		//Iterate through Tutorials.
 		System.out.println("Tuts:");
 		for(Timeslot t:tutorials){
@@ -497,7 +474,7 @@ public class BossSort implements Algorithm{
 			}
 		}
 		System.out.println();
-		
+
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){
