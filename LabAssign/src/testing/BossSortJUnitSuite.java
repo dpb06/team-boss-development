@@ -16,7 +16,14 @@ import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 
 public class BossSortJUnitSuite {
-
+	
+	
+	
+	//TODO: To keep track of the current code coverage, update this fairly regularly.
+	//Current code coverage for BossSort is 96.8%
+		
+	
+	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
@@ -29,7 +36,6 @@ public class BossSortJUnitSuite {
 
 		// TODO: Test input vs output.
 		// TODO: Test non-determinism of output.
-		// TODO: Are all students in input accounted for by the output?
 		// TODO: Sanity check inputs.
 		// TODO: Check code coverage.
 
@@ -95,10 +101,6 @@ public class BossSortJUnitSuite {
 		assertTrue(out.get(ts3).contains(s3) && out.get(ts3).size() == 1);
 	}
 	
-	
-	//TODO: test tutorials are assigned
-	//TODO: test tutorials affect fitness functions
-	//TODO: test students are assigned to a lab and a tut, or flagged
 	
 	/**
 	 * Ensures BossSort assigns tutorials to students (however poorly)

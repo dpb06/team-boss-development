@@ -110,7 +110,7 @@ public class JUnitTestingData {
 			}
 			//Create a student.
 			Student s = new Student(i, "name");			
-			//TODO: UNUGLIFY THIS.
+			//TODO: UNUGLIFY THIS. (maybe???)
 			//For each integer in the student's lab choices
 			for(int ind=0; ind < studentLabChoices.length; ind++){
 				//If the choice is 0

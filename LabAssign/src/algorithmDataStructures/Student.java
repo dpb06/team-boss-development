@@ -106,8 +106,6 @@ public class Student implements Comparable<Object>{
 				return 0;
 			}
 		}
-		//If object is not a Student, throw exception.
-		//TODO: put exception here.
 		return 0;
 	}
 
