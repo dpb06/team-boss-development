@@ -111,24 +111,6 @@ public class Student implements Comparable<Object>{
 		return 0;
 	}
 
-	/**
-	 * clears students choices after they have been rearranged.
-	 * @param i
-	 */
-	public void clearChoice(int i){
-		switch(i){
-		case(1):
-			this.firstChoicesLabs.clear();
-			break;
-		case(2):
-			this.secondChoicesLabs.clear();
-			break;
-		case(3):
-			this.thirdChoicesLabs.clear();
-			break;
-		}
-	}
-
 	//-----ADD METHODS-----\\
 	public boolean addFirstLab(Timeslot t){
 		if(firstChoicesLabs.contains(t)){
@@ -308,19 +290,15 @@ public class Student implements Comparable<Object>{
 	// For rearranging the order of students choices. Sets a students choice to an array of
 	// another of their choices. Used by StudentChoiceOrder class.
 	public void setFirstChoiceLabs(ArrayList<Timeslot> choices) {
-		if(this.firstChoicesLabs.isEmpty()){
-			this.firstChoicesLabs=choices;
-		}
+		this.firstChoicesLabs=choices;
 	}
+
 	public void setSecondChoiceLabs(ArrayList<Timeslot> choices) {
-		if(this.secondChoicesLabs.isEmpty()){
 			this.secondChoicesLabs=choices;
-		}
 	}
+	
 	public void setThirdChoiceLabs(ArrayList<Timeslot> choices) {
-		if(this.thirdChoicesLabs.isEmpty()){
 			this.thirdChoicesLabs=choices;
-		}
 	}
 	
 	// For removing tutorial choices without causing a concurrent modification exception.
@@ -339,8 +317,8 @@ public class Student implements Comparable<Object>{
 		this.flagged=true;
 	}
 
-	public void setChangedChoices(){
-		this.changedChoices=true;
+	public void setChangedChoices(boolean b){
+		this.changedChoices=b;
 	}
 
 	public void setAssignedTut(Timeslot t){

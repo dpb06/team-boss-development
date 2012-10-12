@@ -225,7 +225,6 @@ public class BossSort implements Algorithm{
 
 
 
-	//TODO: Fix concurrency problems properly
 	/**
 	 * Removes student's tutorial choices that clash with the lab they are assigned to. 
 	 */
