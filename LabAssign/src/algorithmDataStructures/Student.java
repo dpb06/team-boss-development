@@ -115,15 +115,15 @@ public class Student implements Comparable<Object>{
 	 * clears students choices after they have been rearranged.
 	 * @param i
 	 */
-	public void clearChoice(int i ){
+	public void clearChoice(int i){
 		switch(i){
-		case(0):
+		case(1):
 			this.firstChoicesLabs.clear();
 			break;
-		case(1):
+		case(2):
 			this.secondChoicesLabs.clear();
 			break;
-		case(2):
+		case(3):
 			this.thirdChoicesLabs.clear();
 			break;
 		}
@@ -326,19 +326,13 @@ public class Student implements Comparable<Object>{
 	// For removing tutorial choices without causing a concurrent modification exception.
 	// Sets a students choice to an array of choices. Used by BossSort.modifyTuts().
 		public void setFirstChoiceTuts(ArrayList<Timeslot> choices) {
-			if(this.firstChoicesTuts.isEmpty()){
 				this.firstChoicesTuts=choices;
-			}
 		}
 		public void setSecondChoiceTuts(ArrayList<Timeslot> choices) {
-			if(this.secondChoicesTuts.isEmpty()){
 				this.secondChoicesTuts=choices;
-			}
 		}
 		public void setThirdChoiceTuts(ArrayList<Timeslot> choices) {
-			if(this.thirdChoicesTuts.isEmpty()){
 				this.thirdChoicesTuts=choices;
-			}
 		}
 
 	public void setFlagged(){

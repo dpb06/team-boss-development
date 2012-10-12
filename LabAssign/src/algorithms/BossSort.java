@@ -234,6 +234,8 @@ public class BossSort implements Algorithm{
 		System.out.println("modifyTuts() in BossSort");
 		//For each student
 		for (Student s : students){
+			//Ensure only assigned students are modified
+			if(s.getAssignedLab() == null){continue;}
 			//Initialize boolean to track changes 
 			boolean removals = false;
 			//Printspam the name of each student.
@@ -241,11 +243,11 @@ public class BossSort implements Algorithm{
 			//Find assigned lab timeslot
 			Timeslot assignedLab = s.getAssignedLab();
 			//Create a copy of student's tutorial first choices
-			ArrayList<Timeslot> firsts = (ArrayList<Timeslot>) s.getFirstChoiceTuts().clone();
+			ArrayList<Timeslot> firsts = new ArrayList<Timeslot>(s.getFirstChoiceTuts());
 			//For each of the student's tutorial first choices
 			for (Timeslot tut : s.getFirstChoiceTuts()){
 				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
+				if(tut.intersectsWith(assignedLab)){
 					//Remove that tutorial from student's first choices
 					firsts.remove(tut);
 					removals = true;
@@ -254,14 +256,14 @@ public class BossSort implements Algorithm{
 				}
 			}
 			//Set new list of first choices
-			s.setFirstChoiceLabs(firsts);
+			s.setFirstChoiceTuts(firsts);
 
 			//Create a copy of student's tutorial second choices
-			ArrayList<Timeslot> seconds = (ArrayList<Timeslot>) s.getSecondChoiceTuts().clone();
+			ArrayList<Timeslot> seconds = new ArrayList<Timeslot>(s.getSecondChoiceTuts());
 			//For each of the student's tutorial second choices
 			for (Timeslot tut : s.getSecondChoiceTuts()){
 				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
+				if(tut.intersectsWith(assignedLab)){
 					//Remove that tutorial from student's second choices
 					seconds.remove(tut);
 					removals = true;
@@ -270,14 +272,14 @@ public class BossSort implements Algorithm{
 				}
 			}
 			//Set new list of second choices
-			s.setSecondChoiceLabs(seconds);
+			s.setSecondChoiceTuts(seconds);
 
 			//Create a copy of student's tutorial third choices
-			ArrayList<Timeslot> thirds = (ArrayList<Timeslot>) s.getThirdChoiceTuts().clone();
+			ArrayList<Timeslot> thirds = new ArrayList<Timeslot>(s.getThirdChoiceTuts());
 			//For each of the student's tutorial third choices
 			for (Timeslot tut : s.getThirdChoiceTuts()){
 				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
+				if(tut.intersectsWith(assignedLab)){
 					//Remove that tutorial from student's third choices
 					thirds.remove(tut);
 					removals = true;

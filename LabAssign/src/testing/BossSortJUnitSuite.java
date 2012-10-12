@@ -1,5 +1,6 @@
 package testing;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class BossSortJUnitSuite {
 		Timeslot ts6 = new Tutorial(13, 1400, 1500, Day.Wednesday);
 		//Create students
 		Student s1 = new Student(1, "a");
-		s1.addFirstLab(ts1);
+		s1.addFirstLab(ts3);
 		s1.addFirstTut(ts4);
 		Student s2 = new Student(2, "b");
 		s2.addFirstTut(ts5);
@@ -138,11 +139,11 @@ public class BossSortJUnitSuite {
 		BossSort bs = new BossSort(labos, tutos, studs);
 		AlgorithmOutput out = bs.start();
 		//Assertions
-		assertTrue(out.get(ts1).contains(s1) && out.get(ts1).size() == 1);
+		assertTrue(out.get(ts3).contains(s1) && out.get(ts3).size() == 2);
 		assertTrue(out.get(ts2).contains(s2) && out.get(ts2).size() == 1);
-		assertTrue(out.get(ts3).contains(s3) && out.get(ts3).size() == 1);
-		//assertTrue(out.get(ts4).contains(s1) && out.get(ts4).size() == 1);
-		assertTrue(out.get(ts5).contains(s2) && out.get(ts4).size() == 1);
+		assertTrue(out.get(ts3).contains(s3) && out.get(ts3).size() == 2);
+		assertFalse(out.get(ts4).contains(s1) && out.get(ts4).size() == 1);
+		assertTrue(out.get(ts4).size() == 0);
 		assertTrue(out.get(ts6).contains(s3) && out.get(ts6).size() == 1);
 		assertTrue(out.getFlagged().contains(s1) && out.getFlagged().size() == 1);
 		

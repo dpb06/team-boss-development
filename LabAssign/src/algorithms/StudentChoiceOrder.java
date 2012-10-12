@@ -15,8 +15,8 @@ public class StudentChoiceOrder {
 	}
 
 	private void checkChoices() {
-		final int THIRDCHOICE=2;
-		final int SECONDCHOICE=1;
+		final int THIRDCHOICE=3;
+		final int SECONDCHOICE=2;
 		
 		for(Student s:students){
 			if(s.getFirstChoiceLabs().isEmpty()&& s.getSecondChoiceLabs().isEmpty() && !s.getThirdChoiceLabs().isEmpty()){
