@@ -25,7 +25,7 @@ public class StudentChoiceOrder {
 				//If they have no second choices
 				if(s.getSecondChoiceLabs().isEmpty()){
 					//If they have no third choices
-					if(!s.getThirdChoiceLabs().isEmpty()){
+					if(s.getThirdChoiceLabs().isEmpty()){
 						//Flag that student
 						s.setFlagged();
 					}
@@ -62,7 +62,7 @@ public class StudentChoiceOrder {
 				//If they have no second choices
 				if(s.getSecondChoiceTuts().isEmpty()){
 					//If they have no third choices
-					if(!s.getThirdChoiceTuts().isEmpty()){
+					if(s.getThirdChoiceTuts().isEmpty()){
 						//Flag that student
 						s.setFlagged();
 					}
@@ -70,6 +70,8 @@ public class StudentChoiceOrder {
 					else {
 						//Bump their third choices up to firsts
 						s.setFirstChoiceTuts(s.getThirdChoiceTuts());
+						//Clear third choices
+						s.setThirdChoiceTuts(new ArrayList<Timeslot>());
 						//Note changes have been made
 						s.setChangedChoices(true);
 					}
@@ -77,9 +79,11 @@ public class StudentChoiceOrder {
 				//If they have second choices
 				else {
 					//Bump their second choices to firsts
-					s.setFirstChoiceLabs(s.getSecondChoiceTuts());
+					s.setFirstChoiceTuts(s.getSecondChoiceTuts());
 					//Bump their third choices to seconds
-					s.setSecondChoiceLabs(s.getThirdChoiceTuts());
+					s.setSecondChoiceTuts(s.getThirdChoiceTuts());
+					//Clear third choices
+					s.setThirdChoiceTuts(new ArrayList<Timeslot>());
 					//Note changes have been made
 					s.setChangedChoices(true);
 				}
