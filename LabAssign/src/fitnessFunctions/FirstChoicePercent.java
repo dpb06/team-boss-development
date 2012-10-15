@@ -29,6 +29,8 @@ public class FirstChoicePercent implements FitnessFunction{
 		
 		//Make fitness equal to percentage of students in a first choice lab
 		this.fitness = firsts/total;
+		//Add fitness to AlgorithmOutput
+		output.addFitness("FirstChoicePercent", (int) fitness);
 	}
 	
 	public double fitness(){

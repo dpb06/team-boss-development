@@ -9,6 +9,8 @@ import java.util.HashMap;
  *   A map from each timeslot to their list of assigned students.
  *   A collection of fitness functions as a map from the function's name to the function's final integer value.
  *   A list of the students who were not assigned to any lab.
+ *   NOTA BENE: Labs and tutorials are both saved in the same HashMap. This is because they can be differentiated
+ *   by their types if necessary, and FitnessFunctions can still get all the Timeslots by calling .keySet()
  */
 @SuppressWarnings("serial")
 public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>>{

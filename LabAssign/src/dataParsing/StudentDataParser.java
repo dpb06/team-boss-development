@@ -17,7 +17,6 @@ import algorithmDataStructures.Timeslot;
 public class StudentDataParser {
 	
 	
-	//TODO: Fix everything I've broken.
 	//TODO: Ensure student IDs are unique.
 	
 	

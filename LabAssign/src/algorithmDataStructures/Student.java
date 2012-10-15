@@ -106,27 +106,7 @@ public class Student implements Comparable<Object>{
 				return 0;
 			}
 		}
-		//If object is not a Student, throw exception.
-		//TODO: put exception here.
 		return 0;
-	}
-
-	/**
-	 * clears students choices after they have been rearranged.
-	 * @param i
-	 */
-	public void clearChoice(int i ){
-		switch(i){
-		case(0):
-			this.firstChoicesLabs.clear();
-			break;
-		case(1):
-			this.secondChoicesLabs.clear();
-			break;
-		case(2):
-			this.thirdChoicesLabs.clear();
-			break;
-		}
 	}
 
 	//-----ADD METHODS-----\\
@@ -305,30 +285,38 @@ public class Student implements Comparable<Object>{
 		this.assignedLab = t;
 	}
 
-	// for rearranging the order of students choices sets a students choice to an array of
+	// For rearranging the order of students choices. Sets a students choice to an array of
 	// another of their choices. Used by StudentChoiceOrder class.
-	public void setFirst(ArrayList<Timeslot> choices) {
-		if(this.firstChoicesLabs.isEmpty()){
-			this.firstChoicesLabs=choices;
-		}
+	public void setFirstChoiceLabs(ArrayList<Timeslot> choices) {
+		this.firstChoicesLabs=choices;
 	}
-	public void setSecond(ArrayList<Timeslot> choices) {
-		if(this.secondChoicesLabs.isEmpty()){
+
+	public void setSecondChoiceLabs(ArrayList<Timeslot> choices) {
 			this.secondChoicesLabs=choices;
-		}
 	}
-	public void setThird(ArrayList<Timeslot> choices) {
-		if(this.thirdChoicesLabs.isEmpty()){
+	
+	public void setThirdChoiceLabs(ArrayList<Timeslot> choices) {
 			this.thirdChoicesLabs=choices;
-		}
 	}
+	
+	// For removing tutorial choices without causing a concurrent modification exception.
+	// Sets a students choice to an array of choices. Used by BossSort.modifyTuts().
+		public void setFirstChoiceTuts(ArrayList<Timeslot> choices) {
+				this.firstChoicesTuts=choices;
+		}
+		public void setSecondChoiceTuts(ArrayList<Timeslot> choices) {
+				this.secondChoicesTuts=choices;
+		}
+		public void setThirdChoiceTuts(ArrayList<Timeslot> choices) {
+				this.thirdChoicesTuts=choices;
+		}
 
 	public void setFlagged(){
 		this.flagged=true;
 	}
 
-	public void setChangedChoices(){
-		this.changedChoices=true;
+	public void setChangedChoices(boolean b){
+		this.changedChoices=b;
 	}
 
 	public void setAssignedTut(Timeslot t){

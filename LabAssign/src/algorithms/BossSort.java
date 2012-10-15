@@ -12,6 +12,8 @@ public class BossSort implements Algorithm{
 
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
 
+
+
 	//-----FIELDS-----\\
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
@@ -31,20 +33,21 @@ public class BossSort implements Algorithm{
 
 	//-----INTERFACE METHODS-----\\
 	public AlgorithmOutput start() {
-		priorityCalculator();
-
-		System.out.println();
-		System.out.println("priorityCalculator() in BossSort");
-
+		//Prioritize students by their lab choices
+		labPriorityCalculator();
+		//Assign labs to students
 		sortLabs();
-		modifyTuts();
+		//Remove tutorial choices that clash with assigned labs
+		tutorialChecker tc = new tutorialChecker(students);
+		students = tc.getStudents();
+		//Prioritize students by their tutorial choices
 		tutPriorityCalculator();
+		//Assign tutorials to students
 		sortTuts();
-
-		System.out.println();
-		System.out.println("FitnessFunctions(tuts,stus,labs) in BossSort");
-
-		guiOutput();
+		//Create an AlgorithmOutput object
+		generateAlgorithmOutput();
+		System.out.println("\n\n");
+		//Return output
 		return output;
 	}
 
@@ -56,13 +59,15 @@ public class BossSort implements Algorithm{
 
 	//-----FUNCTIONALITIES-----\\
 	/**
-	 * Prioritizes students according to the number and types of lab/tutorial choices they didn't mark
-	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
+	 * Prioritizes students according to the number and types of lab choices they didn't mark
+	 * as 'cannot attend'. These students are then added to a global priorityQueue called 'priority'.
 	 */
-	private void priorityCalculator() {
-		//Initialize integer values to represent priority, and factors that affect it. 
+	private void labPriorityCalculator() {
+		//Begin console output.
+		System.out.println("labPriorityCalculator() in BossSort");
+		//Initialize integer values to represent priority, and the factors that affect it. 
 		int studentPriority;
-		//Iterate list of students.
+		//For every student.
 		for(Student s:students){
 			//Initialise variables for assigning priority points for each choice.
 			int thirdPoints = 0;
@@ -101,7 +106,7 @@ public class BossSort implements Algorithm{
 			//Add the student to the priorityQueue.
 			priority.add(s);
 			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum()+" Priority: "+s.getPriority());
+			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 		}
 
 		//How many choices in total do they have? (More = higher priority)
@@ -109,11 +114,127 @@ public class BossSort implements Algorithm{
 		//How many second choices do they have? (More = lower priority)
 		//How many third choices do they have? (More = lower priority)
 
+		System.out.println("\n");
 	}
 
+
+	/**
+	 * Places each student (in priority order) into a Timeslot, according to the fullness of each Timeslot
+	 * and the student's choices. The Timeslot object is altered to reflect the student's placement.
+	 * If the student cannot be assigned, they will be added to a list of flagged students.
+	 */
+	public void sortLabs(){
+		//Begin console output.
+		System.out.println("sortLabs() in BossSort");
+		//For every student (in priority order)
+		while(priority.size() > 0){
+			Student s=priority.poll();
+			//Printspam the priority of each student.
+			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+			//Assert student is not assigned
+			boolean assigned = false;
+
+			//Create a list of first choices
+			ArrayList<Timeslot> firsts = s.getFirstChoiceLabs();
+			//Iterate the list
+			while(firsts.size() > 0){
+				//Randomly pick one of those choices and assign it to a variable
+				Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
+				//If the Timeslot is not full
+				if(labs.contains(choice) && !choice.isOverfilled()){
+					//Add student to the chosen lab
+					choice.addStudent(s);
+					//Set assigned lab in student object
+					s.setAssignedLab(choice);
+					assigned = true;
+					//Printspam the lab this student is assigned to
+					System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+					break;
+				}
+				//If Timeslot is full
+				else {
+					//Remove Timeslot from list of first choices
+					firsts.remove(choice);
+				}
+			}
+			if(!assigned){
+				//Create a list of second choices
+				ArrayList<Timeslot> seconds = s.getSecondChoiceLabs();
+				//Iterate the list
+				while(seconds.size() > 0){
+					//Randomly pick one of those choices and assign it to a variable
+					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
+					//If the Timeslot is not full
+					if(labs.contains(choice) && !choice.isOverfilled()){
+						//Add student to the chosen lab
+						choice.addStudent(s);
+						//Set assigned lab in student object
+						s.setAssignedLab(choice);
+						assigned = true;
+						//Printspam the lab this student is assigned to
+						System.out.println("Assigned to second choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						break;
+					}
+					//If Timeslot is full
+					else {
+						//Remove Timeslot from list of second choices
+						seconds.remove(choice);
+					}
+				}
+			}
+
+			if(!assigned){
+				//Create a list of third choices
+				ArrayList<Timeslot> thirds = s.getThirdChoiceLabs();
+				//Iterate the list
+				while(thirds.size() > 0){
+					//Randomly pick one of those choices and assign it to a variable
+					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
+					//If the Timeslot is not full
+					if(labs.contains(choice) && !choice.isOverfilled()){
+						//Add student to chosen lab
+						choice.addStudent(s);
+						//Set assigned lab in student object
+						s.setAssignedLab(choice);
+						assigned = true;
+						//Printspam the lab this student is assigned to
+						System.out.println("Assigned to third choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						break;
+					}
+					//If Timeslot is full
+					else {
+						//Remove Timeslot from list of third choices
+						thirds.remove(choice);
+					}
+				}
+			}
+
+			if(!assigned) {
+				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
+				flagged.add(s);
+				//Printspam that student is not assigned.
+				System.out.println("Not Assigned");
+			}
+		}
+		System.out.println("\n");
+	}
+
+
+
+
+
+
+	/**
+	 * Prioritizes students according to the number and types of tutorial choices they didn't mark
+	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
+	 */
 	private void tutPriorityCalculator() {
+		//Begin console output.
+		System.out.println("tutPriorityCalculator() in BossSort");
 		//Initialize integer values to represent priority, and factors that affect it. 
 		int studentPriority;
+		//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
+		priority = new PriorityQueue<Student>();
 		//Iterate list of students.
 		for(Student s:students){
 			//Initialise variables for assigning priority points for each choice.
@@ -139,175 +260,53 @@ public class BossSort implements Algorithm{
 			//Add the student to the priorityQueue.
 			priority.add(s);
 			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum()+" Priority: "+s.getPriority());
+			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 		}
+		System.out.println("\n");
 	}
 
 
-	private void modifyTuts() {
-		//For each student
-		for (Student s : students){
-			//Find assigned lab timeslot
-			Timeslot assignedLab = s.getAssignedLab();
-			//For each of the student's tutorial first choices
-			for (Timeslot tut : s.getFirstChoiceTuts()){
-				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
-					//Remove that tutorial from student's first choices
-					s.removeFirstChoiceTut(tut);
-				}
-			}
-			//For each of the student's tutorial second choices
-			for (Timeslot tut : s.getSecondChoiceTuts()){
-				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
-					//Remove that tutorial from student's second choices
-					s.removeSecondChoiceTut(tut);
-				}
-			}
-			//For each of the student's tutorial third choices
-			for (Timeslot tut : s.getThirdChoiceTuts()){
-				//If assigned lab time intersects with a time of a tutorial
-				if(tut.compareTo(assignedLab) != 0){
-					//Remove that tutorial from student's third choices
-					s.removeThirdChoiceTut(tut);
-				}
-			}
-		}
-	}
 
 	/**
 	 * Places each student (in priority order) into a Timeslot, according to the fullness of each Timeslot
 	 * and the student's choices. The Timeslot object is altered to reflect the student's placement.
 	 * If the student cannot be assigned, they will be added to a list of flagged students.
 	 */
-	public void sortLabs(){
-
-		//For every student (in priority order)
-		while(priority.size() > 0){
-			Student s=priority.poll();
-			System.out.println("Student priority: "+s.getPriority());
-			//WHILE assigned = false
-			boolean assigned = false;
-			while(!assigned ){
-				//Create a list of first choices
-				//Check if those choices are in the list of labs that aren't full
-				ArrayList<Timeslot> firsts = s.getFirstChoiceLabs();
-				//If the list is now empty
-				while(firsts.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
-					//Try to add student to the chosen lab
-					if(!choice.isOverfilled()){
-						choice.addStudent(s);
-						System.out.println("Third");
-						System.out.println(choice.getDay() + "\n");
-						assigned = true;
-						break;
-					}
-					//If unsuccessful
-					else {
-						firsts.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
-
-				//Create a list of second choices
-				ArrayList<Timeslot> seconds = s.getSecondChoiceLabs();
-				//Check if those choices are in the list of labs that aren't full
-				//If the list is now empty
-				while(seconds.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
-					//Try to add student to the chosen lab
-					if(!choice.isOverfilled()){
-						choice.addStudent(s);
-						System.out.println("Third");
-						System.out.println(choice.getDay() + "\n");
-						assigned = true;
-						break;
-					}
-					//If unsuccessful
-					else {
-						seconds.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
-
-				//Create a list of third choices
-				//Check if those choices are in the list of labs that aren't full
-				//Create a list of second choices
-				ArrayList<Timeslot> thirds = s.getThirdChoiceLabs();
-				//Check if those choices are in the list of labs that aren't full
-
-				//If the list is now empty
-				while(thirds.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
-					//Try to add student to the chosen lab
-					if(!choice.isOverfilled()){
-						choice.addStudent(s);
-						System.out.println("Third");
-						System.out.println(choice.getDay() + "\n");
-						assigned = true;
-						break;
-					}
-					//If unsuccessful
-					else {
-						thirds.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
-
-				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
-				flagged.add(s);
-				System.out.println("Not Assigned: " + s.getStudentNum() + "\n");
-				break;
-
-			}
-		}
-	}
-
-
 	private void sortTuts() {
+		//Begin console output.
+		System.out.println("sortTuts() in BossSort");
 		//For every student (in priority order)
 		while(priority.size()>0){
 			Student s = priority.poll();
+			//Printspam the priority of each student.
+			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 			//While student is not assigned
 			boolean assigned = false;
-			while(!assigned){
-				//Create a list of first choices
-				ArrayList<Timeslot> firsts = s.getFirstChoiceTuts();
-				//Iterate the list
-				while(firsts.size() > 0){
-					//Randomly pick one of those choices and assign it to a variable
-					Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
-					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
-						//Add student to the chosen lab
-						choice.addStudent(s);
-						assigned = true;
-					}
-					//If Timeslot is full
-					else {
-						//Remove Timeslot from list of first choices
-						firsts.remove(choice);
-					}
-				}
-				//If assigned, break outer loop.
-				if(assigned){
+
+			//Create a list of first choices
+			ArrayList<Timeslot> firsts = s.getFirstChoiceTuts();
+			//Iterate the list
+			while(firsts.size() > 0){
+				//Randomly pick one of those choices and assign it to a variable
+				Timeslot choice = firsts.get((int) (Math.random()*firsts.size()));
+				//If the Timeslot is not full
+				if(tutorials.contains(choice) && !choice.isOverfilled()){
+					//Add student to the chosen lab
+					choice.addStudent(s);
+					//Set assigned lab in student object
+					s.setAssignedTut(choice);
+					assigned = true;
+					//Printspam the tut this student is assigned to
+					System.out.println("Assigned to first choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
 					break;
 				}
-
+				//If Timeslot is full
+				else {
+					//Remove Timeslot from list of first choices
+					firsts.remove(choice);
+				}
+			}
+			if(!assigned){
 				//Create a list of second choices
 				ArrayList<Timeslot> seconds = s.getSecondChoiceTuts();
 				//Iterate the list
@@ -315,10 +314,15 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = seconds.get((int) (Math.random()*seconds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(tutorials.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
+						//Set assigned lab in student object
+						s.setAssignedTut(choice);
 						assigned = true;
+						//Printspam the tut this student is assigned to
+						System.out.println("Assigned to second choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						break;
 					}
 					//If Timeslot is full
 					else {
@@ -326,11 +330,8 @@ public class BossSort implements Algorithm{
 						seconds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
-				
+			}
+			if(!assigned){
 				//Create a list of third choices
 				ArrayList<Timeslot> thirds = s.getThirdChoiceTuts();
 				//Iterate the list
@@ -338,10 +339,15 @@ public class BossSort implements Algorithm{
 					//Randomly pick one of those choices and assign it to a variable
 					Timeslot choice = thirds.get((int) (Math.random()*thirds.size()));
 					//If the Timeslot is not full
-					if(!choice.isOverfilled()){
+					if(tutorials.contains(choice) && !choice.isOverfilled()){
 						//Add student to the chosen lab
 						choice.addStudent(s);
+						//Set assigned lab in student object
+						s.setAssignedTut(choice);
 						assigned = true;
+						//Printspam the tut this student is assigned to
+						System.out.println("Assigned to third choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						break;
 					}
 					//If Timeslot is full
 					else {
@@ -349,49 +355,58 @@ public class BossSort implements Algorithm{
 						thirds.remove(choice);
 					}
 				}
-				//If assigned, break outer loop.
-				if(assigned){
-					break;
-				}
+			}
+			if(!assigned){
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
-				else{
-					flagged.add(s);
-					break;
-				}
+				flagged.add(s);
+				//Printspam that student is not assigned.
+				System.out.println("Not Assigned");
 			}
 		}
+		System.out.println("\n");
 	}
 
-			/**
-			 * Creates a hashmap containing each lab/tutorial as keys and an arraylist of students assigned to
-			 * that timeslot as values. This hashmap is saved in the variable 'output', and serves as the input
-			 * to the GUI.
-			 */
-			private void guiOutput() {
-				System.out.println();
-				System.out.println("guiOutPut() in BossSort");
-				//Iterate through Timeslots.
-				for(Timeslot t:labs){
-					//Add the timeslot and its assigned students to the output hashmap.
-					output.put(t,  t.getAssigned());
-					//Printspam the timeslot and its assigned students.
-					System.out.println(t.getDay() + ": " + t.getStartTime() + "-" + t.getEndTime());
-					for(Student s: t.getAssigned()){
-						System.out.println("\t "+s.getStudentNum());
-					}
-				}
-				//Printspam the flagged students.
-				System.out.println();
-				System.out.println("Not Assigned:");
-				for(Student s: flagged){
-					System.out.println("\t "+s.getStudentNum());
-					output.addFlagged(s);
-				}
+
+
+	/**
+	 * Creates a hashmap containing each lab/tutorial as keys and an arraylist of students assigned to
+	 * that timeslot as values. This hashmap is saved in the variable 'output', and serves as the input
+	 * to the GUI.
+	 */
+	private void generateAlgorithmOutput() {
+		//Begin console output.
+		System.out.println("generateAlgorithmOutput() in BossSort");
+		//Iterate through Labs.
+		System.out.println("Labs:");
+		for(Timeslot t:labs){
+			//Add the lab and its assigned students to the output hashmap.
+			output.put(t,  t.getAssigned());
+			//Printspam the lab and its assigned students.
+			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			for(Student s: t.getAssigned()){
+				System.out.println(s.getStudentNum() + " - " + s.getName());
 			}
-
-			//Before finding priority, if a Student has no first choices, bump up all their choices.
-			//Flag every Student that has their choices bumped.
-
-
-
 		}
+		System.out.println();
+
+		//Iterate through Tutorials.
+		System.out.println("Tuts:");
+		for(Timeslot t:tutorials){
+			//Add the tutorial and its assigned students to the output hashmap.
+			output.put(t,  t.getAssigned());
+			//Printspam the tutorial and its assigned students.
+			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			for(Student s: t.getAssigned()){
+				System.out.println(s.getStudentNum() + " - " + s.getName());
+			}
+		}
+		System.out.println();
+
+		//Printspam the flagged students.
+		System.out.println("Flagged:");
+		for(Student s: flagged){
+			System.out.println(s.getStudentNum() + " - " + s.getName());
+			output.addFlagged(s);
+		}
+	}
+}

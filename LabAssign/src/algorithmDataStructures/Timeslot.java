@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *   The number of students that can/should be in this lab/tut.
  *   The students assigned to this lab/tut.
  */
-public abstract class Timeslot implements Comparable<Object>{
+public abstract class Timeslot{
 	
 	//-----FIELDS-----\\
 	private int uID;
@@ -50,34 +50,37 @@ public abstract class Timeslot implements Comparable<Object>{
 			System.out.println(assigned.get(i).getStudentNum());
 		}
 	}
-	
-	@Override
-	public int compareTo(Object o){
-		//Ensure object is a Timeslot.
-		if(o instanceof Timeslot){
-			//Cast object.
-			Timeslot otherTimeslot = (Timeslot) o;
+
+	/**
+	 * This method checks to see whether this timeslot intersects with the given timeslot, by comparing their start and finish times
+	 * @param otherTimeSlot the timeslot to compare this with
+	 * @return whether or not the two slots intersect in time
+	 */
+	public boolean intersectsWith(Timeslot otherTimeslot){
+			if (otherTimeslot == null){
+				return false;
+			}
+			//If on different days, return false
+			if (this.day != otherTimeslot.getDay()){
+				return false;
+			}
 			//If this ends before the other begins, return 1.
-			if(this.endTime < otherTimeslot.getStartTime()){
-				return 1;
+			if(this.endTime <= otherTimeslot.getStartTime()){
+				return false;
 			}
 			//If this begins after the other ends, return -1.
-			else if(this.startTime > otherTimeslot.getEndTime()){
-				return -1;
+			else if(this.startTime >= otherTimeslot.getEndTime()){
+				return false;
 			}
 			//If the times intersect, return 0.
 			else{
-				return 0;
+				return true;
 			}
-		}
-		//If object is not a Timeslot, throw exception.
-		//TODO: put exception here.
-		return 0;
 	}
 	
 	@Override
 	public String toString(){
-		return uID +":  "+ startTime+ " - "+endTime ;
+		return day.toString().substring(0,3) +":  "+ startTime+ " - "+endTime ;
 	}
 	
 	public boolean isOverfilled(){

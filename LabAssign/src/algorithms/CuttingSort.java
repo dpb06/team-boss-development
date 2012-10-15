@@ -23,16 +23,15 @@ public class CuttingSort implements Algorithm {
 			ArrayList<Student> students) {
 		this.students = students;
 		this.labs = labs;
-		labSizeOverview();
+		this.tutorials = tutorials;
 	}
 
-	public void labSizeOverview() {
+	public AlgorithmOutput start() {
 		// For each timeslot
 		for (Timeslot t : labs) {
 			// Add to map, and initialize value
 			onlyAttends.put(t, new Integer(0));
 		}
-
 		// for each student
 		for (Student s : students) {
 			// if they have only one choice
@@ -58,39 +57,59 @@ public class CuttingSort implements Algorithm {
 			}
 		}
 		//Run bossSort on the data, and converts the timeslots to a list
-		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(labs, tutorials, students).start().keySet());
+		List<Timeslot> temp = new ArrayList<Timeslot>(new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start().keySet());
+		//Sort the output of BossSort according to timeslot fullness (emptiest timeslots first)
 		Collections.sort(temp, new TimeslotSizeComparator());
+//					for (ArrayList<Student> s: new BossSort(labs, tutorials, students).start().values()){
+//						for(Student t : s)
+//						System.out.print(t);
+//					}
+//					System.exit(0);
+		//For each timeslot
 		for(Timeslot t: temp){
-			System.out.println(t.getAssigned().size());
+			//System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
+			//If the timeslot has no persons who can only attend that slot
+			if(potentialRemovals.contains(t) && allLabsBelowPreferred(temp)){
+				//Remove the slot from labs
+				labs.remove(t);
+				//And then re-run bossSort on the outcome
+				temp = new ArrayList<Timeslot>(new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start().keySet());
+				//Re-sort the list
+				Collections.sort(temp, new TimeslotSizeComparator());
+			}
 		}
+		//Return the outcome of a BossSort on the reduced lab list		
+		return new BossSort(new ArrayList<Timeslot>(labs), new ArrayList<Timeslot>(tutorials), new ArrayList<Student>(students)).start();
+	}
+
+	private boolean allLabsBelowPreferred(List<Timeslot> timeslots) {
+		//For each timeslot
+		for (Timeslot t: timeslots){
+			//If the lab is currently above preferred max
+			if (t.getAssigned().size()>t.getPreferredMax()){
+				return false;
+			}
+		}
+		//Else if they are all under preferredMax, return true
+		return true;
 	}
 
 	public static void main(String[] args) {
 		JUnitTestingData j = new JUnitTestingData();
 		CuttingSort cs = new CuttingSort(j.getLabs(), j.getTutorials(),
 				j.getStudents());
-		cs.useTestData();
+		cs.start();
 	}
 
-	public void useTestData() {
-		labSizeOverview();
-	}
-
-	@Override
-	public AlgorithmOutput start() {
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-	
+	/**
+	 * Compare timeslots according the what percentage full they are.
+	 * When used in a sort, this will cause the timeslots to be ordered emptiest to fullest
+	 */	
 	private class TimeslotSizeComparator implements Comparator<Timeslot>{
 
 		@Override
-		/**
-		 * Compare the two timeslots according the what percentage full they are
-		 */
 		public int compare(Timeslot o1, Timeslot o2) {
-			return o1.getAssigned().size()/o1.getMaxStudents() - o2.getAssigned().size()/o2.getMaxStudents();
+			return o2.getAssigned().size()*100 /o2.getMaxStudents()- o1.getAssigned().size()*100 /o1.getMaxStudents();
 		}
 		
 	}

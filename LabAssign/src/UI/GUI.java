@@ -250,8 +250,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					// creates a set of input boxes in in the ith row, though
 					// it starts two rows down to allow space for the title rows
 					// (eg. Session Name)
-					timeslotBounds.createInputBoxes(eastPanel, i + 2,
-							"Session " + (i + 1));
+					String slotTitle = slots.get(i).toString();
+					timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
 				}
 			}
 			frame.validate();

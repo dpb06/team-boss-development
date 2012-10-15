@@ -31,7 +31,6 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	}
 	
 	public void setTimeslots(List<Timeslot> in) {
-		//TODO: Make this work with the AlgorithmOutput class.
 		timeslots = new ArrayList<Timeslot>(in);
 		recalculate();
 		repaint();
@@ -48,7 +47,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		Dimension size = this.getPreferredSize();
 		int width = size.width / timeslots.size();		
 		int height = size.height;
-		int largestSection = -Integer.MAX_VALUE;
+		int largestSection = Integer.MIN_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : timeslots) {
 			if (t.getAssigned().size() > largestSection) {
