@@ -80,7 +80,7 @@ public abstract class Timeslot{
 	
 	@Override
 	public String toString(){
-		return uID +":  "+ startTime+ " - "+endTime ;
+		return day.toString().substring(0,3) +":  "+ startTime+ " - "+endTime ;
 	}
 	
 	public boolean isOverfilled(){
