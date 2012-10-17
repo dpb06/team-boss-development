@@ -57,11 +57,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private int NUM_SESSIONS = 12;
 
 	private JTextArea textArea;
-	private final JTextField fileText;
+	private final JTextField LabFileTextField;
+	private final JTextField TutFileTextField;
 	private HistoCanvas canvas;
 	private ArrayList<Bounds> SessionBounds = new ArrayList<Bounds>();
 	boolean alreadyRUN = false;
-	
+
 	private String selectedAlgorithm = "Boss Sort";
 
 	// currently this sets up all the graphical user interface. I'll later break
@@ -83,74 +84,113 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
 
-		fileText = new JTextField("File Name here....", 10);
-		fileText.setMaximumSize(new Dimension(500, 20));
-		fileText.addKeyListener(new KeyListener() {
-			
+		// File for Labs textField
+		LabFileTextField = new JTextField("File Name for Labs here....", 10);
+		LabFileTextField.setMaximumSize(new Dimension(500, 20));
+		LabFileTextField.addKeyListener(new KeyListener() {
+
 			@Override
 			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
 		});
-		
-		JButton fileButton = new JButton("Browse");
-		fileButton.setBounds(0, 0, 50, 20);
-		
+
+		JButton labFileButton = new JButton("Browse");
+		labFileButton.setBounds(0, 0, 50, 20);
+
 		final JButton runButton = new JButton("Run");
-        runButton.setEnabled(false);
-        
-		fileButton.addActionListener(new ActionListener() {			 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: Make this start in the text field path
-                //Handle 'Browse' button action.
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(GUI.this);
- 
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    fileText.setText(fc.getSelectedFile().getAbsolutePath());
-                    runButton.setEnabled(true);
-                }
-            }
-        });
-		
+		runButton.setEnabled(false);
+
+		labFileButton.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Make this start in the text field path
+				//Handle 'Browse' button action.
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(GUI.this);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					LabFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
+					runButton.setEnabled(true);
+				}
+			}
+		});
+
+		/** */
+		// File for Tutorials textField
+		TutFileTextField = new JTextField("File Name for Tutorials here....", 10);
+		TutFileTextField.setMaximumSize(new Dimension(500, 20));
+		TutFileTextField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
+
+			@Override
+			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
+
+			@Override
+			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
+		});
+
+		JButton tutFileButton = new JButton("Browse");
+		tutFileButton.setBounds(0, 0, 50, 20);
+
+		tutFileButton.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Make this start in the text field path
+				//Handle 'Browse' button action.
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(GUI.this);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					TutFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
+					runButton.setEnabled(true);
+				}
+			}
+		});
+
+		/** */
+
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doRun();
 			}
 		});
-		
+
 		fileAlgoPanel.add(new JLabel("File    "));
-		fileAlgoPanel.add(fileText);
-		fileAlgoPanel.add(fileButton);
+		fileAlgoPanel.add(LabFileTextField);
+		fileAlgoPanel.add(labFileButton);
+		fileAlgoPanel.add(TutFileTextField);
+		fileAlgoPanel.add(tutFileButton);
 
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
-		 // This array contains all algorithm options
-        String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
-        JComboBox algoGroup = new JComboBox(algoriths);
- 
- 
-        algoGroup.setSelectedIndex(0);
-        algoGroup.addActionListener(new ActionListener() {      
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
-                selectedAlgorithm = (String)cb.getSelectedItem();
-            }
-        });
- 
-        algoGroup.setMaximumSize(new Dimension(200,25));
-        algoSelect.add(algoGroup);
-        fileAlgoPanel.add(algoSelect);
-        fileAlgoPanel.add(runButton);
+		// This array contains all algorithm options
+		String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
+		JComboBox algoGroup = new JComboBox(algoriths);
+
+
+		algoGroup.setSelectedIndex(0);
+		algoGroup.addActionListener(new ActionListener() {      
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+				selectedAlgorithm = (String)cb.getSelectedItem();
+			}
+		});
+
+		algoGroup.setMaximumSize(new Dimension(200,25));
+		algoSelect.add(algoGroup);
+		fileAlgoPanel.add(algoSelect);
+		fileAlgoPanel.add(runButton);
 
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
@@ -170,7 +210,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		topPanel.add(fileAlgoPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
-		
+
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.pack();		
 		frame.setVisible(true);
@@ -214,7 +254,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	public void doRun() {
 		try {
 			StudentDataParser parser = new StudentDataParser(new File(
-					fileText.getText()));
+					LabFileTextField.getText()));
 			List<Timeslot> slots = parser.getTimeslots();
 			List<Student> students = parser.parseSelections(slots);
 			if (SessionBounds.size() != slots.size() || !alreadyRUN) {
@@ -256,18 +296,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 			frame.validate();
 			if(selectedAlgorithm.equals("Boss Sort")){
-                BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
+				BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+				canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
-                HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
-            }
-            else if(selectedAlgorithm.equals("Cutting Sort")){
-                CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(cs.start().keySet()));
-            }
-			
+				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+				canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
+			}
+			else if(selectedAlgorithm.equals("Cutting Sort")){
+				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
+				canvas.setTimeslots(new ArrayList<Timeslot>(cs.start().keySet()));
+			}
+
 			frame.repaint();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -347,12 +387,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									if (Integer.parseInt(minText.getText()) < 0) {
 										timeslot.setMinStudents(0);
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														minText.setText(0 + "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												minText.setText(0 + "");
+											}
+										});
 									} else
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
@@ -394,14 +434,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// Swing Utilities invoke later is a
 										// work around
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														maxText.setText((timeslot
-																.getMaxStudents())
-																+ "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												maxText.setText((timeslot
+														.getMaxStudents())
+														+ "");
+											}
+										});
 									} else
 										timeslot.setMaxStudents(Integer
 												.parseInt(maxText.getText()));
@@ -438,13 +478,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// Swing Utilities invoke later is a
 										// work around
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														prefMinText
-																.setText(0 + "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												prefMinText
+												.setText(0 + "");
+											}
+										});
 									} else
 										timeslot.setPreferredMin(Integer
 												.parseInt(prefMinText.getText()));
@@ -485,14 +525,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// work around
 										// this runs after we leave the listener
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														prefMaxText.setText((timeslot
-																.getPreferredMax())
-																+ "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												prefMaxText.setText((timeslot
+														.getPreferredMax())
+														+ "");
+											}
+										});
 									} else
 										timeslot.setPreferredMax(Integer
 												.parseInt(prefMaxText.getText()));
