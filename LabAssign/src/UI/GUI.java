@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
@@ -211,7 +212,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
 
-		frame.setPreferredSize(new Dimension(800, 600));
+		frame.setPreferredSize(new Dimension(1000, 800));
 		frame.pack();		
 		frame.setVisible(true);
 	}
@@ -253,66 +254,103 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	public void doRun() {
 		try {
-			StudentDataParser parser = new StudentDataParser(new File(
-					LabFileTextField.getText()));
-			List<Timeslot> slots = parser.getTimeslots();
-			List<Student> students = parser.parseSelections(slots);
-			if (SessionBounds.size() != slots.size() || !alreadyRUN) {
-				alreadyRUN = true;
-				// recreate bounds array
+			File labs = new File(LabFileTextField.getText());
+			List<Timeslot> labSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
 
-				SessionBounds = new ArrayList<Bounds>();
-				GridBagConstraints c = new GridBagConstraints();
-				c.insets = new Insets(1, 1, 1, 1);
-				c.fill = GridBagConstraints.HORIZONTAL;
-				c.weightx = 0.5;
-				c.gridx = 0;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Session Name  "));
-				c.gridx = 1;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Min  "));
-				c.gridx = 2;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Max"));
-				c.gridx = 3;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref. Min  "));
+			File tuts = new File(TutFileTextField.getText());
+			List<Timeslot> tutSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
+			
+			List<Student> labStudents = new ArrayList<Student>();
+			List<Student> tutStudents = new ArrayList<Student>();
 
-				c.gridx = 4;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref. Max  "));
+			if(labs.exists()){
+				StudentDataParser labParser = new StudentDataParser(labs);
+				labSlots = labParser.getTimeslots();
+				labStudents = labParser.parseSelections(labSlots);
+				new NaughtyList(labStudents, labSlots);
+				doBounds(labSlots);
+			}
 
-				eastPanel.add(new JLabel());
-				for (int i = 0; i < slots.size(); i++) {
-					Bounds timeslotBounds = new Bounds(slots.get(i));
-					SessionBounds.add(timeslotBounds);
-					// creates a set of input boxes in in the ith row, though
-					// it starts two rows down to allow space for the title rows
-					// (eg. Session Name)
-					String slotTitle = slots.get(i).toString();
-					timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
+			if(tuts.exists()){
+				StudentDataParser tutParser = new StudentDataParser(tuts);
+				tutSlots = tutParser.getTimeslots();
+				tutStudents = tutParser.parseSelections(tutSlots);
+				new NaughtyList(tutStudents, tutSlots);
+				doBounds(tutSlots);
+			}
+			
+			if (labs.exists() && tuts.exists()){
+				for(Student s: labStudents){
+					for(Student t: tutStudents){
+						s.merge(t);
+					}
 				}
 			}
-			frame.validate();
+
+			AlgorithmOutput output;
+			
 			if(selectedAlgorithm.equals("Boss Sort")){
-				BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-				canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
+				BossSort bs = new BossSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = bs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
-				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-				canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
+				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = hs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 			else if(selectedAlgorithm.equals("Cutting Sort")){
-				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-				canvas.setTimeslots(new ArrayList<Timeslot>(cs.start().keySet()));
-			}
+				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = cs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+			}			
 
 			frame.repaint();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void doBounds(List<Timeslot> slots){
+		if (SessionBounds.size() != slots.size() || !alreadyRUN) {
+			alreadyRUN = true;
+			// recreate bounds array
+
+			SessionBounds = new ArrayList<Bounds>();
+			GridBagConstraints c = new GridBagConstraints();
+			c.insets = new Insets(1, 1, 1, 1);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 0.5;
+			c.gridx = 0;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Session Name  "));
+			c.gridx = 1;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Min  "));
+			c.gridx = 2;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Max"));
+			c.gridx = 3;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Pref. Min  "));
+
+			c.gridx = 4;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Pref. Max  "));
+
+			eastPanel.add(new JLabel());
+			for (int i = 0; i < slots.size(); i++) {
+				Bounds timeslotBounds = new Bounds(slots.get(i));
+				SessionBounds.add(timeslotBounds);
+				// creates a set of input boxes in in the ith row, though
+				// it starts two rows down to allow space for the title rows
+				// (eg. Session Name)
+				String slotTitle = slots.get(i).toString();
+				timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
+			}
+		}
+		frame.validate();
 	}
 
 	@Override
