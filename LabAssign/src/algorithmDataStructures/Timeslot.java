@@ -80,7 +80,7 @@ public abstract class Timeslot{
 	
 	@Override
 	public String toString(){
-		return day.toString().substring(0,3) +":  "+ startTime+ " - "+endTime ;
+		return day.toString().substring(0,3) +": "+ ((startTime>=1000)?startTime:("0"+startTime))+ " - "+endTime ;
 	}
 	
 	public boolean isOverfilled(){

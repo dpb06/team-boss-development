@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
@@ -57,11 +58,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private int NUM_SESSIONS = 12;
 
 	private JTextArea textArea;
-	private final JTextField fileText;
+	private final JTextField LabFileTextField;
+	private final JTextField TutFileTextField;
 	private HistoCanvas canvas;
 	private ArrayList<Bounds> SessionBounds = new ArrayList<Bounds>();
 	boolean alreadyRUN = false;
-	
+
 	private String selectedAlgorithm = "Boss Sort";
 
 	// currently this sets up all the graphical user interface. I'll later break
@@ -83,74 +85,113 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
 
-		fileText = new JTextField("File Name here....", 10);
-		fileText.setMaximumSize(new Dimension(500, 20));
-		fileText.addKeyListener(new KeyListener() {
-			
+		// File for Labs textField
+		LabFileTextField = new JTextField("File Name for Labs here....", 10);
+		LabFileTextField.setMaximumSize(new Dimension(500, 20));
+		LabFileTextField.addKeyListener(new KeyListener() {
+
 			@Override
 			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
 		});
-		
-		JButton fileButton = new JButton("Browse");
-		fileButton.setBounds(0, 0, 50, 20);
-		
+
+		JButton labFileButton = new JButton("Browse");
+		labFileButton.setBounds(0, 0, 50, 20);
+
 		final JButton runButton = new JButton("Run");
-        runButton.setEnabled(false);
-        
-		fileButton.addActionListener(new ActionListener() {			 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: Make this start in the text field path
-                //Handle 'Browse' button action.
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(GUI.this);
- 
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    fileText.setText(fc.getSelectedFile().getAbsolutePath());
-                    runButton.setEnabled(true);
-                }
-            }
-        });
-		
+		runButton.setEnabled(false);
+
+		labFileButton.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Make this start in the text field path
+				//Handle 'Browse' button action.
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(GUI.this);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					LabFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
+					runButton.setEnabled(true);
+				}
+			}
+		});
+
+		/** */
+		// File for Tutorials textField
+		TutFileTextField = new JTextField("File Name for Tutorials here....", 10);
+		TutFileTextField.setMaximumSize(new Dimension(500, 20));
+		TutFileTextField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
+
+			@Override
+			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
+
+			@Override
+			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
+		});
+
+		JButton tutFileButton = new JButton("Browse");
+		tutFileButton.setBounds(0, 0, 50, 20);
+
+		tutFileButton.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Make this start in the text field path
+				//Handle 'Browse' button action.
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(GUI.this);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					TutFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
+					runButton.setEnabled(true);
+				}
+			}
+		});
+
+		/** */
+
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doRun();
 			}
 		});
-		
+
 		fileAlgoPanel.add(new JLabel("File    "));
-		fileAlgoPanel.add(fileText);
-		fileAlgoPanel.add(fileButton);
+		fileAlgoPanel.add(LabFileTextField);
+		fileAlgoPanel.add(labFileButton);
+		fileAlgoPanel.add(TutFileTextField);
+		fileAlgoPanel.add(tutFileButton);
 
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
-		 // This array contains all algorithm options
-        String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
-        JComboBox algoGroup = new JComboBox(algoriths);
- 
- 
-        algoGroup.setSelectedIndex(0);
-        algoGroup.addActionListener(new ActionListener() {      
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
-                selectedAlgorithm = (String)cb.getSelectedItem();
-            }
-        });
- 
-        algoGroup.setMaximumSize(new Dimension(200,25));
-        algoSelect.add(algoGroup);
-        fileAlgoPanel.add(algoSelect);
-        fileAlgoPanel.add(runButton);
+		// This array contains all algorithm options
+		String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
+		JComboBox algoGroup = new JComboBox(algoriths);
+
+
+		algoGroup.setSelectedIndex(0);
+		algoGroup.addActionListener(new ActionListener() {      
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+				selectedAlgorithm = (String)cb.getSelectedItem();
+			}
+		});
+
+		algoGroup.setMaximumSize(new Dimension(200,25));
+		algoSelect.add(algoGroup);
+		fileAlgoPanel.add(algoSelect);
+		fileAlgoPanel.add(runButton);
 
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
@@ -170,8 +211,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		topPanel.add(fileAlgoPanel);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
-		
-		frame.setPreferredSize(new Dimension(800, 600));
+
+		frame.setPreferredSize(new Dimension(1000, 800));
 		frame.pack();		
 		frame.setVisible(true);
 	}
@@ -213,66 +254,103 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	public void doRun() {
 		try {
-			StudentDataParser parser = new StudentDataParser(new File(
-					fileText.getText()));
-			List<Timeslot> slots = parser.getTimeslots();
-			List<Student> students = parser.parseSelections(slots);
-			if (SessionBounds.size() != slots.size() || !alreadyRUN) {
-				alreadyRUN = true;
-				// recreate bounds array
+			File labs = new File(LabFileTextField.getText());
+			List<Timeslot> labSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
 
-				SessionBounds = new ArrayList<Bounds>();
-				GridBagConstraints c = new GridBagConstraints();
-				c.insets = new Insets(1, 1, 1, 1);
-				c.fill = GridBagConstraints.HORIZONTAL;
-				c.weightx = 0.5;
-				c.gridx = 0;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Session Name  "));
-				c.gridx = 1;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Min  "));
-				c.gridx = 2;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Max"));
-				c.gridx = 3;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref. Min  "));
+			File tuts = new File(TutFileTextField.getText());
+			List<Timeslot> tutSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
+			
+			List<Student> labStudents = new ArrayList<Student>();
+			List<Student> tutStudents = new ArrayList<Student>();
 
-				c.gridx = 4;
-				c.gridy = 0;
-				eastPanel.add(new JLabel("Pref. Max  "));
+			if(labs.exists()){
+				StudentDataParser labParser = new StudentDataParser(labs);
+				labSlots = labParser.getTimeslots();
+				labStudents = labParser.parseSelections(labSlots);
+				new NaughtyList(labStudents, labSlots);
+				doBounds(labSlots);
+			}
 
-				eastPanel.add(new JLabel());
-				for (int i = 0; i < slots.size(); i++) {
-					Bounds timeslotBounds = new Bounds(slots.get(i));
-					SessionBounds.add(timeslotBounds);
-					// creates a set of input boxes in in the ith row, though
-					// it starts two rows down to allow space for the title rows
-					// (eg. Session Name)
-					String slotTitle = slots.get(i).toString();
-					timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
+			if(tuts.exists()){
+				StudentDataParser tutParser = new StudentDataParser(tuts);
+				tutSlots = tutParser.getTimeslots();
+				tutStudents = tutParser.parseSelections(tutSlots);
+				new NaughtyList(tutStudents, tutSlots);
+				doBounds(tutSlots);
+			}
+			
+			if (labs.exists() && tuts.exists()){
+				for(Student s: labStudents){
+					for(Student t: tutStudents){
+						s.merge(t);
+					}
 				}
 			}
-			frame.validate();
+
+			AlgorithmOutput output;
+			
 			if(selectedAlgorithm.equals("Boss Sort")){
-                BossSort bs = new BossSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(bs.start().keySet()));
+				BossSort bs = new BossSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = bs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
-                HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(hs.start().keySet()));
-            }
-            else if(selectedAlgorithm.equals("Cutting Sort")){
-                CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(slots),new ArrayList<Timeslot>(),new ArrayList<Student>(students));
-                canvas.setTimeslots(new ArrayList<Timeslot>(cs.start().keySet()));
-            }
-			
+				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = hs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+			}
+			else if(selectedAlgorithm.equals("Cutting Sort")){
+				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = cs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+			}			
+
 			frame.repaint();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void doBounds(List<Timeslot> slots){
+		if (SessionBounds.size() != slots.size() || !alreadyRUN) {
+			alreadyRUN = true;
+			// recreate bounds array
+
+			SessionBounds = new ArrayList<Bounds>();
+			GridBagConstraints c = new GridBagConstraints();
+			c.insets = new Insets(1, 1, 1, 1);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 0.5;
+			c.gridx = 0;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Session Name  "));
+			c.gridx = 1;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Min  "));
+			c.gridx = 2;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Max"));
+			c.gridx = 3;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Pref. Min  "));
+
+			c.gridx = 4;
+			c.gridy = 0;
+			eastPanel.add(new JLabel("Pref. Max  "));
+
+			eastPanel.add(new JLabel());
+			for (int i = 0; i < slots.size(); i++) {
+				Bounds timeslotBounds = new Bounds(slots.get(i));
+				SessionBounds.add(timeslotBounds);
+				// creates a set of input boxes in in the ith row, though
+				// it starts two rows down to allow space for the title rows
+				// (eg. Session Name)
+				String slotTitle = slots.get(i).toString();
+				timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
+			}
+		}
+		frame.validate();
 	}
 
 	@Override
@@ -347,12 +425,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									if (Integer.parseInt(minText.getText()) < 0) {
 										timeslot.setMinStudents(0);
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														minText.setText(0 + "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												minText.setText(0 + "");
+											}
+										});
 									} else
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
@@ -394,14 +472,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// Swing Utilities invoke later is a
 										// work around
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														maxText.setText((timeslot
-																.getMaxStudents())
-																+ "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												maxText.setText((timeslot
+														.getMaxStudents())
+														+ "");
+											}
+										});
 									} else
 										timeslot.setMaxStudents(Integer
 												.parseInt(maxText.getText()));
@@ -438,13 +516,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// Swing Utilities invoke later is a
 										// work around
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														prefMinText
-																.setText(0 + "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												prefMinText
+												.setText(0 + "");
+											}
+										});
 									} else
 										timeslot.setPreferredMin(Integer
 												.parseInt(prefMinText.getText()));
@@ -485,14 +563,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										// work around
 										// this runs after we leave the listener
 										SwingUtilities
-												.invokeLater(new Runnable() {
-													@Override
-													public void run() {
-														prefMaxText.setText((timeslot
-																.getPreferredMax())
-																+ "");
-													}
-												});
+										.invokeLater(new Runnable() {
+											@Override
+											public void run() {
+												prefMaxText.setText((timeslot
+														.getPreferredMax())
+														+ "");
+											}
+										});
 									} else
 										timeslot.setPreferredMax(Integer
 												.parseInt(prefMaxText.getText()));
