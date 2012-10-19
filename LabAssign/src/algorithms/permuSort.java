@@ -20,6 +20,7 @@ public class permuSort implements Algorithm{
 	private permuDataLeafNode current;
 	private static double count=0;
 	private double Fitness=0;
+	private boolean kill=false;
 	//private double purposedFitness=0;
 	private int numStudents;
 	private ArrayList<Student> flagged= new ArrayList<Student>();
@@ -67,6 +68,7 @@ public class permuSort implements Algorithm{
 		}
 		long startTime=System.currentTimeMillis();
 		System.out.println("Starting PermuSort");
+		Killthread k= new Killthread();
 		permuSortPart2(start);
 		long endTime= System.currentTimeMillis();
 		System.out.println("End PermuSort");
@@ -84,7 +86,10 @@ public class permuSort implements Algorithm{
 				c.t=t;
 				if(c.next!=null){
 					//System.out.println("student :"+c.toString()+" Timeslot :"+t.toString());
+					if(kill)
+						break;
 					permuSortPart2(c.next);
+				
 				}
 				else{
 					count++;
@@ -282,11 +287,27 @@ public class permuSort implements Algorithm{
 
 	@Override
 	public AlgorithmOutput start() {
+		
 		permSort();
 		generateAlgorithmOutput();
 		return output;
 	}
-
+	
+private class Killthread extends Thread{
+	private final int timeToRun = 120000; //2 min
+	public void run(){
+		 try {
+			sleep(timeToRun);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 kill=true;
+	      //this.interrupt();
+	}
+	
+	
+}
 
 	private class permuDataLeafNode {
 
