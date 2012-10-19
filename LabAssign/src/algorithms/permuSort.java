@@ -177,7 +177,7 @@ public class permuSort implements Algorithm{
 		}
 		double percentFirst=(double)countFirst/(double)numStudents;
 		//	System.out.println("First choice :"+percentFirst);
-		double percentSecond=countSecond/numStudents;
+	//	double percentSecond=countSecond/numStudents;
 		//	System.out.println("Second choice :"+countSecond);
 
 		double percentThird=(double)countThird/(double)numStudents;
@@ -309,15 +309,6 @@ public class permuSort implements Algorithm{
 			timeslots.addAll(s.getSecondChoiceLabs());
 			timeslots.addAll(s.getThirdChoiceLabs());
 
-		}
-
-		public boolean isEmpty(){
-			if(s==null){
-				return true;
-			}
-			else{
-				return false;
-			}
 		}
 		public Student getStudent(){
 			return s;
