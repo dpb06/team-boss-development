@@ -44,6 +44,7 @@ import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
 import algorithms.CuttingSort;
 import algorithms.HowardsSort;
+import algorithms.permuSort;
 import dataParsing.StudentDataParser;
 
 /**
@@ -317,7 +318,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				output = cs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}else if(selectedAlgorithm.equals("Permute Sort")){
-				PermuteSort ps = new PermuteSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				permuSort ps = new permuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}			
