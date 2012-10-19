@@ -19,7 +19,7 @@ public abstract class Timeslot{
 	private Day day;
 	private int minStudents = 0;
 	private int preferredMin = 0;
-	private int preferredMax = 20;
+	private int preferredMax = 15;
 	private int maxStudents = 20;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 	
@@ -84,7 +84,7 @@ public abstract class Timeslot{
 	}
 	
 	public boolean isOverfilled(){
-		return (assigned.size()>maxStudents);
+		return (assigned.size()>preferredMax);
 	}
 	
 	
