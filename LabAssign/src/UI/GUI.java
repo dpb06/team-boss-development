@@ -1,11 +1,9 @@
 package UI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +11,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -39,8 +38,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import algorithmDataStructures.AlgorithmOutput;
+import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
+import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 import algorithms.CuttingSort;
 import algorithms.HowardsSort;
@@ -67,6 +68,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	private String selectedAlgorithm = "Boss Sort";
 
+	JButton save;	// save button created in GUI, field so can enable in another method
+	AlgorithmOutput output;
+
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
 	public GUI() {
@@ -82,7 +86,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		JPanel fileAlgoPanel = new JPanel();
 		fileAlgoPanel.setLayout(new GridBagLayout());
-		
+
 		int width = 500;
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
@@ -163,6 +167,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				output = null;	//Once 'Run' clicked, output wiped to be refilled
 				doRun();
 			}
 		});
@@ -224,7 +229,20 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);
 		JPanel southPanel = new JPanel();
-		JButton save = new JButton("Save Results");
+		save = new JButton("Save Results");
+		save.setEnabled(false);
+		save.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Make this start in the text field path
+				//Handle 'Save' button action.
+				if(output != null)
+					fileOutput(output);
+				else
+					System.out.println("No output to save");
+			}
+		});
+
 		southPanel.add(save);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
@@ -232,6 +250,74 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.setPreferredSize(new Dimension(1000, 800));
 		frame.pack();		
 		frame.setVisible(true);
+	}
+
+	private void fileOutput(AlgorithmOutput output) {
+		//Algorithm output is HashMap<Timeslot,ArrayList<Student>>
+		try{
+			// Create file 
+			FileWriter fstream = new FileWriter("Output/printout.txt");
+			//TODO: Allow user to select output file
+			BufferedWriter out = new BufferedWriter(fstream);
+
+			out.write("Output for " + selectedAlgorithm);
+			out.newLine();
+
+			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
+			out.write("Students Flagged:\n");			
+			for(Student s: output.getFlagged()){
+				if(s.getFlagged())
+					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+			}
+			
+			/** TODO Uncomment when flaggedForLabs/flaggedForTuts done
+			/** Flagged Students x 3 - for both, just labs & just tuts
+			// Flagged for both:
+			out.write("Students Flagged for both Labs & Tutorials:\n");			
+			for(Student s: output.getFlagged()){
+				if(s.getFlaggedForLabs() && s.getFlaggedForTuts())
+					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+			}
+			// Flagged for labs:
+			out.write("\nStudents Flagged for Labs:\n");			
+			for(Student s: output.getFlagged()){
+				if(s.getFlaggedForLabs() && !s.getFlaggedForTuts())
+					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+			}
+			// Flagged for tuts:
+			out.write("Students Flagged for Tutorials:\n");			
+			for(Student s: output.getFlagged()){
+				if(!s.getFlaggedForLabs() && s.getFlaggedForTuts())
+					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+			}**/
+
+			/** Iterate through Timeslots twice times (labs & tuts) **/
+			// Labs
+			for(Timeslot t: output.keySet()){
+				if(t instanceof Lab){
+					out.write("Lab - " + t.toString());
+					for(Student s: t.getAssigned()){
+						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+					}							
+				}
+			}
+
+			// Labs
+			for(Timeslot t: output.keySet()){
+				if(t instanceof Tutorial){
+					out.write("Tutorial - " + t.toString());
+					for(Student s: t.getAssigned()){
+						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+					}							
+				}
+			}
+
+			//Close the output stream
+			out.close();
+
+		}catch (Exception e){//Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
 	}
 
 	/** Self explanatory. Builds the menu used by the game **/
@@ -276,7 +362,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 			File tuts = new File(TutFileTextField.getText());
 			List<Timeslot> tutSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
-			
+
 			List<Student> labStudents = new ArrayList<Student>();
 			List<Student> tutStudents = new ArrayList<Student>();
 
@@ -295,7 +381,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				new NaughtyList(tutStudents, tutSlots);
 				doBounds(tutSlots);
 			}
-			
+
 			if (labs.exists() && tuts.exists()){
 				for(Student s: labStudents){
 					for(Student t: tutStudents){
@@ -304,8 +390,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 
-			AlgorithmOutput output;
-			
+
+
 			if(selectedAlgorithm.equals("Boss Sort")){
 				BossSort bs = new BossSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
 				output = bs.start();
@@ -336,6 +422,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private void doBounds(List<Timeslot> slots){
 		if (SessionBounds.size() != slots.size() || !alreadyRUN) {
 			alreadyRUN = true;
+			save.setEnabled(true);
 			// recreate bounds array
 
 			SessionBounds = new ArrayList<Bounds>();
@@ -396,6 +483,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
 	}
+
 
 	// The bounds class is used by the GUI to store the bounds
 	// given to it by the user for use in the algorithm of choice.
@@ -609,8 +697,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		public Timeslot getTimeslot() {
 			return this.timeslot;
 		}
-	}
 
-	public void addBoundsInputs() {
+
+		public void addBoundsInputs() {
+		}
 	}
 }
