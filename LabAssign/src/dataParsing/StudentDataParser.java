@@ -1,7 +1,10 @@
 package dataParsing;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -84,19 +87,43 @@ public class StudentDataParser {
 		
 		String startText = "";
 		
-		Scanner scan = new Scanner(f);
-		while(scan.hasNext()){
-			String t = scan.nextLine();
-			startText += " "+t;
-		}
+//		Scanner scan = new Scanner(f);
+//		
+//		while(scan.hasNextLine()){
+//			String t = scan.nextLine();
+//			startText += " "+t;
+//		}
 		
+		BufferedReader br = null;
+	      try {
+	         br = new BufferedReader(new FileReader(f));
+	         String availalbe;
+	         while((availalbe = br.readLine()) != null) {
+	             startText += availalbe;            
+	         }
+	      } catch (FileNotFoundException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      } finally {
+	         if (br != null) {
+	            try {
+	               br.close();
+	            } catch (IOException e) {
+	               e.printStackTrace();
+	            }
+	         }
+	      }
+
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
+		int i = text.indexOf("Friday");
+		System.out.println(Character.getNumericValue((text.charAt(i+6))));
 		 // this character is a space character used in web programs 
 		 // it is simply replaced with an empty string.
-		char nonspace = '\u00A0';
-		text = text.replace(nonspace, ' ');
+		char nonspace = (char) 0xA0;
+		text = text.replace(nonspace, '\u0020');
 		char emptyVal = '\u0000';
 		text = text.replace(emptyVal+"", "");
 		
@@ -104,6 +131,7 @@ public class StudentDataParser {
 		// There is a header that has been left in the file
 		// to remove these extra characters as well as the unneeded titles of
 		// the file, we look for the first line of the file we worry about (to remove junk)
+		
 		text = text.substring(text.indexOf("\"Question ID\""));
 		
 		// and then remove the 35 long first line.
@@ -206,6 +234,21 @@ public class StudentDataParser {
 					day = day.substring(0, posOfSpace); 
 				}
 				
+				// in this case the day was not split from the time correctly 
+				// likely caused by the seperating token being inconsistent between lines
+				// this splits them into the timeStart and day variables.
+				if(day.contains(":")){ 
+					String tempDay = day;
+					for(int i=0 ; i < tempDay.length() ; i ++){
+						if(Character.isLetter(tempDay.charAt(i))){
+							day += tempDay.charAt(i);
+						}else if(Character.isDigit(tempDay.charAt(i))){
+							timeStart += tempDay.charAt(i);
+						}
+					
+					}
+				}
+				
 				// checks to see if day was parsed incorrectly
 				eDay = parseDay(day); 
 				if(eDay == null)  
@@ -243,11 +286,26 @@ public class StudentDataParser {
 
 
 	private int parseTime(String timeStart) {
-		
+		String hours;
+		String mins; 
 		timeStart = timeStart.trim();
-		String[] timeTokens = timeStart.split(":"); 
-		String hours = timeTokens[0];
-		String mins = timeTokens[1];
+		String timeCleaned = "";
+		for(int i = 0 ; i < timeStart.length() ; i++){
+			if(Character.isDigit(timeStart.charAt(i)) 
+					||timeStart.charAt(i) == ':'){
+				timeCleaned += timeStart.charAt(i);
+			}
+		}
+		
+		if(timeCleaned.contains(":")){
+			String[] timeTokens = timeCleaned.split(":"); 
+			hours = timeTokens[0];
+			mins = timeTokens[1];
+		}else{
+			int split = timeCleaned.length()-2;
+			hours = timeCleaned.substring(0, split);
+			mins = timeCleaned.substring(split, split+2);
+		}
 		
 		int h = Integer.parseInt(hours);
 		if (0 > h || h > 24)
