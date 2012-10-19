@@ -70,7 +70,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
 	public GUI() {
-		frame = new JFrame();
+		frame = new JFrame("LabAssign");
 		BorderLayout l = new BorderLayout(4, 4);
 		frame.setLayout(l);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -223,9 +223,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);
+		JPanel southPanel = new JPanel();
+		JButton save = new JButton("Save Results");
+		southPanel.add(save);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
-
+		frame.add(southPanel, BorderLayout.SOUTH);
 		frame.setPreferredSize(new Dimension(1000, 800));
 		frame.pack();		
 		frame.setVisible(true);
