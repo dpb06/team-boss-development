@@ -86,6 +86,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 			g.fillRect(r.x, r.y, r.width, r.height);
 			g.setColor(Color.black);
 			g.drawRect(r.x, r.y, r.width, r.height);
+			g.drawString(s.toString(), r.y, r.width);
 		}
 		
 		

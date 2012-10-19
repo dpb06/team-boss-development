@@ -80,7 +80,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		createMenu();
 
 		JPanel fileAlgoPanel = new JPanel();
-		fileAlgoPanel.setLayout(new BoxLayout(fileAlgoPanel, BoxLayout.X_AXIS));
+		fileAlgoPanel.setLayout(new GridBagLayout());
+		
 		int width = 500;
 		int height = 200;
 		fileAlgoPanel.setSize(width, height);
@@ -165,18 +166,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 		});
 
-		fileAlgoPanel.add(new JLabel("File    "));
-		fileAlgoPanel.add(LabFileTextField);
-		fileAlgoPanel.add(labFileButton);
-		fileAlgoPanel.add(TutFileTextField);
-		fileAlgoPanel.add(tutFileButton);
+
 
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
 		// This array contains all algorithm options
-		String[] algoriths = {"Boss Sort", "Howard Sort", "Cutting Sort"};
-		JComboBox algoGroup = new JComboBox(algoriths);
+		String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
+		JComboBox algoGroup = new JComboBox(algorithms);
 
 
 		algoGroup.setSelectedIndex(0);
@@ -190,9 +187,25 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		algoGroup.setMaximumSize(new Dimension(200,25));
 		algoSelect.add(algoGroup);
-		fileAlgoPanel.add(algoSelect);
-		fileAlgoPanel.add(runButton);
-
+		GridBagConstraints defaultCons = new GridBagConstraints();
+		defaultCons.weightx = 0;
+		GridBagConstraints fileCons = new GridBagConstraints();
+		fileCons.weightx = 1;
+		fileCons.fill = GridBagConstraints.HORIZONTAL;
+		GridBagConstraints lastCons = new GridBagConstraints();
+		lastCons.insets = new Insets(0, 10, 0, 0);
+		lastCons.ipadx = 20;
+		lastCons.gridheight = 2;
+		fileAlgoPanel.add(new JLabel("Lab Answers File      "), defaultCons);
+		fileAlgoPanel.add(LabFileTextField, fileCons);
+		fileAlgoPanel.add(labFileButton, defaultCons);
+		defaultCons.gridy = 1;
+		fileCons.gridy = 1;
+		fileAlgoPanel.add(new JLabel("Tutorial Answers File "), defaultCons);
+		fileAlgoPanel.add(TutFileTextField, fileCons);
+		fileAlgoPanel.add(tutFileButton, defaultCons);
+		fileAlgoPanel.add(algoSelect, lastCons);
+		fileAlgoPanel.add(runButton, lastCons);
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
 		canvasPanel.add(new Box.Filler(d, d, d));
@@ -302,6 +315,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			else if(selectedAlgorithm.equals("Cutting Sort")){
 				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
 				output = cs.start();
+				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+			}else if(selectedAlgorithm.equals("Permute Sort")){
+				PermuteSort ps = new PermuteSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}			
 
