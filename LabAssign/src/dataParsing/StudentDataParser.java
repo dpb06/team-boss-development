@@ -44,6 +44,7 @@ public class StudentDataParser {
 	List<String> tokens = new LinkedList<String>();
 	Scanner studentScan;
 	
+	List<Student> problemStudents = new ArrayList<Student>();
 	
 	
 	/**
@@ -55,6 +56,10 @@ public class StudentDataParser {
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
+		
+		text = text.replace("</p>", "");
+		
+		text = text.replace("<p>", "");
 		
 		
 		Scanner tempScan = new Scanner(text);		
@@ -73,6 +78,10 @@ public class StudentDataParser {
 	
 	public StudentDataParser(File f) throws FileNotFoundException  {
 
+		/**The beginning of this method is cleaning of the data to remove any
+		 * unusable sections of the file, and leave us with only the sections we are interested in
+		 */
+		
 		String startText = "";
 		
 		Scanner scan = new Scanner(f);
@@ -84,11 +93,26 @@ public class StudentDataParser {
 		
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
+		 // this character is a space character used in web programs 
+		 // it is simply replaced with an empty string.
+		char nonspace = '\u00A0';
+		text = text.replace(nonspace, ' ');
+		char emptyVal = '\u0000';
+		text = text.replace(emptyVal+"", "");
+		
 		// remove the first line of the file, (the line stating the format)
-		text = text.substring(34);
+		// There is a header that has been left in the file
+		// to remove these extra characters as well as the unneeded titles of
+		// the file, we look for the first line of the file we worry about (to remove junk)
+		text = text.substring(text.indexOf("\"Question ID\""));
+		
+		// and then remove the 35 long first line.
+		text = text.substring(35);
+		/** this leaves us with only the data of the file **/
+		
 		
 		Scanner tempScan = new Scanner(text);		
-		tempScan.useDelimiter("[\\t\"]");
+		tempScan.useDelimiter("[\\t\"\\n\\f\\r]");
 	
 		
 		
@@ -167,60 +191,43 @@ public class StudentDataParser {
 					break;
 				
 			}
-			if(token.contains("is a")){ // indicates this token has the day, timestart and end of this timeslot
+			if(token.contains("is a")){ // indicates this token has the stored in it
+										// as well as timestart and end of this timeslot
 				String timeStart = "";
 				Scanner timeScan =  new Scanner(token);
-				String dayAndTime = timeScan.next();
-				String day = "";
-				int spaceIndex = dayAndTime.length();
+				String day = timeScan.next().trim();
 				
-				// looks for the index where the space is
-				// 		had an issue where the character indicating the 
-				//		space does not count as whitespace
-				// - need to look for the first character not part of the day name 
-				for(int i = 0 ; i < dayAndTime.length()  ; i++ ){
-					
-					if (!Character.isLetter(dayAndTime.charAt(i))){
-						spaceIndex = i;
-						break;
-					}
-				}
-				if(spaceIndex != dayAndTime.length())
-					timeStart = dayAndTime.substring(spaceIndex+1).trim();
-				
-				day = dayAndTime.substring(0, spaceIndex).trim();
-				
-				
-				 
-				if(timeStart.equals("")){
-					timeStart = timeScan.next();
+				// in this case the day was not split from the time correctly 
+				// likely caused by the seperating token being inconsistent between lines
+				// this splits them into the timeStart and day variables.
+				if(day.contains(" ")){ 
+					int posOfSpace = day.indexOf(" ");
+					timeStart = day.substring(posOfSpace);
+					day = day.substring(0, posOfSpace); 
 				}
 				
-				eDay = parseDay(day);
-				if(eDay == null)  // checks to see if day was parsed incorrectly
-					throw new IllegalArgumentException("Expected a day as the first token in: "+dayAndTime);
+				// checks to see if day was parsed incorrectly
+				eDay = parseDay(day); 
+				if(eDay == null)  
+					throw new IllegalArgumentException("Expected a day as the first token in: "+day);
 				
+				// if timestart was not set already it should be the next token
+				if(timeStart.equals(""))
+					timeStart = timeScan.next().trim();
 				
+
+				// checks to see if the time was parsed incorrectly
+				// returns the time as an int if correct 
+				// -1 if failed
 				iTimeStart = parseTime(timeStart);
 				if(iTimeStart == -1){
 					throw new IllegalArgumentException("Expected a time as the second token in: "+token);
 				}
-				String dashAndTime = timeScan.next();
-				String timeEnd = "";
-				int secSpaceIndex = 1;
-				
-				//	same issue as above, spaces not appearing as whitespace to the scanner.
-				//	need to manually find the position of the time.
-				//
-				if((dashAndTime.charAt(0) == '-')){
-					if (dashAndTime.length() == 1){
-						timeEnd = timeScan.next();
-					} else
-						timeEnd = dashAndTime.substring(secSpaceIndex+1);
-				}else
+				String dash = timeScan.next();
+				if((dash.charAt(0) != '-'))
 					throw new IllegalArgumentException("Expected - as the third token in: "+token);
 					
-				
+				String timeEnd = timeScan.next();
 				iTimeEnd = parseTime(timeEnd);
 				if(iTimeEnd == -1){
 					throw new IllegalArgumentException("Expected a time as the fourth token in: "+token);
@@ -230,6 +237,7 @@ public class StudentDataParser {
 			timeslots.add(t);
 			}
 		}
+		System.out.println(timeslots);
 		return timeslots;
 	}
 
@@ -258,6 +266,7 @@ public class StudentDataParser {
 	public List<Student> parseSelections(List<Timeslot> timeslots){
 	
 		List<Student> students = new ArrayList<Student>();
+		problemStudents = new ArrayList<Student>();
 		Iterator<String> iter = tokens.iterator();
 		
 		boolean DEBUG = false;
@@ -267,7 +276,7 @@ public class StudentDataParser {
 		String token = "";
 		String firstName = null;
 		String lastName = null;
-		int studentID = -1;
+		int iStudentID = -1;
 		
 		ArrayList<Timeslot> firstChoice = new ArrayList<Timeslot>();
 		ArrayList<Timeslot> secondChoice = new ArrayList<Timeslot>();
@@ -308,15 +317,24 @@ public class StudentDataParser {
 					thirdChoice.add(t);
 			}else if (token.contains("Please enter your first name")){
 				firstName = iter.next().trim();
+				
 			}else if (token.contains("Please enter your last (family) name")){
 				lastName = iter.next().trim();
+				
 			}else if (token.contains("Please enter the last three digits of your student ID number.")){
-				studentID = Integer.parseInt( iter.next().replace('\"', ' ') );
+				String studentID = iter.next().replace('\"', ' ');
+				if(studentID.contains("<Unanswered>")){
+					iStudentID = -1;
+				}else
+					iStudentID = Integer.parseInt(studentID);
 				
 				//Student student = new Student(count, firstName, lastName, studentID);
 				String name = firstName + " " + lastName;
-				Student student = new Student(studentID, name);
-				students.add(student);
+				Student student = new Student(iStudentID, name);
+				if(iStudentID == -1 || name.contains("<Unanswered>"))
+					problemStudents.add(student);
+				else
+					students.add(student);
 				
 				count++; // acting as unique ID
 				for(Timeslot t : firstChoice){
@@ -336,7 +354,10 @@ public class StudentDataParser {
 		return students;
 	}
 	
-
+	public List<Student> getProblemStudents(){
+		return problemStudents;
+	}
+	
 	private Timeslot getTimeslot(List<Timeslot> timeslots, int quID) {
 	
 		for(Timeslot t : timeslots){
@@ -351,15 +372,15 @@ public class StudentDataParser {
 
 	private Day parseDay(String day) {
 
-		if(day.equalsIgnoreCase("Monday"))
+		if(day.contains("Monday"))
 			return Day.Monday;
-		else if(day.equalsIgnoreCase("Tuesday"))
+		else if(day.contains("Tuesday"))
 			return Day.Tuesday;
-		else if(day.equalsIgnoreCase("Wednesday"))
+		else if(day.contains("Wednesday"))
 			return Day.Wednesday;
-		else if(day.equalsIgnoreCase("Thursday"))
+		else if(day.contains("Thursday"))
 			return Day.Thursday;
-		else if(day.equalsIgnoreCase("Friday"))
+		else if(day.contains("Friday"))
 			return Day.Friday;
 		else 
 			return null;
