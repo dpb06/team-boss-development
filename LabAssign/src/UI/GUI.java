@@ -370,7 +370,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser labParser = new StudentDataParser(labs);
 				labSlots = labParser.getTimeslots();
 				labStudents = labParser.parseSelections(labSlots);
-				new NaughtyList(labStudents, labSlots);
+				new NaughtyList(labStudents, labSlots).setVisible(true);
 				doBounds(labSlots);
 			}
 
@@ -378,7 +378,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser tutParser = new StudentDataParser(tuts);
 				tutSlots = tutParser.getTimeslots();
 				tutStudents = tutParser.parseSelections(tutSlots);
-				new NaughtyList(tutStudents, tutSlots);
+				new NaughtyList(tutStudents, tutSlots).setVisible(true);
 				doBounds(tutSlots);
 			}
 
