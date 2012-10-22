@@ -236,8 +236,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Make this start in the text field path
 				//Handle 'Save' button action.
-				if(output != null)
-					fileOutput(output);
+				if(output != null){
+					JFileChooser jfc = new JFileChooser();
+					if (jfc.showSaveDialog(GUI.this) ==  JFileChooser.APPROVE_OPTION){
+						File fout = jfc.getSelectedFile();
+						fileOutput(output, fout);
+					}
+				}
 				else
 					System.out.println("No output to save");
 			}
@@ -252,11 +257,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.setVisible(true);
 	}
 
-	private void fileOutput(AlgorithmOutput output) {
+	private void fileOutput(AlgorithmOutput output, File fout) {
 		//Algorithm output is HashMap<Timeslot,ArrayList<Student>>
 		try{
 			// Create file 
-			FileWriter fstream = new FileWriter("Output/printout.txt");
+			FileWriter fstream = new FileWriter(fout);
 			//TODO: Allow user to select output file
 			BufferedWriter out = new BufferedWriter(fstream);
 
@@ -292,20 +297,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}**/
 
 			/** Iterate through Timeslots twice times (labs & tuts) **/
+
+			out.write("Assigned Students:");
 			// Labs
 			for(Timeslot t: output.keySet()){
 				if(t instanceof Lab){
-					out.write("Lab - " + t.toString());
+					out.write("Lab - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
 						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 					}							
 				}
 			}
 
-			// Labs
+			// Tuts
 			for(Timeslot t: output.keySet()){
 				if(t instanceof Tutorial){
-					out.write("Tutorial - " + t.toString());
+					out.write("Tutorial - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
 						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 					}							
