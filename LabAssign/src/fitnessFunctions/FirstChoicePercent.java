@@ -20,7 +20,7 @@ public class FirstChoicePercent implements FitnessFunction{
 				//Increment total.
 				total++;
 				//If student is in their first choice
-				if(s.getAssignedLab()==t){
+				if(s.getFirstChoiceLabs().contains(s.getAssignedLab())){
 					//Increment firsts
 					firsts++;
 				}

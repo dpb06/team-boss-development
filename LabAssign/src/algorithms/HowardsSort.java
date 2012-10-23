@@ -1,6 +1,8 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import algorithmDataStructures.AlgorithmOutput;
@@ -28,6 +30,21 @@ public class HowardsSort implements Algorithm {
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
+		Collections.sort(students,new Comparator<Student>(){
+			@Override
+			public int compare(Student arg0, Student arg1) {
+				Student s1=arg0;
+				Student s2=arg1;
+				if(s1.getNumCanAttendLabs()<s2.getNumCanAttendLabs()){
+					return 1;
+				}
+				else if(s1.getNumCanAttendLabs()>s2.getNumCanAttendLabs()){
+					return -1;
+				}
+				return 0;
+			}
+
+		});
 	}
 
 
@@ -37,14 +54,23 @@ public class HowardsSort implements Algorithm {
 		//Give students a random order
 		priorityCalculator();
 		//Sort students into labs
+		for(Student s: students){
+			s.combineLabs();
+			if(s.getCombinedLabs().isEmpty()){
+				s.setFlagged();
+				flagged.add(s);
+			}
+		}
+		for(Timeslot t:labs)
+			t.sortAssigned();
 		sortLabs();
-		tutorialChecker tc = new tutorialChecker(students);
-		students = tc.getStudents();
+		//	tutorialChecker tc = new tutorialChecker(students);
+		//		students = tc.getStudents();
 		//Prioritize students by their tutorial choices
 		//Give students random order again
-		priorityCalculator();
+		//	priorityCalculator();
 		//Sort students into tutorials
-		sortTuts();
+		//	sortTuts();
 		//Generate AlgorithmOutput
 		generateAlgorithmOutput();
 		//Return output
@@ -59,182 +85,220 @@ public class HowardsSort implements Algorithm {
 
 	@SuppressWarnings("unchecked")
 	private void priorityCalculator() {
-		//Begin console output.
-		System.out.println("priorityCalculator() in HowardsSort");
-		//Create a local clone of students so original data remains intact
-		//TODO: FIX THE NULL POINTER EXCEPTION BEING THROWN HERE
-		priority = new PriorityQueue<Student>(students);
-		//Give each a random priority
-		for(Student s: priority){
-			s.setPriority((int) (Math.random()*students.size()*3));
-			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
-		}
-		System.out.println("\n");
+
+		Collections.shuffle(students);
+
+		//		//Begin console output.
+		//		System.out.println("priorityCalculator() in HowardsSort");
+		//		//Create a local clone of students so original data remains intact
+		//		//TODO: FIX THE NULL POINTER EXCEPTION BEING THROWN HERE
+		//		priority = new PriorityQueue<Student>(students);
+		//		//Give each a random priority
+		//		for(Student s: priority){
+		//			s.setPriority((int) (Math.random()*students.size()*3));
+		//			//Printspam the priority of each student.
+		//			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+		//		}
+		//		System.out.println("\n");
 	}
 
 
 	//-----FUNCTIONALITIES-----\\
 	public void sortLabs(){
-		//Begin console output.
-		System.out.println("sortLabs() in HowardsSort");
-		//Initialize a reference to the current student
+		ArrayList<Timeslot>overfilledLabs;
+	//	System.out.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT" +labs.get(0).toString());
+		for( Student s : students){
+			if(s.getCombinedLabs().contains(labs.get(0)))
+				System.out.println("Contains as first choice: "+labs.get(0).toString());
+		}
+		for(Student s: students){
+			if(!s.getFlagged()){
+				s.setAssignedLab(s.getCombinedLabs().get(0));
+				s.getCombinedLabs().get(0).addStudent(s);
+			}
+		}
 		Student currentStudent;
-		//Initialize a list of first choices
-		ArrayList<Timeslot> firstChoiceLab;
-		//Pick a student at random
-		while(!priority.isEmpty()){
-			currentStudent = priority.poll();
-			//Printspam the details of each student.
-			System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
-			//Set the list of first choices
-			firstChoiceLab = currentStudent.getFirstChoiceLabs();
-			//Set an index for the lowest lab
-			int lowestLabIndex = 0;
-			//Put the student into the first choice lab that has the least students assigned to it
-			//For each lab choice
-			for(int i = 0; i < firstChoiceLab.size(); i++){
-				//If the lab choice has fewer assigned students than the smallest lab choice so far
-				if(firstChoiceLab.get(i).getAssigned().size() < firstChoiceLab.get(lowestLabIndex).getAssigned().size()){
-					//Set the smallest lab choice index to this lab's index
-					lowestLabIndex = i;
-				}
-			}
-			//Put the student into the first choice lab with the least students assigned to it
-			//TODO: FIX THE INDEX OUT OF BOUNDS BEING THROWN HERE
-			Timeslot choice = firstChoiceLab.get(lowestLabIndex);
-			choice.addStudent(currentStudent);
-			currentStudent.setAssignedLab(choice);
-			//Printspam the lab this student is assigned to
-			System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-		}
-
-		/*Iterate over the labs that are overfilled and move students into another one of there first choices if they have first choices.*/
-
-		//Create a list of overfilled Labs
-		ArrayList<Timeslot> overfilledLabsList = overFilledLabs();
-		//For each overfilled lab
-		for(Timeslot t : overfilledLabsList){
-			//Get the size of the lab
-			int size = t.getAssigned().size();
-			//For every student who is above the overfilled line
-			for(int j = t.getMaxStudents(); j < size; j++){
-				//Check if they have anymore first choices.
-				currentStudent = t.getAssigned().get(j);
-				//Printspam the details of each student.
-				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
-				if(currentStudent.getFirstChoiceLabs().size() > 1){
-					//For each lab choice
-					for(Timeslot choice : currentStudent.getFirstChoiceLabs()){
-						//If it is not the current lab
-						if(choice != t){
-							//And is not overfilled already
-							if(!choice.isOverfilled()){
-								//Move the student into that lab
-								t.removeStudent(currentStudent);
-								choice.addStudent(currentStudent);
-								currentStudent.setAssignedLab(choice);
-								//Printspam the lab this student is assigned to
-								System.out.println("Moved to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-							}
+		overfilledLabs=overFilledLabs();
+		while(!overfilledLabs.isEmpty()){
+			for(Timeslot t: overfilledLabs){
+				for(int i=t.getPreferredMax();i<t.getAssigned().size();i++){
+					currentStudent=t.getAssigned().get(i);
+					currentStudent.getCurrentTimeslot().removeStudent(currentStudent);
+					if((currentStudent.getCurrentIndex()+1)<currentStudent.getNumCanAttendLabs()){						
+						currentStudent.incrementIndex();
+						if(currentStudent.getCurrentTimeslot().getAssigned().size()<currentStudent.getCurrentTimeslot().getPreferredMax()){
+							currentStudent.setAssignedLab(currentStudent.getCombinedLabs().get(currentStudent.getCurrentIndex()));
+							currentStudent.getCurrentTimeslot().addStudent(currentStudent);				
 						}
+					}
+					else{
+						currentStudent.setFlagged();
+						flagged.add(currentStudent);
 					}
 				}
 			}
-		}
-		
-		/*Iterate over the labs that are overfilled and move students into a second choice.*/
-
-		//Create a list of overfilled labs
-		overfilledLabsList = overFilledLabs();
-		//For each overfilled lab
-		for(Timeslot t : overfilledLabsList){
-			//Get the size of the lab
-			int size = t.getAssigned().size();
-			//For every student who is above the overfilled line
-			for(int j = t.getMaxStudents(); j < size; j++){
-				//Check if they have anymore second choices.
-				currentStudent=t.getAssigned().get(j);
-				//Printspam the details of each student.
-				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
-				if(currentStudent.getSecondChoiceLabs().size()>1){
-					//For each lab choice
-					for(Timeslot choice : currentStudent.getSecondChoiceLabs()){
-						//If it is not the current lab
-						if(choice != t){
-							//And is not overfilled already
-							if(!choice.isOverfilled()){
-								//Move the student into that lab
-								t.removeStudent(currentStudent);
-								choice.addStudent(currentStudent);
-								currentStudent.setAssignedLab(choice);
-								//Printspam the lab this student is assigned to
-								System.out.println("Moved to second choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-							}
-						}
-					}
-				}
-			}
+			overfilledLabs=overFilledLabs();
 		}
 
-		/*Iterate over the labs that are overfilled and move students into a third choice.*/
-
-		//Create a list of overfilled labs
-		overfilledLabsList = overFilledLabs();
-		//For each overfilled lab
-		for(Timeslot t : overfilledLabsList){
-			//Get the size of the lab
-			int size = t.getAssigned().size();
-			//For every student who is above the overfilled line
-			for(int j = t.getMaxStudents(); j < size; j++){
-				//Check if they have anymore third choices.
-				currentStudent=t.getAssigned().get(j);
-				//Printspam the details of each student.
-				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
-				if(currentStudent.getThirdChoiceLabs().size()>1){
-					//For each lab choice
-					for(Timeslot choice:currentStudent.getThirdChoiceLabs()){
-						//If it is not the current lab
-						if(choice != t){
-							//And is not overfilled already
-							if(!choice.isOverfilled()){
-								//Move the student into that lab
-								t.removeStudent(currentStudent);
-								choice.addStudent(currentStudent);
-								currentStudent.setAssignedLab(choice);
-								//Printspam the lab this student is assigned to
-								System.out.println("Moved to third choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
-							}
-						}
-					}
-				}
-			}
-		}
-
-		/*Flag students in overfilled labs*/
-
-		//Create a list of overfilled labs
-		overfilledLabsList = overFilledLabs();
-		//For each lab
-		for(Timeslot t : overfilledLabsList){
-			//Flag every student who is still over the maximum lab size
-			for(int z = t.getMaxStudents(); z < t.getAssigned().size(); z++){
-				currentStudent = t.getAssigned().get(z);
-				//Printspam the details of each student.
-				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
-				flagged.add(t.getAssigned().get(z));
-				//TODO: Should this also be removing the student??????????????????????????
-				//Printspam that student is not assigned.
-				System.out.println("Not Assigned");
-			}
-		}
-		System.out.println("\n");
+		//		//Begin console output.
+		//		System.out.println("sortLabs() in HowardsSort");
+		//		//Initialize a reference to the current student
+		//		Student currentStudent;
+		//		//Initialize a list of first choices
+		//		ArrayList<Timeslot> firstChoiceLab;
+		//		//Pick a student at random
+		//		while(!priority.isEmpty()){
+		//			currentStudent = priority.poll();
+		//			//Printspam the details of each student.
+		//			System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
+		//			//Set the list of first choices
+		//			firstChoiceLab = currentStudent.getFirstChoiceLabs();
+		//			//Set an index for the lowest lab
+		//			int lowestLabIndex = 0;
+		//			//Put the student into the first choice lab that has the least students assigned to it
+		//			//For each lab choice
+		//			for(int i = 0; i < firstChoiceLab.size(); i++){
+		//				//If the lab choice has fewer assigned students than the smallest lab choice so far
+		//				if(firstChoiceLab.get(i).getAssigned().size() < firstChoiceLab.get(lowestLabIndex).getAssigned().size()){
+		//					//Set the smallest lab choice index to this lab's index
+		//					lowestLabIndex = i;
+		//				}
+		//			}
+		//			//Put the student into the first choice lab with the least students assigned to it
+		//			//TODO: FIX THE INDEX OUT OF BOUNDS BEING THROWN HERE
+		//			Timeslot choice = firstChoiceLab.get(lowestLabIndex);
+		//			choice.addStudent(currentStudent);
+		//			currentStudent.setAssignedLab(choice);
+		//			//Printspam the lab this student is assigned to
+		//			System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+		//		}
+		//
+		//		/*Iterate over the labs that are overfilled and move students into another one of there first choices if they have first choices.*/
+		//
+		//		//Create a list of overfilled Labs
+		//		ArrayList<Timeslot> overfilledLabsList = overFilledLabs();
+		//		//For each overfilled lab
+		//		for(Timeslot t : overfilledLabsList){
+		//			//Get the size of the lab
+		//			int size = t.getAssigned().size();
+		//			//For every student who is above the overfilled line
+		//			for(int j = t.getMaxStudents(); j < size; j++){
+		//				//Check if they have anymore first choices.
+		//				currentStudent = t.getAssigned().get(j);
+		//				//Printspam the details of each student.
+		//				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
+		//				if(currentStudent.getFirstChoiceLabs().size() > 1){
+		//					//For each lab choice
+		//					for(Timeslot choice : currentStudent.getFirstChoiceLabs()){
+		//						//If it is not the current lab
+		//						if(choice != t){
+		//							//And is not overfilled already
+		//							if(!choice.isOverfilled()){
+		//								//Move the student into that lab
+		//								t.removeStudent(currentStudent);
+		//								choice.addStudent(currentStudent);
+		//								currentStudent.setAssignedLab(choice);
+		//								//Printspam the lab this student is assigned to
+		//								System.out.println("Moved to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//		
+		//		/*Iterate over the labs that are overfilled and move students into a second choice.*/
+		//
+		//		//Create a list of overfilled labs
+		//		overfilledLabsList = overFilledLabs();
+		//		//For each overfilled lab
+		//		for(Timeslot t : overfilledLabsList){
+		//			//Get the size of the lab
+		//			int size = t.getAssigned().size();
+		//			//For every student who is above the overfilled line
+		//			for(int j = t.getMaxStudents(); j < size; j++){
+		//				//Check if they have anymore second choices.
+		//				currentStudent=t.getAssigned().get(j);
+		//				//Printspam the details of each student.
+		//				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
+		//				if(currentStudent.getSecondChoiceLabs().size()>1){
+		//					//For each lab choice
+		//					for(Timeslot choice : currentStudent.getSecondChoiceLabs()){
+		//						//If it is not the current lab
+		//						if(choice != t){
+		//							//And is not overfilled already
+		//							if(!choice.isOverfilled()){
+		//								//Move the student into that lab
+		//								t.removeStudent(currentStudent);
+		//								choice.addStudent(currentStudent);
+		//								currentStudent.setAssignedLab(choice);
+		//								//Printspam the lab this student is assigned to
+		//								System.out.println("Moved to second choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//
+		//		/*Iterate over the labs that are overfilled and move students into a third choice.*/
+		//
+		//		//Create a list of overfilled labs
+		//		overfilledLabsList = overFilledLabs();
+		//		//For each overfilled lab
+		//		for(Timeslot t : overfilledLabsList){
+		//			//Get the size of the lab
+		//			int size = t.getAssigned().size();
+		//			//For every student who is above the overfilled line
+		//			for(int j = t.getMaxStudents(); j < size; j++){
+		//				//Check if they have anymore third choices.
+		//				currentStudent=t.getAssigned().get(j);
+		//				//Printspam the details of each student.
+		//				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
+		//				if(currentStudent.getThirdChoiceLabs().size()>1){
+		//					//For each lab choice
+		//					for(Timeslot choice:currentStudent.getThirdChoiceLabs()){
+		//						//If it is not the current lab
+		//						if(choice != t){
+		//							//And is not overfilled already
+		//							if(!choice.isOverfilled()){
+		//								//Move the student into that lab
+		//								t.removeStudent(currentStudent);
+		//								choice.addStudent(currentStudent);
+		//								currentStudent.setAssignedLab(choice);
+		//								//Printspam the lab this student is assigned to
+		//								System.out.println("Moved to third choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//
+		//		/*Flag students in overfilled labs*/
+		//
+		//		//Create a list of overfilled labs
+		//		overfilledLabsList = overFilledLabs();
+		//		//For each lab
+		//		for(Timeslot t : overfilledLabsList){
+		//			//Flag every student who is still over the maximum lab size
+		//			for(int z = t.getMaxStudents(); z < t.getAssigned().size(); z++){
+		//				currentStudent = t.getAssigned().get(z);
+		//				//Printspam the details of each student.
+		//				System.out.println(currentStudent.getStudentNum() + " - " + currentStudent.getName());
+		//				flagged.add(t.getAssigned().get(z));
+		//				//TODO: Should this also be removing the student??????????????????????????
+		//				//Printspam that student is not assigned.
+		//				System.out.println("Not Assigned");
+		//			}
+		//		}
+		//		System.out.println("\n");
 	}
 
-	
-	
-	
-	
+
+
+
+
 	public ArrayList<Timeslot> overFilledLabs(){
 		ArrayList<Timeslot> overfilledLabsList = new ArrayList<Timeslot>();
 		for(Timeslot t : labs){
@@ -288,5 +352,5 @@ public class HowardsSort implements Algorithm {
 		}
 	}
 
-	
+
 }
