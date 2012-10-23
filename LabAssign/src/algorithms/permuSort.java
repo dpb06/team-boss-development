@@ -1,5 +1,6 @@
 package algorithms;
 
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +25,8 @@ public class permuSort implements Algorithm{
 	//private double purposedFitness=0;
 	private int numStudents;
 	private ArrayList<Student> flagged= new ArrayList<Student>();
-	private HashMap<Timeslot, Integer> timeslotSize=new HashMap<Timeslot, Integer>();
-
-	private double mill=10000000;
+	private static HashMap<Timeslot, Integer>timeslotSize=new HashMap<Timeslot, Integer>();
+	private double mill=1000;
 	public permuSort(ArrayList<Timeslot> labs, ArrayList<Timeslot> tutorials, ArrayList<Student> students){
 		this.students = students;
 		this.labs = labs;
@@ -69,6 +69,7 @@ public class permuSort implements Algorithm{
 		long startTime=System.currentTimeMillis();
 		System.out.println("Starting PermuSort");
 		Killthread k= new Killthread();
+		k.start();
 		permuSortPart2(start);
 		long endTime= System.currentTimeMillis();
 		System.out.println("End PermuSort");
@@ -81,108 +82,88 @@ public class permuSort implements Algorithm{
 	}
 
 	public void permuSortPart2(permuDataLeafNode c){
+		Integer i;
+		int j=0;
 		for(Timeslot t: c.timeslots){
-			if(!(t.getAssigned().size()>t.getPreferredMax())){
-				c.t=t;
-				if(c.next!=null){
-					//System.out.println("student :"+c.toString()+" Timeslot :"+t.toString());
-					if(kill)
-						break;
-					permuSortPart2(c.next);
-				
-				}
-				else{
-					count++;
-					if(count==mill ){
-						System.out.println("number of solutions so far: "+mill);
-						mill+=1000000;
+			System.out.println(timeslotSize.get(t)+" : "+t.getPreferredMax());
+			if(timeslotSize.get(t)<t.getPreferredMax()){
+				c.setTimeslot(t);
+				if(c.t!=null){
+					if(c.next!=null){
+						if(!kill){
+							System.out.println(c.getStudent()+" : "+c.t.toString());
+							permuSortPart2(c.next);
+						}
+
 					}
-					//purposedFitness=-1;
-					FitnessFunctionFirstChoice(c);
+					else{
+						//	System.out.println("found a solution");
+						//					count++;
+						//					if(count==mill ){
+						//						System.out.println("number of solutions so far: "+mill);
+						//						mill+=1000000;
+						//					}
+						//purposedFitness=-1;
+						printSpam();
+						FitnessFunctionFirstChoice(c);
+						//System.out.println("found some solution");
+					}
 				}
 			}
-			//			else{
-			////				count++;
-			////				if(count==mill){
-			////				System.out.println("we have gotten to the end "+count+" number of times");
-			////				mill+=10000000;
-			//				}
 		}
 	}
 
 
-	private void FitnessFunctionFirstChoice(permuDataLeafNode c) {
-		for(Timeslot t:labs){
-			timeslotSize.put(t, 0);
+	private void printSpam() {
+		for(Timeslot t: timeslotSize.keySet()){
+			System.out.println(t.toString()+" : "+timeslotSize.get(t).toString());
 		}
+
+	}
+
+	private void FitnessFunctionFirstChoice(permuDataLeafNode c) {
+
 		int countFirst=0;
 		int countThird=0;
 		int countSecond=0;
 		double purposedFitness=0;
+		boolean full=false;
 		Integer i1;
 		//	System.out.println("Purposed fitness Start: "+purposedFitness);
-//		if(c.getStudent().getFirstChoiceLabs().contains(c.t)){
-//			countFirst++;
-//			i1 = timeslotSize.get(c.t);
-//			i1 = Integer.valueOf(i1.intValue()+1);
-//			timeslotSize.put(c.t, i1);
-//
-//		}
-//		else if(c.getStudent().getSecondChoiceLabs().contains(c.t)){
-//			countSecond++;
-//			i1= timeslotSize.get(c.t);
-//			i1 = Integer.valueOf(i1.intValue()+1);
-//			timeslotSize.put(c.t, i1);
-//		}
-//		else if(c.getStudent().getThirdChoiceLabs().contains(c.t)){
-//			countThird++;
-//			i1 = timeslotSize.get(c.t);
-//			i1 = Integer.valueOf(i1.intValue()+1);
-//			timeslotSize.put(c.t, i1);
-//		}
+		if(c.getStudent().getFirstChoiceLabs().contains(c.t)){
+			countFirst++;
+		}
+		else if(c.getStudent().getSecondChoiceLabs().contains(c.t)){
+			countSecond++;
+		}
+		else if(c.getStudent().getThirdChoiceLabs().contains(c.t)){
+			countThird++;
+		}
 		while(c.parent!=null){
 			if(c.getStudent().getFirstChoiceLabs().contains(c.t)){
 				countFirst++;
-				i1 = timeslotSize.get(c.t);
-				i1 = Integer.valueOf(i1.intValue()+1);
-				timeslotSize.put(c.t, i1);
 			}
 			else if(c.getStudent().getSecondChoiceLabs().contains(c.t)){
 				countSecond++;
-				i1 = timeslotSize.get(c.t);
-				i1 = Integer.valueOf(i1.intValue()+1);
-				timeslotSize.put(c.t, i1);
 			}
 			else if(c.getStudent().getThirdChoiceLabs().contains(c.t)){
 				countThird++;
-				i1 = timeslotSize.get(c.t);
-				i1 = Integer.valueOf(i1.intValue()+1);
-				timeslotSize.put(c.t, i1);
 			}
 			c=c.parent;
 		}
 
 		if(c.getStudent().getFirstChoiceLabs().contains(c.t)){
 			countFirst++;
-			i1 = timeslotSize.get(c.t);
-			i1 = Integer.valueOf(i1.intValue()+1);
-			timeslotSize.put(c.t, i1);
 		}
 		else if(c.getStudent().getSecondChoiceLabs().contains(c.t)){
 			countSecond++;
-			i1 = timeslotSize.get(c.t);
-			i1 = Integer.valueOf(i1.intValue()+1);
-			timeslotSize.put(c.t, i1);
 		}
 		else if(c.getStudent().getThirdChoiceLabs().contains(c.t)){
 			countThird++;
-			i1 = timeslotSize.get(c.t);
-			i1 = Integer.valueOf(i1.intValue()+1);
-			timeslotSize.put(c.t, i1);
 		}
 		double percentFirst=(double)countFirst/(double)numStudents;
 		//	System.out.println("First choice :"+percentFirst);
-	//	double percentSecond=countSecond/numStudents;
+		//	double percentSecond=countSecond/numStudents;
 		//	System.out.println("Second choice :"+countSecond);
 
 		double percentThird=(double)countThird/(double)numStudents;
@@ -201,53 +182,65 @@ public class permuSort implements Algorithm{
 				average+=1;
 				average=average/2;
 			}
-			else if(timeslotSize.get(t)<(t.getPreferredMax()/2)){
-				average+=0.2;
-				average=average/2;
+			else{
+				average=(double)timeslotSize.get(t)/(double)t.getPreferredMax();
 			}
-			else if((timeslotSize.get(t)<(t.getPreferredMax()))&&(timeslotSize.get(t)>(t.getPreferredMax()/2) )){
-				average+=0.75;
-				average=average/2;
-			}
+
 			//	System.out.println("average :"+average);
 		}
 		purposedFitness=(average+percentFirst+(1-percentThird))/3;
+		for(Timeslot t:labs){
+			if(t.getAssigned().size()>t.getPreferredMax()){
+				//System.out.println("you fool");
+				purposedFitness=0;
+				break;
+			}
+		}
 		//		System.out.println("Purposed fitness end: "+purposedFitness);
-		if(purposedFitness>Fitness){
-			System.out.println("found a better Solution");
-			System.out.println(percentFirst+" percent first choice");
-			System.out.println(percentThird+" percent third choice "+(1-percentThird)+" fitness value");
-			System.out.println("average value: "+average);
+		if(purposedFitness>Fitness && !over()){
+			//	System.out.println("found a better Solution");
+			//				System.out.println(percentFirst+" percent first choice");
+			//				System.out.println(percentThird+" percent third choice "+(1-percentThird)+" fitness value");
+			//				System.out.println("average value: "+average);
 			Fitness=purposedFitness;
 			System.out.println("Highest fitness function value so far: "+Fitness);
-			while(c.next!=null){
-				if(!(c.t.getAssigned().contains(c.getStudent()))){
-					c.t.addStudent(c.getStudent());
-					for(Timeslot z:labs){
-						if(!(z==c.t) && z.getAssigned().contains(c.getStudent())){
-							z.removeStudent(c.getStudent());
-						}
-					}
+			for(Student s: students){
+				if(s.getAssignedLab()!=null){
+					s.setAssignedLab(null);
 				}
-				c=c.next;
-
 			}
-			if(!(c.t.getAssigned().contains(c.getStudent()))){
-				c.t.addStudent(c.getStudent());
-				for(Timeslot z:labs){
-					if(!(z==c.t) && z.getAssigned().contains(c.getStudent())){
-						z.removeStudent(c.getStudent());
-					}
+			for( Timeslot t: labs){
+				t.getAssigned().clear();
+			}
+			boolean n=true;
+			while(n){
+				labs.indexOf(c.t);
+				labs.get(labs.indexOf(c.t)).addStudent(c.getStudent());
+				c.getStudent().setAssignedLab(c.t);
+				if(c.next!=null){
+					c=c.next;
+				}
+				else 
+					n=false;
+			}
+			for(Timeslot t:labs){
+				if(t.isOverfilled()){
+					System.out.println("You are overfilling labs");
 				}
 			}
 		}
-		for( Student s: students){
-			if(s.getFlagged()){
-				System.out.println("Flagged Student :" +s.toString());
-			}
-		}
-			System.out.println("Purposed fitness: "+purposedFitness);
 	}
+	private boolean over() {
+		boolean w= false;
+		for(Timeslot t: timeslotSize.keySet()){
+			if(timeslotSize.get(t)>t.getPreferredMax()){
+				w=true;
+				System.out.println("AAAAAAAWWWWWWWWWWWWWWWWWWW");
+			}
+		}
+		return w;
+	}
+
 	private void generateAlgorithmOutput() {
 		//Begin console output.
 		System.out.println("generateAlgorithmOutput() in BossSort");
@@ -287,45 +280,39 @@ public class permuSort implements Algorithm{
 
 	@Override
 	public AlgorithmOutput start() {
-		
 		permSort();
 		generateAlgorithmOutput();
 		return output;
 	}
-	
-private class Killthread extends Thread{
-	private final int timeToRun = 120000; //2 min
-	public void run(){
-		 try {
-			sleep(timeToRun);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	private class Killthread extends Thread{
+		private final int timeToRun = 6000; //4 min
+		public void run(){
+			try {
+				sleep(timeToRun);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			kill=true;
+			//this.interrupt();
 		}
-		 kill=true;
-	      //this.interrupt();
+
+
 	}
-	
-	
-}
 
 	private class permuDataLeafNode {
 
-
-
 		permuDataLeafNode parent;
-		Timeslot t;
+		Timeslot t=null;
 		Student s;
 		ArrayList<Timeslot>timeslots=new ArrayList<Timeslot>();
-		int numberTimeslot;
-		boolean visited=false;
 		permuDataLeafNode next;
 
 		public permuDataLeafNode(Student s,permuDataLeafNode parent) {
 			this.s=s;		
-			if(parent!=null){
-				this.parent=parent;
-			}
+			this.parent=parent;
+
 			timeslots.addAll(s.getFirstChoiceLabs());
 			timeslots.addAll(s.getSecondChoiceLabs());
 			timeslots.addAll(s.getThirdChoiceLabs());
@@ -334,11 +321,37 @@ private class Killthread extends Thread{
 		public Student getStudent(){
 			return s;
 		}
+		public void setTimeslot(Timeslot t){
+			int i;
+			if(this.t!=t){
+				if(this.t==null){
+					this.t=t;
+					i=timeslotSize.get(t).intValue()+1;
+					timeslotSize.put(t, i);
+				}
+				else{
+					if(timeslotSize.get(t)>t.getPreferredMax()){
+						System.out.println("This should not be above the preferd size but it is...");
+						t=null;
+					}
+					else{
+						i=Integer.valueOf(timeslotSize.get(this.t));
+						i=i-1;
+						timeslotSize.put(this.t,i);
+						i=Integer.valueOf(timeslotSize.get(t));
+						i=i+1;
+						timeslotSize.put(t,i);
+						this.t=t;
+					}
 
+				}
+			}
+		}
 		public String toString(){
 			return s.toString();
 		}
 
-	}
 
+	}
 }
+ 

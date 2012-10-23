@@ -37,6 +37,7 @@ public class BossSort implements Algorithm{
 		labPriorityCalculator();
 		//Assign labs to students
 		sortLabs();
+		System.out.println("Number of students: " + students.size());
 		//Remove tutorial choices that clash with assigned labs
 		tutorialChecker tc = new tutorialChecker(students);
 		students = tc.getStudents();
@@ -235,32 +236,35 @@ public class BossSort implements Algorithm{
 		int studentPriority;
 		//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
 		priority = new PriorityQueue<Student>();
-		//Iterate list of students.
-		for(Student s:students){
-			//Initialise variables for assigning priority points for each choice.
-			int thirdPoints = 0;
-			int secondPoints = 0;
-			int firstPoints = 0;
-
-			//Largest priority weighting is the number of tuts the student can attend.
-			studentPriority = s.getNumCanAttendTuts()*1000;
-			//Next is the number of third choices the student has selected.
-			thirdPoints = s.getThirdChoiceTuts().size()*3;
-			//Next is the number of second choices the student has selected.
-			secondPoints = s.getSecondChoiceTuts().size()*2;
-			//Next is the number of first choices the student has selected.
-			firstPoints = s.getFirstChoiceTuts().size();
-
-			//Combine priority values by multiplying the tut choices using the number of tuts as a factor.
-			studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
-			//Add an element of randomization.
-			studentPriority = studentPriority+((int) (Math.random()*1000));
-			//Set the priority in the Student object.
-			s.setPriority(studentPriority);
-			//Add the student to the priorityQueue.
-			priority.add(s);
-			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+		//Check if there are no students in tutorials
+		if(students != null){
+			//Iterate list of students.
+			for(Student s:students){
+				//Initialise variables for assigning priority points for each choice.
+				int thirdPoints = 0;
+				int secondPoints = 0;
+				int firstPoints = 0;
+	
+				//Largest priority weighting is the number of tuts the student can attend.
+				studentPriority = s.getNumCanAttendTuts()*1000;
+				//Next is the number of third choices the student has selected.
+				thirdPoints = s.getThirdChoiceTuts().size()*3;
+				//Next is the number of second choices the student has selected.
+				secondPoints = s.getSecondChoiceTuts().size()*2;
+				//Next is the number of first choices the student has selected.
+				firstPoints = s.getFirstChoiceTuts().size();
+	
+				//Combine priority values by multiplying the tut choices using the number of tuts as a factor.
+				studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
+				//Add an element of randomization.
+				studentPriority = studentPriority+((int) (Math.random()*1000));
+				//Set the priority in the Student object.
+				s.setPriority(studentPriority);
+				//Add the student to the priorityQueue.
+				priority.add(s);
+				//Printspam the priority of each student.
+				System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+			}
 		}
 		System.out.println("\n");
 	}
@@ -377,6 +381,7 @@ public class BossSort implements Algorithm{
 		//Begin console output.
 		System.out.println("generateAlgorithmOutput() in BossSort");
 		//Iterate through Labs.
+		
 		System.out.println("Labs:");
 		for(Timeslot t:labs){
 			//Add the lab and its assigned students to the output hashmap.

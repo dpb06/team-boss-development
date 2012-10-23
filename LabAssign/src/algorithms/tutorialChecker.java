@@ -15,8 +15,9 @@ public class tutorialChecker {
 	public tutorialChecker(ArrayList<Student> students){
 		//Begin console output.
 		System.out.println("modifyTuts() in BossSort");
+		this.students = new ArrayList<Student>(students);
 		//For each student
-		for (Student s : students){
+		for (Student s : this.students){
 			//Ensure only assigned students are modified
 			if(s.getAssignedLab() == null){continue;}
 			//Initialize boolean to track changes 

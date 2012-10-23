@@ -1,5 +1,7 @@
 package algorithmDataStructures;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Stores information about a single lab or tutorial, including:
@@ -11,7 +13,7 @@ import java.util.ArrayList;
  *   The students assigned to this lab/tut.
  */
 public abstract class Timeslot{
-	
+
 	//-----FIELDS-----\\
 	private int uID;
 	private int startTime;
@@ -22,7 +24,7 @@ public abstract class Timeslot{
 	private int preferredMax = 15;
 	private int maxStudents = 20;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
-	
+
 
 	//-----CONSTRUCTOR-----\\
 	public Timeslot(int UID, int startTime, int endTime, Day day){
@@ -30,9 +32,10 @@ public abstract class Timeslot{
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.day = day;
+
 	}
 
-	
+
 	//-----FUNCTIONALITIES-----\\
 	public void timeslotPrint() {
 		//Print time/day
@@ -57,49 +60,66 @@ public abstract class Timeslot{
 	 * @return whether or not the two slots intersect in time
 	 */
 	public boolean intersectsWith(Timeslot otherTimeslot){
-			if (otherTimeslot == null){
-				return false;
-			}
-			//If on different days, return false
-			if (this.day != otherTimeslot.getDay()){
-				return false;
-			}
-			//If this ends before the other begins, return 1.
-			if(this.endTime <= otherTimeslot.getStartTime()){
-				return false;
-			}
-			//If this begins after the other ends, return -1.
-			else if(this.startTime >= otherTimeslot.getEndTime()){
-				return false;
-			}
-			//If the times intersect, return 0.
-			else{
-				return true;
-			}
+		if (otherTimeslot == null){
+			return false;
+		}
+		//If on different days, return false
+		if (this.day != otherTimeslot.getDay()){
+			return false;
+		}
+		//If this ends before the other begins, return 1.
+		if(this.endTime <= otherTimeslot.getStartTime()){
+			return false;
+		}
+		//If this begins after the other ends, return -1.
+		else if(this.startTime >= otherTimeslot.getEndTime()){
+			return false;
+		}
+		//If the times intersect, return 0.
+		else{
+			return true;
+		}
 	}
-	
+	public void sortAssigned(){
+		Collections.sort(assigned,new Comparator<Student>(){
+
+			@Override
+			public int compare(Student o1, Student o2) {
+				// TODO Auto-generated method stub
+				if(o1.getNumCanAttendLabs()>o2.getNumCanAttendLabs()){
+					return 1;
+				}
+				else if(o1.getNumCanAttendLabs()<o2.getNumCanAttendLabs()){
+					return -1;
+				}
+				else
+					return 0;
+			}
+
+		});
+	}
 	@Override
 	public String toString(){
-		return day.toString().substring(0,3) +": "+ ((startTime>=1000)?startTime:("0"+startTime))+ " - "+endTime ;
+		return day.toString().substring(0,3) +": "+ ((startTime>=1000)?startTime:("0"+startTime))+ " - "+((endTime>=1000)?endTime:("0"+endTime)) ;
 	}
-	
+
 	public boolean isOverfilled(){
 		return (assigned.size()>preferredMax);
 	}
-	
-	
+
+
 	//-----ADD METHODS-----\\
 	public void addStudent(Student s) {
 		this.assigned.add(s);
 	}
-	
-	
+
+
 	//-----REMOVE METHODS-----\\
 	public void removeStudent(Student s){
 		this.assigned.remove(s);
 	}
-	
-	
+
+
 	//-----SET METHODS-----\\
 	public void setThresholds (int[] threshold){
 		this.minStudents = threshold[0];
@@ -107,11 +127,11 @@ public abstract class Timeslot{
 		this.preferredMax = threshold[2];
 		this.maxStudents = threshold[3];
 	}
-	
+
 	public void setMinStudents(int minStudents) {
 		this.minStudents = minStudents;
 	}
-	
+
 	public void setPreferredMin(int preferredMin) {
 		this.preferredMin = preferredMin;
 	}
@@ -124,7 +144,7 @@ public abstract class Timeslot{
 		this.maxStudents = maxStudents;
 	}
 
-	
+
 	//-----GET METHODS-----\\
 	public int getuID(){
 		return uID;
@@ -136,7 +156,7 @@ public abstract class Timeslot{
 	public int getEndTime() {
 		return endTime;
 	}
-	
+
 	public Day getDay() {
 		return day;
 	}
@@ -152,11 +172,11 @@ public abstract class Timeslot{
 	public int getPreferredMax() {
 		return preferredMax;
 	}
-	
+
 	public int getMaxStudents() {
 		return maxStudents;
 	}
-	
+
 	public ArrayList<Student> getAssigned() {
 		return assigned;
 	}

@@ -8,6 +8,8 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithmDataStructures.Tutorial;
 import algorithms.CuttingSort;
+import algorithms.StudentChoiceOrder;
+import algorithms.permuSort;
 
 public class JUnitTestingData {
 

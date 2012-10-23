@@ -28,6 +28,10 @@ public class Student implements Comparable<Object> {
 	private int numCanAttendLabs = 0;
 	private int numCanAttendTuts = 0;
 
+	private ArrayList<Timeslot> combinedLabs=new ArrayList<Timeslot>();
+	private ArrayList<Timeslot> combinedTuts=new ArrayList<Timeslot>();
+	private int currentIndex=0;
+	
 	private boolean flagged = false;
 	private boolean changedChoices = false;
 
@@ -196,10 +200,39 @@ public class Student implements Comparable<Object> {
 		}
 		return false;
 	}
-
+	
+	public void combineLabs(){
+		combinedLabs.addAll(firstChoicesLabs);
+		combinedLabs.addAll(secondChoicesLabs);
+		combinedLabs.addAll(thirdChoicesLabs);
+	}
+	
+	public void combineTuts(){
+		combinedTuts.addAll(firstChoicesTuts);
+		combinedTuts.addAll(secondChoicesTuts);
+		combinedTuts.addAll(thirdChoicesTuts);
+	}
+public void incrementIndex(){
+	currentIndex++;
+}
 	// -----GET METHODS-----\\
+	public int getCurrentIndex(){
+		return currentIndex;
+	}
+	
+	public Timeslot getCurrentTimeslot(){
+		return combinedLabs.get(currentIndex);
+	}
 	public int getPriority() {
 		return Priority;
+	}
+	
+	public ArrayList<Timeslot> getCombinedTuts(){
+		return combinedTuts;
+	}
+	
+	public ArrayList<Timeslot> getCombinedLabs(){
+		return combinedLabs;
 	}
 
 	public int getStudentNum() {
@@ -275,6 +308,9 @@ public class Student implements Comparable<Object> {
 		this.assignedLab = t;
 	}
 
+	public void setIndex(int i){
+		currentIndex=i;
+	}
 	// For rearranging the order of students choices. Sets a students choice to
 	// an array of
 	// another of their choices. Used by StudentChoiceOrder class.
