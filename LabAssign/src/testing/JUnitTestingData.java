@@ -322,7 +322,7 @@ public class JUnitTestingData {
 	public static void main(String []args){
 		JUnitTestingData j=new JUnitTestingData();
 		StudentChoiceOrder sc= new StudentChoiceOrder(j.students);
-		new PermuSort(j.getLabs(), j.getTutorials(), sc.getStudents()).start();
+		new permuSort(j.getLabs(), j.getTutorials(), sc.getStudents()).start();
 	}
 	
 }
