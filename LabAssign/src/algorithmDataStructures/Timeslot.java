@@ -20,9 +20,9 @@ public abstract class Timeslot implements Comparable<Timeslot>{
 	private int endTime;
 	private Day day;
 	private int minStudents = 0;
-	private int preferredMin = 0;
-	private int preferredMax = 15;
-	private int maxStudents = 20;
+	private int preferredMin = 10;
+	private int preferredMax = 20;
+	private int maxStudents = 24;
 	private ArrayList<Student> assigned=new ArrayList<Student>();
 
 
