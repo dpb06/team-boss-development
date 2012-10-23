@@ -134,8 +134,8 @@ public class StudentDataParser {
 		
 		text = text.substring(text.indexOf("\"Question ID\""));
 		
-		// and then remove the 35 long first line.
-		text = text.substring(35);
+		// and then remove the 34 long first line.
+		text = text.substring(34);
 		/** this leaves us with only the data of the file **/
 		
 		

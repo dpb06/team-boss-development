@@ -8,7 +8,7 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithmDataStructures.Tutorial;
 import algorithms.CuttingSort;
-import algorithms.PermuteSort;
+import algorithms.PermuSort;
 import algorithms.StudentChoiceOrder;
 
 public class JUnitTestingData {
@@ -321,8 +321,8 @@ public class JUnitTestingData {
 	}
 	public static void main(String []args){
 		JUnitTestingData j=new JUnitTestingData();
-		StudentChoiceOrder sco = new StudentChoiceOrder(j.getStudents());
-		new PermuteSort(j.getLabs(), j.getTutorials(), sco.getStudents()).start();
+		StudentChoiceOrder sc= new StudentChoiceOrder(j.students);
+		new permuSort(j.getLabs(), j.getTutorials(), sc.getStudents()).start();
 	}
 	
 }

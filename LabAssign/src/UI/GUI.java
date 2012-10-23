@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -61,7 +62,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private final JTextField LabFileTextField;
 	private final JTextField TutFileTextField;
 	private HistoCanvas canvas;
-	private ArrayList<Bounds> SessionBounds = new ArrayList<Bounds>();
+	private ArrayList<Bounds> sessionBoundsLabs = new ArrayList<Bounds>();
+	private ArrayList<Bounds> sessionBoundsTuts = new ArrayList<Bounds>();
+	private List<Timeslot> labsList = new ArrayList<Timeslot>();
+	private List<Timeslot> tutorialsList = new ArrayList<Timeslot>();
 	boolean alreadyRUN = false;
 
 	private String selectedAlgorithm = "Boss Sort";
@@ -364,29 +368,37 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	public void doRun() {
 		try {
 			File labs = new File(LabFileTextField.getText());
-			List<Timeslot> labSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
+			
 
 			File tuts = new File(TutFileTextField.getText());
-			List<Timeslot> tutSlots = new ArrayList<Timeslot>();	// New empty so no nulls later
 
+			
 			List<Student> labStudents = new ArrayList<Student>();
 			List<Student> tutStudents = new ArrayList<Student>();
 
-			if(labs.exists()){
+			boolean havelabs = false;
+			boolean havetuts = false;
+			if(labs.exists())
+				havelabs = true;
+			if(tuts.exists())
+				havetuts = true;
+				
+			if(havelabs &&  !alreadyRUN){			
 				StudentDataParser labParser = new StudentDataParser(labs);
-				labSlots = labParser.getTimeslots();
-				labStudents = labParser.parseSelections(labSlots);
-				doBounds(labSlots);
+			
+				labsList = labParser.getTimeslots();
+				labStudents = labParser.parseSelections(labsList);
+				doBounds(labsList, true, havelabs, havetuts);			
 			}
 
-			if(tuts.exists()){
+			if(havetuts &&  !alreadyRUN){
 				StudentDataParser tutParser = new StudentDataParser(tuts);
-				tutSlots = tutParser.getTimeslots();
-				tutStudents = tutParser.parseSelections(tutSlots);
-				doBounds(tutSlots);
+				tutorialsList = tutParser.getTimeslots();
+				tutStudents = tutParser.parseSelections(tutorialsList);
+				doBounds(tutorialsList, false, havelabs, havetuts);
 			}
 
-			if (labs.exists() && tuts.exists()){
+			if (havelabs && havetuts){
 				for(Student s: labStudents){
 					for(Student t: tutStudents){
 						s.merge(t);
@@ -397,76 +409,114 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 
 			if(selectedAlgorithm.equals("Boss Sort")){
-				BossSort bs = new BossSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
 				output = bs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 			else if(selectedAlgorithm.equals("Howard Sort")){
-				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
 				output = hs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 			else if(selectedAlgorithm.equals("Cutting Sort")){
-				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
 				output = cs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}else if(selectedAlgorithm.equals("Permute Sort")){
+<<<<<<< HEAD
 				PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+=======
+				permuSort ps = new permuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+>>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}		
 			
 			//Create Naughty Lists
 			if(labs.exists())
-				new NaughtyList(output.getFlagged(), labSlots).setVisible(true);
+				new NaughtyList(output.getFlagged(), labsList).setVisible(true);
 			if(tuts.exists())
-				new NaughtyList(output.getFlagged(), tutSlots).setVisible(true);
+				new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
 
 			frame.repaint();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void doBounds(List<Timeslot> slots){
-		if (SessionBounds.size() != slots.size() || !alreadyRUN) {
-			alreadyRUN = true;
+	
+	//TODO resolve it so that the labs and tutorials are saved
+	// and not overwritten when re-running algorithm.
+	//
+	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
+		
+		if ( (sessionBoundsLabs.size()+ sessionBoundsTuts.size()) != slots.size() 
+				|| !alreadyRUN ) {
+			
+			System.out.println("ASDDDDDDDDDDDDD");
+			
+			// created the last of the bounds when
+			// - we only have Labs and are now making bounds for these
+			// - or we have Tutorials and have done labs, or dont have labs
+			if(isLabs && !hasTuts)
+				alreadyRUN = true;
+			else if(!isLabs && hasTuts){
+				alreadyRUN = true;				
+			}
+			save.setEnabled(true);
 			save.setEnabled(true);
 			// recreate bounds array
+			int startRow;
+			if(isLabs){
+				startRow = 0;
+			}else
+				startRow = sessionBoundsLabs.size()+5;
 
-			SessionBounds = new ArrayList<Bounds>();
+			ArrayList<Bounds> sessionBounds = new ArrayList<Bounds>();
 			GridBagConstraints c = new GridBagConstraints();
-			c.insets = new Insets(1, 1, 1, 1);
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.weightx = 0.5;
-			c.gridx = 0;
-			c.gridy = 0;
-			eastPanel.add(new JLabel("Session Name  "));
-			c.gridx = 1;
-			c.gridy = 0;
-			eastPanel.add(new JLabel("Min  "));
-			c.gridx = 2;
-			c.gridy = 0;
-			eastPanel.add(new JLabel("Max"));
-			c.gridx = 3;
-			c.gridy = 0;
-			eastPanel.add(new JLabel("Pref. Min  "));
-
-			c.gridx = 4;
-			c.gridy = 0;
-			eastPanel.add(new JLabel("Pref. Max  "));
-
-			eastPanel.add(new JLabel());
+			c.insets = new Insets(2, 2, 2, 2);
+			c.fill = GridBagConstraints.VERTICAL;
+			if(isLabs){
+				c.weightx = 0.5;
+				c.gridx = 0;
+				c.gridy = 0+startRow;
+				eastPanel.add(new JLabel("Session Name "));
+				c.gridx = 1;
+				c.gridy = 0+startRow;
+				eastPanel.add(new JLabel("Min      "));
+				c.gridx = 2;
+				c.gridy = 0+startRow;
+				eastPanel.add(new JLabel("Max      "));
+				c.gridx = 3;
+				c.gridy = 0+startRow;
+				eastPanel.add(new JLabel("Pref. Min"));
+	
+				c.gridx = 4;
+				c.gridy = 0+startRow;
+				eastPanel.add(new JLabel("Pref. Max"));
+			}
+			String sectionTitle = "";
+			
+			if(isLabs)
+				sectionTitle = "LABS";
+			else
+				sectionTitle = "TUTS";
+			
+			createTitleRow(eastPanel, 3+startRow, sectionTitle);
+			
 			for (int i = 0; i < slots.size(); i++) {
 				Bounds timeslotBounds = new Bounds(slots.get(i));
-				SessionBounds.add(timeslotBounds);
+				sessionBounds.add(timeslotBounds);
 				// creates a set of input boxes in in the ith row, though
 				// it starts two rows down to allow space for the title rows
 				// (eg. Session Name)
 				String slotTitle = slots.get(i).toString();
-				timeslotBounds.createInputBoxes(eastPanel, i + 2,"Session " + (i + 1));
+				timeslotBounds.createInputBoxes(eastPanel, i + 4 + startRow, slotTitle);
 			}
+			if(isLabs)
+				sessionBoundsLabs = sessionBounds;
+			else
+				sessionBoundsTuts = sessionBounds;
 		}
 		frame.validate();
 	}
@@ -488,6 +538,46 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 		}
 	}
+	
+	
+	public boolean createTitleRow(JPanel panel, int drawRow, String name) {
+		if (panel.getLayout() instanceof GridBagLayout) {
+			// Uses the gridbag layout manager, so we can set up where we
+			// want the
+			// boxes to be placed in the grid.
+			GridBagConstraints c = new GridBagConstraints();
+			c.insets = new Insets(1, 1, 1, 1);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 0.5;
+			c.gridy = drawRow;
+			JLabel title = new JLabel(name);
+			c.gridx = 0;
+			
+			panel.add(title, c);
+			final JLabel minText = new JLabel("");
+			c.gridx++;
+			panel.add(minText, c);
+			
+			final JLabel maxText = new JLabel("");
+			
+			c.gridx++;
+			panel.add(maxText, c);
+			
+			final JLabel prefMinText = new JLabel("");
+			c.gridx++;
+			panel.add(prefMinText, c);
+			
+			final JLabel prefMaxText = new JLabel("");
+			c.gridx++;
+			panel.add(prefMaxText, c);
+			
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -504,6 +594,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		public Bounds(Timeslot _timeslot) {
 			this.timeslot = _timeslot;
 		}
+		 
 
 		public boolean createInputBoxes(JPanel panel, int drawRow, String name) {
 			if (panel.getLayout() instanceof GridBagLayout) {
@@ -541,20 +632,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 							public void update(DocumentEvent e) {
 								try {
-									if (Integer.parseInt(minText.getText()) < 0) {
-										timeslot.setMinStudents(0);
-										SwingUtilities
-										.invokeLater(new Runnable() {
-											@Override
-											public void run() {
-												minText.setText(0 + "");
-											}
-										});
-									} else
+									if (Integer.parseInt(minText.getText()) < 0 ||
+											Integer.parseInt(minText.getText()) >= timeslot
+												.getMaxStudents()) {
+										minText.setForeground(Color.red);							
+										
+									} else{
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
+										minText.setForeground(Color.black);
+									}
 								} catch (NumberFormatException nfe) {
 								}
+								System.out.println(timeslot.getMinStudents());
+								System.out.println(timeslot.getMaxStudents());
+								System.out.println(timeslot.getPreferredMin());
+								System.out.println(timeslot.getPreferredMax());
 							}
 						});
 				final JTextArea maxText = new JTextArea("20");
@@ -586,25 +679,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 										timeslot.setMaxStudents(timeslot
 												.getMinStudents() + 1);
-										// resets the text, but cannot do so
-										// within the listener.
-										// Swing Utilities invoke later is a
-										// work around
-										SwingUtilities
-										.invokeLater(new Runnable() {
-											@Override
-											public void run() {
-												maxText.setText((timeslot
-														.getMaxStudents())
-														+ "");
-											}
-										});
+										
 									} else
 										timeslot.setMaxStudents(Integer
 												.parseInt(maxText.getText()));
 								} catch (NumberFormatException nfe) {
 								}
+								System.out.println(timeslot.getMinStudents());
+								System.out.println(timeslot.getMaxStudents());
+								System.out.println(timeslot.getPreferredMin());
+								System.out.println(timeslot.getPreferredMax());
 							}
+							
 						});
 				final JTextArea prefMinText = new JTextArea("0");
 				c.gridx++;
@@ -628,26 +714,23 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 							public void update(DocumentEvent e) {
 								try {
-									if (Integer.parseInt(prefMinText.getText()) < 0) {
-										timeslot.setPreferredMin(0);
-										// resets the text, but cannot do so
-										// within the listener.
-										// Swing Utilities invoke later is a
-										// work around
-										SwingUtilities
-										.invokeLater(new Runnable() {
-											@Override
-											public void run() {
-												prefMinText
-												.setText(0 + "");
-											}
-										});
-									} else
+									if (Integer.parseInt(prefMinText.getText()) < 0 || 
+										Integer.parseInt(prefMinText.getText()) >= timeslot
+										.getPreferredMax()) {
+										// do nothing if not between preferred max and 0	
+										prefMinText.setForeground(Color.red);
+									} else{
 										timeslot.setPreferredMin(Integer
 												.parseInt(prefMinText.getText()));
+										prefMinText.setForeground(Color.black);
+									}
 								} catch (NumberFormatException nfe) {
 
 								}
+								System.out.println(timeslot.getMinStudents());
+								System.out.println(timeslot.getMaxStudents());
+								System.out.println(timeslot.getPreferredMin());
+								System.out.println(timeslot.getPreferredMax());
 							}
 						});
 				final JTextArea prefMaxText = new JTextArea("20");
@@ -674,27 +757,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								try {
 									if (Integer.parseInt(prefMaxText.getText()) <= timeslot
 											.getPreferredMin()) {
+										
 										timeslot.setPreferredMax(timeslot
 												.getPreferredMin() + 1);
-										// resets the text, but cannot do so
-										// within the listener.
-										// Swing Utilities invoke later is a
-										// work around
-										// this runs after we leave the listener
-										SwingUtilities
-										.invokeLater(new Runnable() {
-											@Override
-											public void run() {
-												prefMaxText.setText((timeslot
-														.getPreferredMax())
-														+ "");
-											}
-										});
 									} else
 										timeslot.setPreferredMax(Integer
 												.parseInt(prefMaxText.getText()));
 								} catch (NumberFormatException nfe) {
 								}
+								System.out.println(timeslot.getMinStudents());
+								System.out.println(timeslot.getMaxStudents());
+								System.out.println(timeslot.getPreferredMin());
+								System.out.println(timeslot.getPreferredMax());
 							}
 						});
 				return true;
