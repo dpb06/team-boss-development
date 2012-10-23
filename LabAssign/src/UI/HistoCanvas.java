@@ -3,6 +3,8 @@ package UI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -86,7 +88,12 @@ public class HistoCanvas extends JPanel implements MouseListener{
 			g.fillRect(r.x, r.y, r.width, r.height);
 			g.setColor(Color.black);
 			g.drawRect(r.x, r.y, r.width, r.height);
-			g.drawString(s.toString(), r.y+r.height+10, r.x);
+			((Graphics2D)g).rotate(-Math.PI/4);
+			Point textPoint = new Point(r.x, r.y+r.height-10);
+			Point newPos = new Point();
+			((Graphics2D)g).getTransform().deltaTransform(textPoint, newPos);
+			((Graphics2D)g).drawString(s.toString(), newPos.x, newPos.y);
+			((Graphics2D)g).rotate(Math.PI/4);
 		}
 		
 		
