@@ -52,27 +52,29 @@ public class HowardsSort implements Algorithm {
 	@Override
 	public AlgorithmOutput start() {
 		//Give students a random order
-		randomize();
+		Collections.shuffle(students);
 		//Sort students into labs
 		for(Student s: students){
 			s.combineLabs();
 			if(s.getCombinedLabs().isEmpty()){
-				s.setFlaggedLabs();
+				s.setFlaggedForLabs(true);
+				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
 				flagged.add(s);
 			}
 		}
 		for(Timeslot t:labs)
 			t.sortAssigned();
 		sortLabs();
+		//Prioritize students by their tutorial choices
 		//  TutorialChecker tc = new TutorialChecker(students);
 		//      students = tc.getStudents();
-		//Prioritize students by their tutorial choices
 		//Give students random order again
-		randomize();
+		Collections.shuffle(students);
 		for(Student s: students){
 			s.combineTuts();
 			if(s.getCombinedTuts().isEmpty()){
-				s.setFlaggedLabs();
+				s.setFlaggedForTuts(true);
+				s.setReasonForFlagging("Student has no first, second, or third tutorial choices.");
 				flagged.add(s);
 			}
 		}
@@ -94,7 +96,7 @@ public class HowardsSort implements Algorithm {
 				System.out.println("Contains as first choice: "+labs.get(0).toString());
 		}
 		for(Student s: students){
-			if(!s.getFlaggedTut()){
+			if(!s.getFlaggedForTuts()){
 				s.setAssignedTut(s.getCombinedLabs().get(0));
 				s.getCombinedTuts().get(0).addStudent(s);
 			}
@@ -114,7 +116,8 @@ public class HowardsSort implements Algorithm {
 						}
 					}
 					else{
-						currentStudent.setFlaggedTuts();
+						currentStudent.setFlaggedForTuts(true);
+						currentStudent.setReasonForFlagging("FILL THIS OUT"); //TODO: FILL THIS OUT FILL THIS OUT FILL THIS OUT FILL THIS OUT FILL THIS OUT
 						flagged.add(currentStudent);
 					}
 				}
@@ -127,21 +130,7 @@ public class HowardsSort implements Algorithm {
 
 	@SuppressWarnings("unchecked")
 	private void randomize() {
-
 		Collections.shuffle(students);
-
-		//		//Begin console output.
-		//		System.out.println("priorityCalculator() in HowardsSort");
-		//		//Create a local clone of students so original data remains intact
-		//		//TODO: FIX THE NULL POINTER EXCEPTION BEING THROWN HERE
-		//		priority = new PriorityQueue<Student>(students);
-		//		//Give each a random priority
-		//		for(Student s: priority){
-		//			s.setPriority((int) (Math.random()*students.size()*3));
-		//			//Printspam the priority of each student.
-		//			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
-		//		}
-		//		System.out.println("\n");
 	}
 
 
@@ -154,7 +143,7 @@ public class HowardsSort implements Algorithm {
 				System.out.println("Contains as first choice: "+labs.get(0).toString());
 		}
 		for(Student s: students){
-			if(!s.getFlaggedLabs()){
+			if(!s.getFlaggedForLabs()){
 				s.setAssignedLab(s.getCombinedLabs().get(0));
 				s.getCombinedLabs().get(0).addStudent(s);
 			}
@@ -174,7 +163,26 @@ public class HowardsSort implements Algorithm {
 						}
 					}
 					else{
-						currentStudent.setFlaggedLabs();
+						currentStudent.setFlaggedForLabs(true);
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						//TODO: Fill this out
+						currentStudent.setReasonForFlagging("Josh, you have to fill this out.");
 						flagged.add(currentStudent);
 					}
 				}

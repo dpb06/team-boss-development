@@ -83,7 +83,7 @@ public class PermuSort implements Algorithm{
 		//For each student in order of how few labs they can attend. TODO: check???
 		for(Student s:students){
 			//If the student hasn't already been flagged
-			if(!s.getFlagged()){
+			if(!s.getFlaggedForLabs()){
 				//If the root node is null
 				if(start==null){
 					//Initialize a new tree, with this student as its root node value.

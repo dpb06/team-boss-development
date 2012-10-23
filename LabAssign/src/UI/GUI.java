@@ -423,11 +423,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				output = cs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}else if(selectedAlgorithm.equals("Permute Sort")){
-<<<<<<< HEAD
 				PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
-=======
-				permuSort ps = new permuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
->>>>>>> branch 'master' of https://github.com/dpb06/team-boss-development.git
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}		
