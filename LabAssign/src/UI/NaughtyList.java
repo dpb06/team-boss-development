@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import dataParsing.StudentDataParser;
@@ -23,16 +24,15 @@ public class NaughtyList extends JFrame {
 	private JTable table;
 	private List<Student> students;
 	private List<Timeslot> timeslots;// Just for knowing 'index'
-
-	public NaughtyList(List<Student> allStudents, List<Timeslot> timeslots) {
-		students = new ArrayList<Student>(allStudents);
-		// for(Student s: allStudents){
-		// // this.students = students;
-		// if(s.getNumCanAttendLabs() < 2){
-		// students.add(s);
-		// }
-		// }
+	
+	public NaughtyList(List<Student> flaggedStudents, List<Timeslot> timeslots) {
+		students = new ArrayList<Student>(flaggedStudents);
 		this.timeslots = timeslots;
+		if(timeslots.get(0) instanceof Lab)
+			this.setTitle("Students Flagged for Labs");
+		else
+			this.setTitle("Students Flagged for Tutorials");
+		
 		String[] titles = new String[timeslots.size() + 1];
 		titles[0] = "Student ID";
 		for (int i = 1; i <= timeslots.size(); ++i) {

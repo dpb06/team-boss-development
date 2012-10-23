@@ -377,7 +377,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser labParser = new StudentDataParser(labs);
 				labSlots = labParser.getTimeslots();
 				labStudents = labParser.parseSelections(labSlots);
-				new NaughtyList(labStudents, labSlots).setVisible(true);
 				doBounds(labSlots);
 			}
 
@@ -385,7 +384,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser tutParser = new StudentDataParser(tuts);
 				tutSlots = tutParser.getTimeslots();
 				tutStudents = tutParser.parseSelections(tutSlots);
-				new NaughtyList(tutStudents, tutSlots).setVisible(true);
 				doBounds(tutSlots);
 			}
 
@@ -417,7 +415,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				permuSort ps = new permuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}			
+			}		
+			
+			//Create Naughty Lists
+			if(labs.exists())
+				new NaughtyList(output.getFlagged(), labSlots).setVisible(true);
+			if(tuts.exists())
+				new NaughtyList(output.getFlagged(), tutSlots).setVisible(true);
 
 			frame.repaint();
 		} catch (FileNotFoundException e) {
