@@ -21,7 +21,6 @@ public class HowardsSort implements Algorithm {
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
 	private ArrayList<Student> students;
-	private PriorityQueue<Student> priority = new PriorityQueue<Student>();
 	private ArrayList<Student> flagged = new ArrayList<Student>();
 	private AlgorithmOutput output = new AlgorithmOutput();
 
