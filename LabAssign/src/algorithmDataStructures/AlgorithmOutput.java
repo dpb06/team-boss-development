@@ -42,4 +42,14 @@ public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>>{
 	public HashMap<String,Integer> getFitness(){
 		return fitness;
 	}
+	
+	public double fitnessValue(){
+		double fitnessValue=0;
+		double count=0;
+		for(String s: fitness.keySet()){
+			fitnessValue+=fitness.get(s);
+			count++;
+		}
+		return fitnessValue/count;
+	}
 }

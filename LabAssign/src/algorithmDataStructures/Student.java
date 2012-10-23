@@ -31,9 +31,11 @@ public class Student implements Comparable<Object> {
 	private ArrayList<Timeslot> combinedLabs=new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> combinedTuts=new ArrayList<Timeslot>();
 	private int currentIndex=0;
-	
-	private boolean flagged = false;
+
+	private boolean flaggedForLabs = false;
+	private boolean flaggedForTuts = false;
 	private boolean changedChoices = false;
+	private String reasonForFlagging = "";
 
 	// -----CONSTRUCTOR-----\\
 	public Student(int studentNum, String name) {
@@ -200,37 +202,39 @@ public class Student implements Comparable<Object> {
 		}
 		return false;
 	}
-	
+
 	public void combineLabs(){
 		combinedLabs.addAll(firstChoicesLabs);
 		combinedLabs.addAll(secondChoicesLabs);
 		combinedLabs.addAll(thirdChoicesLabs);
 	}
-	
+
 	public void combineTuts(){
 		combinedTuts.addAll(firstChoicesTuts);
 		combinedTuts.addAll(secondChoicesTuts);
 		combinedTuts.addAll(thirdChoicesTuts);
 	}
-public void incrementIndex(){
-	currentIndex++;
-}
+	
+	public void incrementIndex(){
+		currentIndex++;
+	}
+	
 	// -----GET METHODS-----\\
 	public int getCurrentIndex(){
 		return currentIndex;
 	}
-	
+
 	public Timeslot getCurrentTimeslot(){
 		return combinedLabs.get(currentIndex);
 	}
 	public int getPriority() {
 		return Priority;
 	}
-	
+
 	public ArrayList<Timeslot> getCombinedTuts(){
 		return combinedTuts;
 	}
-	
+
 	public ArrayList<Timeslot> getCombinedLabs(){
 		return combinedLabs;
 	}
@@ -291,12 +295,19 @@ public void incrementIndex(){
 		return assignedTut;
 	}
 
-	public boolean getFlagged() {
-		return flagged;
+	public boolean getFlaggedForTuts() {
+		return flaggedForTuts;
+	}
+	public boolean getFlaggedForLabs() {
+		return flaggedForLabs;
 	}
 
 	public boolean getChangedChoices() {
 		return changedChoices;
+	}
+
+	public String getReasonForFlagging() {
+		return reasonForFlagging;
 	}
 
 	// -----SET METHODS-----\\
@@ -342,8 +353,15 @@ public void incrementIndex(){
 		this.thirdChoicesTuts = choices;
 	}
 
-	public void setFlagged() {
-		this.flagged = true;
+	public void setFlaggedForLabs(boolean flaggedForLabs) {
+		this.flaggedForLabs = flaggedForLabs;
+	}
+	public void setFlaggedForTuts(boolean flaggedForTuts) {
+		this.flaggedForTuts = flaggedForTuts;
+	}
+
+	public void setReasonForFlagging(String reasonForFlagging){
+		this.reasonForFlagging = reasonForFlagging;
 	}
 
 	public void setChangedChoices(boolean b) {

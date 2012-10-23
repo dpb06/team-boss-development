@@ -104,6 +104,8 @@ public class BossSortJUnitSuite {
 	
 	/**
 	 * Ensures BossSort assigns tutorials to students (however poorly)
+	 * Ensures tutorialChecker is working correctly
+	 * Ensures students are flagged if they have no tutorial choices
 	 */
 	@Test
 	public void testTutorialAssign(){
