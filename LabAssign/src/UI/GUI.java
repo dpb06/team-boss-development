@@ -56,8 +56,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private JFrame frame;
 	private JPanel eastPanel;
 	private JMenuBar menuBar;
-	// private Graphics g;
-	private int NUM_SESSIONS = 12;
 
 	private JTextArea textArea;
 	private final JTextField LabFileTextField;
@@ -178,7 +176,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
 		// This array contains all algorithm options
-		String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
+		//String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
+		String[] algorithms = {"Boss Sort", "Howard Sort", "Permute Sort"};
 		JComboBox algoGroup = new JComboBox(algorithms);
 
 
@@ -236,8 +235,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Make this start in the text field path
 				//Handle 'Save' button action.
-				if(output != null)
-					fileOutput(output);
+				if(output != null){
+					JFileChooser jfc = new JFileChooser();
+					if (jfc.showSaveDialog(GUI.this) ==  JFileChooser.APPROVE_OPTION){
+						File fout = jfc.getSelectedFile();
+						fileOutput(output, fout);
+					}
+				}
 				else
 					System.out.println("No output to save");
 			}
@@ -252,11 +256,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.setVisible(true);
 	}
 
-	private void fileOutput(AlgorithmOutput output) {
+	private void fileOutput(AlgorithmOutput output, File fout) {
 		//Algorithm output is HashMap<Timeslot,ArrayList<Student>>
 		try{
 			// Create file 
-			FileWriter fstream = new FileWriter("Output/printout.txt");
+			FileWriter fstream = new FileWriter(fout);
 			//TODO: Allow user to select output file
 			BufferedWriter out = new BufferedWriter(fstream);
 
@@ -292,20 +296,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}**/
 
 			/** Iterate through Timeslots twice times (labs & tuts) **/
+
+			out.write("Assigned Students:");
 			// Labs
 			for(Timeslot t: output.keySet()){
 				if(t instanceof Lab){
-					out.write("Lab - " + t.toString());
+					out.write("Lab - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
 						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 					}							
 				}
 			}
 
-			// Labs
+			// Tuts
 			for(Timeslot t: output.keySet()){
 				if(t instanceof Tutorial){
-					out.write("Tutorial - " + t.toString());
+					out.write("Tutorial - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
 						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 					}							
@@ -370,7 +376,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser labParser = new StudentDataParser(labs);
 				labSlots = labParser.getTimeslots();
 				labStudents = labParser.parseSelections(labSlots);
-				new NaughtyList(labStudents, labSlots).setVisible(true);
 				doBounds(labSlots);
 			}
 
@@ -378,7 +383,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				StudentDataParser tutParser = new StudentDataParser(tuts);
 				tutSlots = tutParser.getTimeslots();
 				tutStudents = tutParser.parseSelections(tutSlots);
-				new NaughtyList(tutStudents, tutSlots).setVisible(true);
 				doBounds(tutSlots);
 			}
 
@@ -407,10 +411,16 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				output = cs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}else if(selectedAlgorithm.equals("Permute Sort")){
-				permuSort ps = new permuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
+				PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labSlots),new ArrayList<Timeslot>(tutSlots),new ArrayList<Student>(labStudents));
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}			
+			}		
+			
+			//Create Naughty Lists
+			if(labs.exists())
+				new NaughtyList(output.getFlagged(), labSlots).setVisible(true);
+			if(tuts.exists())
+				new NaughtyList(output.getFlagged(), tutSlots).setVisible(true);
 
 			frame.repaint();
 		} catch (FileNotFoundException e) {
