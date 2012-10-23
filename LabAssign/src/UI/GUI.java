@@ -69,6 +69,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	boolean alreadyRUN = false;
 
 	private String selectedAlgorithm = "Boss Sort";
+	
+	//Fields for fileChosen()/doRun() use
+	File labs;
+	File tuts;
+	List<Student> labStudents = new ArrayList<Student>();
 
 	JButton save;	// save button created in GUI, field so can enable in another method
 	AlgorithmOutput output;
@@ -126,6 +131,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					File file = fc.getSelectedFile();
 					LabFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
+					fileChosen();
 				}
 			}
 		});
@@ -160,6 +166,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					File file = fc.getSelectedFile();
 					TutFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
+					fileChosen();
 				}
 			}
 		});
@@ -377,12 +384,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		GUI g = new GUI();
 	}
 
-	public void doRun() {
+	public void fileChosen() {
 		try {
-			File labs = new File(LabFileTextField.getText());
-			File tuts = new File(TutFileTextField.getText());
+			labs = new File(LabFileTextField.getText());
+			tuts = new File(TutFileTextField.getText());
 
-			List<Student> labStudents = new ArrayList<Student>();
+			labStudents = new ArrayList<Student>();
 			List<Student> tutStudents = new ArrayList<Student>();
 
 			boolean havelabs = false;
@@ -434,48 +441,51 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					}
 				}
 			}
-
-			if(selectedAlgorithm.equals("Boss Sort")){
-				BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
-				output = bs.start();
-				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}
-			else if(selectedAlgorithm.equals("Howard Sort")){
-				HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
-				output = hs.start();
-				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}
-			else if(selectedAlgorithm.equals("Cutting Sort")){
-				CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
-				output = cs.start();
-				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}else if(selectedAlgorithm.equals("Permute Sort")){
-				PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
-				output = ps.start();
-				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
-			}
-		    
-			System.out.println(output.fitnessValue());
-			String fitness = "Fitness - " + output.fitnessValue();
-//			for(String f: output.getFitness().keySet()){
-//				fitness += (f + " - " + output.getFitness().get(f) + "\n");
-//			}
 			
-			JLabel fit = new JLabel(fitness);
-			fitnessFunctionPanel.add(fit);
-			fitnessFunctionPanel.setVisible(true);
-			frame.validate();
-
-			//Create Naughty Lists
-			if(labs.exists())
-				new NaughtyList(output.getFlagged(), labsList).setVisible(true);
-			if(tuts.exists())
-				new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
-
-			frame.repaint();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void doRun(){
+		if(selectedAlgorithm.equals("Boss Sort")){
+			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			output = bs.start();
+			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+		}
+		else if(selectedAlgorithm.equals("Howard Sort")){
+			HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			output = hs.start();
+			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+		}
+		else if(selectedAlgorithm.equals("Cutting Sort")){
+			CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			output = cs.start();
+			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+		}else if(selectedAlgorithm.equals("Permute Sort")){
+			PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			output = ps.start();
+			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
+		}
+	    
+		System.out.println(output.fitnessValue());
+		String fitness = "Fitness - " + output.fitnessValue();
+//		for(String f: output.getFitness().keySet()){
+//			fitness += (f + " - " + output.getFitness().get(f) + "\n");
+//		}
+		
+		JLabel fit = new JLabel(fitness);
+		fitnessFunctionPanel.add(fit);
+		fitnessFunctionPanel.setVisible(true);
+		frame.validate();
+
+		//Create Naughty Lists
+		if(labs.exists())
+			new NaughtyList(output.getFlagged(), labsList).setVisible(true);
+		if(tuts.exists())
+			new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
+
+		frame.repaint();
 	}
 
 
