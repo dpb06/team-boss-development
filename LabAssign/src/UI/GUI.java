@@ -406,7 +406,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 			if(naughtyStudents.size() > 0){
-				labStudents = new NaughtyList(naughtyStudents, labsList, "Students with one/no labs selected").getStudents();
+				new NaughtyList(naughtyStudents, labsList, "Students with one/no labs selected").getStudents();
 				//TODO Stop it here awaiting user's checkover of list
 			}
 			naughtyStudents = new ArrayList<Student>();	// Cleared so can use for tuts too
@@ -455,10 +455,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}
 		    
-			String fitness = "Fitness:\n";
-			for(String f: output.getFitness().keySet()){
-				fitness += (f + " - " + output.getFitness().get(f) + "\n");
-			}
+			System.out.println(output.fitnessValue());
+			String fitness = "Fitness - " + output.fitnessValue();
+//			for(String f: output.getFitness().keySet()){
+//				fitness += (f + " - " + output.getFitness().get(f) + "\n");
+//			}
 			
 			JLabel fit = new JLabel(fitness);
 			fitnessFunctionPanel.add(fit);
