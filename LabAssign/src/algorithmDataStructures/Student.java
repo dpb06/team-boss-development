@@ -32,7 +32,8 @@ public class Student implements Comparable<Object> {
 	private ArrayList<Timeslot> combinedTuts=new ArrayList<Timeslot>();
 	private int currentIndex=0;
 	
-	private boolean flagged = false;
+	private boolean flaggedLabs = false;
+	private boolean flaggedTuts = false;
 	private boolean changedChoices = false;
 
 	// -----CONSTRUCTOR-----\\
@@ -116,7 +117,7 @@ public class Student implements Comparable<Object> {
 		numCanAttendLabs++;
 		return true;
 	}
-
+	
 	public boolean addSecondLab(Timeslot t) {
 		if (secondChoicesLabs.contains(t)) {
 			return false;
@@ -291,8 +292,11 @@ public void incrementIndex(){
 		return assignedTut;
 	}
 
-	public boolean getFlagged() {
-		return flagged;
+	public boolean getFlaggedTut() {
+		return flaggedTuts;
+	}
+	public boolean getFlaggedLabs() {
+		return flaggedLabs;
 	}
 
 	public boolean getChangedChoices() {
@@ -342,8 +346,11 @@ public void incrementIndex(){
 		this.thirdChoicesTuts = choices;
 	}
 
-	public void setFlagged() {
-		this.flagged = true;
+	public void setFlaggedLabs() {
+		this.flaggedLabs = true;
+	}
+	public void setFlaggedTuts() {
+		this.flaggedTuts = true;
 	}
 
 	public void setChangedChoices(boolean b) {
