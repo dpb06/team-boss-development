@@ -41,7 +41,7 @@ public class StudentChoiceOrderSuite {
 		for(Student s: students){
 			//If a student has no first choices and isn't flagged
 			if(s.getFirstChoiceLabs().isEmpty()){
-				if(s.getFlagged() == false){
+				if(s.getFlaggedLabs() == false){
 					//Set boolean to false
 					startEmptyFirstChoices = false;
 				}
@@ -56,7 +56,7 @@ public class StudentChoiceOrderSuite {
 			//If a student has no first choices
 			if(s.getFirstChoiceLabs().isEmpty()){
 				//Ignore if they have no choices and are flagged
-				if(s.getFlagged()==true && s.getSecondChoiceLabs().isEmpty() && s.getThirdChoiceLabs().isEmpty()){}
+				if(s.getFlaggedLabs()==true && s.getSecondChoiceLabs().isEmpty() && s.getThirdChoiceLabs().isEmpty()){}
 				//Otherwise
 				else {
 					//Set boolean to false
@@ -79,7 +79,7 @@ public class StudentChoiceOrderSuite {
 		for(Student s: students){
 			//If a student has no first choices and isn't flagged
 			if(s.getFirstChoiceTuts().isEmpty()){
-				if(s.getFlagged() == false){
+				if(s.getFlaggedTut() == false){
 					//Set boolean to false
 					startEmptyFirstChoices = false;
 				}
@@ -94,7 +94,7 @@ public class StudentChoiceOrderSuite {
 			//If a student has no first choices
 			if(s.getFirstChoiceTuts().isEmpty()){
 				//Ignore if they have no choices and are flagged
-				if(s.getFlagged()==true && s.getSecondChoiceTuts().isEmpty() && s.getThirdChoiceTuts().isEmpty()){}
+				if(s.getFlaggedTut()==true && s.getSecondChoiceTuts().isEmpty() && s.getThirdChoiceTuts().isEmpty()){}
 				//Otherwise
 				else {
 					//Set boolean to false

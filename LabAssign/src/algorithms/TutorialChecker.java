@@ -8,11 +8,11 @@ import algorithmDataStructures.Timeslot;
 /**
  * Removes student's tutorial choices that clash with the lab they are assigned to. 
  */
-public class tutorialChecker {
+public class TutorialChecker {
 
 	private ArrayList<Student> students;
 	
-	public tutorialChecker(ArrayList<Student> students){
+	public TutorialChecker(ArrayList<Student> students){
 		//Begin console output.
 		System.out.println("modifyTuts() in BossSort");
 		this.students = new ArrayList<Student>(students);

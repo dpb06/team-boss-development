@@ -46,7 +46,7 @@ import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 import algorithms.CuttingSort;
 import algorithms.HowardsSort;
-import algorithms.permuSort;
+import algorithms.PermuSort;
 import dataParsing.StudentDataParser;
 
 /**
@@ -274,7 +274,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
 			out.write("Students Flagged:\n");			
 			for(Student s: output.getFlagged()){
-				if(s.getFlagged())
+				if(s.getFlaggedLabs())
 					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 			}
 			
@@ -423,7 +423,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				output = cs.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}else if(selectedAlgorithm.equals("Permute Sort")){
-				permuSort ps = new permuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+				PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
 				output = ps.start();
 				canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 			}		
@@ -629,7 +629,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							public void update(DocumentEvent e) {
 								try {
 									if (Integer.parseInt(minText.getText()) < 0 ||
-											Integer.parseInt(minText.getText()) >= timeslot
+											Integer.parseInt(minText.getText()) > timeslot
 												.getMaxStudents()) {
 										minText.setForeground(Color.red);							
 										
@@ -670,7 +670,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 							public void update(DocumentEvent e) {
 								try {
-									if (Integer.parseInt(maxText.getText()) <= timeslot
+									if (Integer.parseInt(maxText.getText()) < timeslot
 											.getMinStudents()) {
 
 										timeslot.setMaxStudents(timeslot
@@ -711,7 +711,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							public void update(DocumentEvent e) {
 								try {
 									if (Integer.parseInt(prefMinText.getText()) < 0 || 
-										Integer.parseInt(prefMinText.getText()) >= timeslot
+										Integer.parseInt(prefMinText.getText()) > timeslot
 										.getPreferredMax()) {
 										// do nothing if not between preferred max and 0	
 										prefMinText.setForeground(Color.red);
@@ -751,7 +751,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 							public void update(DocumentEvent e) {
 								try {
-									if (Integer.parseInt(prefMaxText.getText()) <= timeslot
+									if (Integer.parseInt(prefMaxText.getText()) < timeslot
 											.getPreferredMin()) {
 										
 										timeslot.setPreferredMax(timeslot
