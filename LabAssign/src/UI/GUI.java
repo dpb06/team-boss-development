@@ -13,10 +13,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedWriter;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +40,8 @@ import javax.swing.event.DocumentListener;
 
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Lab;
-import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
-import algorithmDataStructures.Tutorial;
 import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 import algorithms.CuttingSort;
@@ -73,7 +69,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	boolean alreadyRUN = false;
 
 	private String selectedAlgorithm = "Boss Sort";
-	
 
 	JButton save;	// save button created in GUI, field so can enable in another method
 	AlgorithmOutput output;
@@ -175,7 +170,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				output = null;	//Once 'Run' clicked, output wiped to be refilled
-				output = null;	//Once 'Run' clicked, output wiped to be refilled
 				doRun();
 			}
 		});
@@ -265,7 +259,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.pack();		
 		frame.setVisible(true);
 	}
-
 
 	private void fileOutput(AlgorithmOutput output, File fout) {
 		//Algorithm output is HashMap<Timeslot,ArrayList<Student>>
@@ -410,7 +403,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					for(Student t: tutStudents){
 						s.merge(t);
 					}
-				}				
+				}
 			}
 
 
@@ -586,7 +579,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
 	}
-
 
 
 	// The bounds class is used by the GUI to store the bounds
