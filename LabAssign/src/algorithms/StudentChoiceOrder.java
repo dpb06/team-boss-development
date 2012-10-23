@@ -27,7 +27,7 @@ public class StudentChoiceOrder {
 					//If they have no third choices
 					if(s.getThirdChoiceLabs().isEmpty()){
 						//Flag that student
-						s.setFlagged();
+						s.setFlaggedLabs();
 					}
 					//If they have third, but not first or second choices
 					else {
@@ -64,7 +64,7 @@ public class StudentChoiceOrder {
 					//If they have no third choices
 					if(s.getThirdChoiceTuts().isEmpty()){
 						//Flag that student
-						s.setFlagged();
+						s.setFlaggedTuts();
 					}
 					//If they have third, but not first or second choices
 					else {
