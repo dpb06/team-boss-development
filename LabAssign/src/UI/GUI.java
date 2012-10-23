@@ -274,7 +274,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
 			out.write("Students Flagged:\n");			
 			for(Student s: output.getFlagged()){
-				if(s.getFlaggedLabs())
+				if(s.getFlaggedForLabs())
 					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
 			}
 			
