@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 
 	private void recalculate() {
 		Dimension size = this.getPreferredSize();
+		Collections.sort(timeslots);
 		int width = (size.width-20) / timeslots.size();		
 		int height = size.height-70;
 		int largestSection = Integer.MIN_VALUE;
@@ -62,7 +64,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		for (int i = 0; i < timeslots.size(); i++) {
 			Timeslot t = timeslots.get(i);
 			rectangles.put(
-					new Rectangle(i * width, height- (t.getAssigned().size() * student), width, t.getAssigned().size() * student), t);
+					new Rectangle(i * width+10, height- (t.getAssigned().size() * student), width, t.getAssigned().size() * student), t);
 		}
 	}
 
@@ -92,13 +94,13 @@ public class HistoCanvas extends JPanel implements MouseListener{
 			g.fillRect(r.x, r.y, r.width, r.height);
 			g.setColor(Color.black);
 			g.drawRect(r.x, r.y, r.width, r.height);
-			((Graphics2D)g).rotate(Math.PI/4);
+			((Graphics2D)g).rotate(Math.PI/6);
 			Point textPoint = new Point(r.x+r.width/2, r.y+r.height+10);
 			Point newPos = new Point();
 			try {
 				((Graphics2D)g).getTransform().createInverse().deltaTransform(textPoint, newPos);
 				((Graphics2D)g).drawString(s.toString(), newPos.x, newPos.y);
-				((Graphics2D)g).rotate(-Math.PI/4);
+				((Graphics2D)g).rotate(-Math.PI/6);
 			} catch (NoninvertibleTransformException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
