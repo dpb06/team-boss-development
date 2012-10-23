@@ -38,7 +38,7 @@ public class BossSort implements Algorithm{
 		//Assign labs to students
 		sortLabs();
 		//Remove tutorial choices that clash with assigned labs
-		tutorialChecker tc = new tutorialChecker(students);
+		TutorialChecker tc = new TutorialChecker(students);
 		students = tc.getStudents();
 		//Prioritize students by their tutorial choices
 		tutPriorityCalculator();

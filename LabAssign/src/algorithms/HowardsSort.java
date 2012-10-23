@@ -38,7 +38,7 @@ public class HowardsSort implements Algorithm {
 		priorityCalculator();
 		//Sort students into labs
 		sortLabs();
-		tutorialChecker tc = new tutorialChecker(students);
+		TutorialChecker tc = new TutorialChecker(students);
 		students = tc.getStudents();
 		//Prioritize students by their tutorial choices
 		//Give students random order again

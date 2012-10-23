@@ -33,6 +33,7 @@ public class PermuLeafNode{
 		return next;
 	}
 
+	@Override
 	public String toString(){
 		return student.toString();
 	}
@@ -52,5 +53,4 @@ public class PermuLeafNode{
 	public PermuLeafNode getParent() {
 		return parent;
 	}
-
 }

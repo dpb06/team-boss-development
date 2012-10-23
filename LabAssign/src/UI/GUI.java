@@ -45,7 +45,7 @@ import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 import algorithms.CuttingSort;
 import algorithms.HowardsSort;
-import algorithms.permuSort;
+import algorithms.PermuSort;
 import dataParsing.StudentDataParser;
 
 /**
