@@ -56,8 +56,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private JFrame frame;
 	private JPanel eastPanel;
 	private JMenuBar menuBar;
-	// private Graphics g;
-	private int NUM_SESSIONS = 12;
 
 	private JTextArea textArea;
 	private final JTextField LabFileTextField;
@@ -178,7 +176,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
 		// This array contains all algorithm options
-		String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
+		//String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
+		String[] algorithms = {"Boss Sort", "Howard Sort", "Permute Sort"};
 		JComboBox algoGroup = new JComboBox(algorithms);
 
 
