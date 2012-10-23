@@ -646,8 +646,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								System.out.println(timeslot.getPreferredMax());
 							}
 						});
-				final JTextArea maxText = new JTextArea("20");
-				timeslot.setMaxStudents(20);
+				final JTextArea maxText = new JTextArea(timeslot.getMaxStudents()+"");
 				c.gridx++;
 				panel.add(maxText, c);
 				maxText.getDocument().addDocumentListener(
@@ -688,7 +687,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							}
 							
 						});
-				final JTextArea prefMinText = new JTextArea("0");
+				final JTextArea prefMinText = new JTextArea(timeslot.getPreferredMin()+"");
 				c.gridx++;
 				panel.add(prefMinText, c);
 				prefMinText.getDocument().addDocumentListener(
@@ -729,7 +728,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								System.out.println(timeslot.getPreferredMax());
 							}
 						});
-				final JTextArea prefMaxText = new JTextArea("20");
+				final JTextArea prefMaxText = new JTextArea(timeslot.getPreferredMax()+"");
 				c.gridx++;
 				panel.add(prefMaxText, c);
 				prefMaxText.getDocument().addDocumentListener(
