@@ -97,7 +97,7 @@ public class NaughtyList extends JFrame {
 		StudentDataParser p;
 		try {
 			p = new StudentDataParser(new File(
-					"//u/students/newporhayd/git/team-boss-development/LabAssign/src/FullInputData.txt"));
+					"~/FullInputData.txt"));
 			List<Timeslot> ts = p.getTimeslots();
 			List<Student> studs;
 			new NaughtyList(studs = p.parseSelections(ts),ts).setVisible(true);
