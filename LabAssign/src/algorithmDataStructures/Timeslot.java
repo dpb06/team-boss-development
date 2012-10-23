@@ -12,7 +12,7 @@ import java.util.Comparator;
  *   The number of students that can/should be in this lab/tut.
  *   The students assigned to this lab/tut.
  */
-public abstract class Timeslot{
+public abstract class Timeslot implements Comparable<Timeslot>{
 
 	//-----FIELDS-----\\
 	private int uID;
@@ -179,6 +179,16 @@ public abstract class Timeslot{
 
 	public ArrayList<Student> getAssigned() {
 		return assigned;
+	}
+	/**
+	 * 
+	 */
+	public int compareTo(Timeslot other){
+		if(this.day != other.day){
+			return this.day.ordinal() - other.day.ordinal() ;
+		} else {
+			return this.startTime - other.startTime;
+		}
 	}
 
 }

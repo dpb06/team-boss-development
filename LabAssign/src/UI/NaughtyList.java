@@ -24,15 +24,37 @@ public class NaughtyList extends JFrame {
 	private JTable table;
 	private List<Student> students;
 	private List<Timeslot> timeslots;// Just for knowing 'index'
-	
+	private String title = "";
+	private Object[][] rowData;
+
+
+	public NaughtyList(List<Student> flaggedStudents, List<Timeslot> timeslots, String title) {
+		//Constructor for Students with One or less Choices
+		students = new ArrayList<Student>(flaggedStudents);
+		this.timeslots = timeslots;
+		this.title = title;
+		create();
+	}
+
 	public NaughtyList(List<Student> flaggedStudents, List<Timeslot> timeslots) {
 		students = new ArrayList<Student>(flaggedStudents);
 		this.timeslots = timeslots;
-		if(timeslots.get(0) instanceof Lab)
-			this.setTitle("Students Flagged for Labs");
-		else
-			this.setTitle("Students Flagged for Tutorials");
+		create();
+	}
+
+	public List<Student> getStudents(){
+		return students;
+	}
+	private void create(){
+		if(title.equals("")){
+			if(timeslots.get(0) instanceof Lab)
+				title = "Students Flagged for Labs";
+			else
+				title = "Students Flagged for Tutorials";
+		}
 		
+		this.setTitle(title);
+
 		String[] titles = new String[timeslots.size() + 1];
 		titles[0] = "Student ID";
 		for (int i = 1; i <= timeslots.size(); ++i) {
@@ -41,7 +63,7 @@ public class NaughtyList extends JFrame {
 			titles[i] = t.toString();
 		}
 		// TODO: Replace this nastiness with a table model
-		Object[][] rowData = new Object[students.size()][timeslots.size() + 1];
+		rowData = new Object[students.size()][timeslots.size() + 1];
 		for (int i = 0; i < students.size(); ++i) {
 			Student s = students.get(i);
 			Arrays.fill(rowData[i], false);
@@ -67,6 +89,7 @@ public class NaughtyList extends JFrame {
 			}
 		});
 		this.pack();
+		this.setVisible(true);
 	}
 
 	public static void main(String[] args) {
@@ -74,7 +97,7 @@ public class NaughtyList extends JFrame {
 		StudentDataParser p;
 		try {
 			p = new StudentDataParser(new File(
-					"//u/students/newporhayd/git/team-boss-development/LabAssign/src/FullInputData.txt"));
+					"~/FullInputData.txt"));
 			List<Timeslot> ts = p.getTimeslots();
 			List<Student> studs;
 			new NaughtyList(studs = p.parseSelections(ts),ts).setVisible(true);

@@ -2,13 +2,17 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,7 +32,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	public HistoCanvas(){
 		this.addMouseListener(this);
 		//addMouseListener(this);
-		setPreferredSize(new Dimension(500, 200));
+		setPreferredSize(new Dimension(600, 350));
 		
 	}
 	
@@ -45,10 +49,10 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	}
 
 	private void recalculate() {
-		Rectangle bounds = this.getBounds();
 		Dimension size = this.getPreferredSize();
-		int width = size.width / timeslots.size();		
-		int height = size.height;
+		Collections.sort(timeslots);
+		int width = (size.width-20) / timeslots.size();		
+		int height = size.height-70;
 		int largestSection = Integer.MIN_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : timeslots) {
@@ -60,12 +64,14 @@ public class HistoCanvas extends JPanel implements MouseListener{
 		for (int i = 0; i < timeslots.size(); i++) {
 			Timeslot t = timeslots.get(i);
 			rectangles.put(
-					new Rectangle(i * width, height- (t.getAssigned().size() * student), width, t.getAssigned().size() * student), t);
+					new Rectangle(i * width+10, height- (t.getAssigned().size() * student), width, t.getAssigned().size() * student), t);
 		}
 	}
 
 	/** Histogram representation of all Timeslots */
 	public void histogram(Graphics g) {
+		((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		((Graphics2D)g).setFont(new Font("Sans serif", 0, 9));
 		if (this.rectangles == null) { // There's no data
 			System.out.println("No data to plot histogram");
 			return;
@@ -88,12 +94,17 @@ public class HistoCanvas extends JPanel implements MouseListener{
 			g.fillRect(r.x, r.y, r.width, r.height);
 			g.setColor(Color.black);
 			g.drawRect(r.x, r.y, r.width, r.height);
-			((Graphics2D)g).rotate(-Math.PI/4);
-			Point textPoint = new Point(r.x, r.y+r.height-10);
+			((Graphics2D)g).rotate(Math.PI/6);
+			Point textPoint = new Point(r.x+r.width/2, r.y+r.height+10);
 			Point newPos = new Point();
-			((Graphics2D)g).getTransform().deltaTransform(textPoint, newPos);
-			((Graphics2D)g).drawString(s.toString(), newPos.x, newPos.y);
-			((Graphics2D)g).rotate(Math.PI/4);
+			try {
+				((Graphics2D)g).getTransform().createInverse().deltaTransform(textPoint, newPos);
+				((Graphics2D)g).drawString(s.toString(), newPos.x, newPos.y);
+				((Graphics2D)g).rotate(-Math.PI/6);
+			} catch (NoninvertibleTransformException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		
