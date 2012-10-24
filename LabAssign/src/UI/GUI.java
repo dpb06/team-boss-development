@@ -681,6 +681,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				c.gridx = 0;
 				panel.add(title, c);
 				final JTextArea minText = new JTextArea(timeslot.getMinStudents()+"");
+				final JTextArea maxText = new JTextArea(timeslot.getMaxStudents()+"");
+				final JTextArea prefMinText = new JTextArea(timeslot.getPreferredMin()+"");
+				final JTextArea prefMaxText = new JTextArea(timeslot.getPreferredMax()+"");
 				c.gridx++;
 				panel.add(minText, c);
 				minText.getDocument().addDocumentListener(
@@ -706,12 +709,17 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									if (Integer.parseInt(minText.getText()) < 0 ||
 											Integer.parseInt(minText.getText()) > timeslot
 											.getMaxStudents()) {
-										minText.setForeground(Color.red);							
+										minText.setForeground(Color.red);
+										maxText.setForeground(Color.red);							
 
 									} else{
+										
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
+										timeslot.setMaxStudents(Integer
+												.parseInt(maxText.getText()));
 										minText.setForeground(Color.black);
+										maxText.setForeground(Color.black);
 									}
 								} catch (NumberFormatException nfe) {
 								}
@@ -721,7 +729,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								System.out.println(timeslot.getPreferredMax());
 							}
 						});
-				final JTextArea maxText = new JTextArea(timeslot.getMaxStudents()+"");
+
 				c.gridx++;
 				panel.add(maxText, c);
 				maxText.getDocument().addDocumentListener(
@@ -747,12 +755,16 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									if (Integer.parseInt(maxText.getText()) < timeslot
 											.getMinStudents()) {
 
-										timeslot.setMaxStudents(timeslot
-												.getMinStudents() + 1);
-
+										minText.setForeground(Color.red);
+										maxText.setForeground(Color.red);
+										
 									} else
+										timeslot.setMinStudents(Integer
+												.parseInt(minText.getText()));
 										timeslot.setMaxStudents(Integer
 												.parseInt(maxText.getText()));
+										minText.setForeground(Color.black);
+										maxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
 								System.out.println(timeslot.getMinStudents());
@@ -762,7 +774,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							}
 
 						});
-				final JTextArea prefMinText = new JTextArea(timeslot.getPreferredMin()+"");
+				
 				c.gridx++;
 				panel.add(prefMinText, c);
 				prefMinText.getDocument().addDocumentListener(
@@ -789,10 +801,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										.getPreferredMax()) {
 										// do nothing if not between preferred max and 0	
 										prefMinText.setForeground(Color.red);
+										prefMaxText.setForeground(Color.red);
 									} else{
 										timeslot.setPreferredMin(Integer
 												.parseInt(prefMinText.getText()));
+										timeslot.setPreferredMax(Integer
+												.parseInt(prefMaxText.getText()));
 										prefMinText.setForeground(Color.black);
+										prefMaxText.setForeground(Color.black);
 									}
 								} catch (NumberFormatException nfe) {
 
@@ -803,7 +819,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								System.out.println(timeslot.getPreferredMax());
 							}
 						});
-				final JTextArea prefMaxText = new JTextArea(timeslot.getPreferredMax()+"");
+
 				c.gridx++;
 				panel.add(prefMaxText, c);
 				prefMaxText.getDocument().addDocumentListener(
@@ -828,11 +844,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									if (Integer.parseInt(prefMaxText.getText()) < timeslot
 											.getPreferredMin()) {
 
-										timeslot.setPreferredMax(timeslot
-												.getPreferredMin() + 1);
+										prefMinText.setForeground(Color.red);
+										prefMaxText.setForeground(Color.red);
 									} else
+										timeslot.setPreferredMin(Integer
+												.parseInt(prefMinText.getText()));
 										timeslot.setPreferredMax(Integer
 												.parseInt(prefMaxText.getText()));
+										prefMinText.setForeground(Color.black);
+										prefMaxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
 								System.out.println(timeslot.getMinStudents());
