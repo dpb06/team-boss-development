@@ -76,7 +76,7 @@ public class NaughtyList extends JFrame {
 			p = new StudentDataParser(new File("~/FullInputData.txt"));
 			List<Timeslot> ts = p.getTimeslots();
 			List<Student> studs;
-			new NaughtyList(studs = p.parseSelections(ts),ts).setVisible(true);
+			new NaughtyList(studs = p.parseSelections(ts,true),ts).setVisible(true);
 			for (Student s:studs){
 				s.printDebug();
 			}
