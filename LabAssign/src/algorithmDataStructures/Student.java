@@ -371,6 +371,23 @@ public class Student implements Comparable<Object> {
 	public void setAssignedTut(Timeslot t) {
 		this.assignedTut = t;
 	}
+	
+	public void addThird(Timeslot t){
+		if(t instanceof Lab){
+			addThirdLab(t);
+		}else if (t instanceof Tutorial){
+			addThirdTut(t);
+		}
+	}
+	
+	public void removeTimeSlot(Timeslot t){
+		firstChoicesLabs.remove(t);
+		secondChoicesLabs.remove(t);
+		thirdChoicesLabs.remove(t);
+		firstChoicesTuts.remove(t);
+		secondChoicesTuts.remove(t);
+		thirdChoicesTuts.remove(t);
+	}
 
 	/**
 	 * This method merges the given students choices into this student
