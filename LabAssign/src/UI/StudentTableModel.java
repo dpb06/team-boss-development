@@ -8,8 +8,10 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
+import algorithmDataStructures.Tutorial;
 
 public class StudentTableModel extends AbstractTableModel {
 	private String[] columnNames;
@@ -52,16 +54,32 @@ public class StudentTableModel extends AbstractTableModel {
 
 	private Object[][] createData(List<Student> students, List<Timeslot> timeslots){
 		Object[][] rowData = new Object[students.size()][timeslots.size() + 1];
-		for (int i = 0; i < students.size(); ++i) {
-			Student s = students.get(i);
-			Arrays.fill(rowData[i], false);
-			ArrayList<Timeslot> canAttends = new ArrayList<Timeslot>(
-					s.getFirstChoiceLabs());
-			canAttends.addAll(s.getSecondChoiceLabs());
-			canAttends.addAll(s.getThirdChoiceLabs());
-			rowData[i][0] = s.getStudentNum();
-			for (Timeslot t : canAttends) {
-				rowData[i][timeslots.indexOf(t)+1] = true;
+		if (timeslots.isEmpty()) return rowData;
+		if (timeslots.get(0) instanceof Lab) {
+			for (int i = 0; i < students.size(); ++i) {
+				Student s = students.get(i);
+				Arrays.fill(rowData[i], false);
+				ArrayList<Timeslot> canAttends = new ArrayList<Timeslot>(
+						s.getFirstChoiceLabs());
+				canAttends.addAll(s.getSecondChoiceLabs());
+				canAttends.addAll(s.getThirdChoiceLabs());
+				rowData[i][0] = s.getStudentNum();
+				for (Timeslot t : canAttends) {
+					rowData[i][timeslots.indexOf(t) + 1] = true;
+				}
+			}
+		} else if (timeslots.get(0) instanceof Tutorial) {
+			for (int i = 0; i < students.size(); ++i) {
+				Student s = students.get(i);
+				Arrays.fill(rowData[i], false);
+				ArrayList<Timeslot> canAttends = new ArrayList<Timeslot>(
+						s.getFirstChoiceTuts());
+				canAttends.addAll(s.getSecondChoiceTuts());
+				canAttends.addAll(s.getThirdChoiceTuts());
+				rowData[i][0] = s.getStudentNum();
+				for (Timeslot t : canAttends) {
+					rowData[i][timeslots.indexOf(t) + 1] = true;
+				}
 			}
 		}
 		return rowData;

@@ -51,6 +51,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 	private void recalculate() {
 		Dimension size = this.getPreferredSize();
 		Collections.sort(timeslots);
+		if(timeslots.size() <= 0) return;
 		int width = (size.width-20) / timeslots.size();		
 		int height = size.height-70;
 		int largestSection = Integer.MIN_VALUE;
@@ -60,6 +61,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 				largestSection = t.getAssigned().size();
 			}
 		}
+		if(largestSection <= 0) return;
 		int student = height / largestSection;
 		for (int i = 0; i < timeslots.size(); i++) {
 			Timeslot t = timeslots.get(i);
@@ -112,6 +114,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(rectangles != null)
 		for(Rectangle r: rectangles.keySet()){
 			if(r.contains(e.getPoint())){
 				JDialog jD = new JDialog();

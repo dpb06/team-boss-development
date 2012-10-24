@@ -321,7 +321,7 @@ public class StudentDataParser {
 
 	
 	
-	public List<Student> parseSelections(List<Timeslot> timeslots){
+	public List<Student> parseSelections(List<Timeslot> timeslots, boolean labs){
 	
 		List<Student> students = new ArrayList<Student>();
 		problemStudents = new ArrayList<Student>();
@@ -396,13 +396,22 @@ public class StudentDataParser {
 				
 				count++; // acting as unique ID
 				for(Timeslot t : firstChoice){
-					student.addFirstLab(t);
+					if(labs)
+						student.addFirstLab(t);
+					else
+						student.addFirstTut(t);
 				}
 				for(Timeslot t : secondChoice){
-					student.addSecondLab(t);
+					if(labs)
+						student.addSecondLab(t);
+					else
+						student.addSecondTut(t);
 				}
 				for(Timeslot t : thirdChoice){
-					student.addThirdLab(t);
+					if(labs)
+						student.addThirdLab(t);
+					else
+						student.addThirdTut(t);
 				}
 				firstChoice = new ArrayList<Timeslot>();
 				secondChoice = new ArrayList<Timeslot>();

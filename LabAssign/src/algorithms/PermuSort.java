@@ -27,7 +27,7 @@ public class PermuSort implements Algorithm{
 	private int numStudents;
 	private ArrayList<Student> flagged = new ArrayList<Student>();
 	private AlgorithmOutput output = new AlgorithmOutput();
-
+	int counting=0;
 	private PermuLeafNode start;
 	private PermuLeafNode current;
 
@@ -129,6 +129,7 @@ public class PermuSort implements Algorithm{
 	 */
 	public void iterateLabPermutations(PermuLeafNode currentNode){
 		//For every lab the student of the current node can possibly attend
+
 		for(Timeslot t: currentNode.getAttendableLabs()){
 			//If the lab size is under its preferred maximum
 			if(numAssignedToTimeslot.get(t).intValue() < t.getPreferredMax()){
@@ -143,7 +144,15 @@ public class PermuSort implements Algorithm{
 					if(!kill){
 						//Recurse on child
 						//System.out.println(c.getStudent()+" : "+c.t.toString());
+					
+						counting++;
+						if(counting==116){
+							System.out.println("no homo");
+						}
 						iterateLabPermutations(currentNode.getNext());
+					}
+					else{
+						System.out.println("FFFFFFFFFFFFFFFFFFFMMMMMMMMMMMMMMMMMMLLLLLLLLLLLLLLLLLLLLLL");
 					}
 				}
 				//If this node doesn't have a child
@@ -151,6 +160,7 @@ public class PermuSort implements Algorithm{
 					//Mark that a solution has been found.
 					count+=1;
 					//Check fitness of this solution
+					System.out.println("found Solution");
 					checkFitness(currentNode);
 				}
 			}
