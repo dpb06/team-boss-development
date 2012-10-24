@@ -96,18 +96,26 @@ public class ManualAssignList extends JFrame {
 					if(buttonMap.get(i).getSelection() != null){
 						String action = buttonMap.get(i).getSelection().getActionCommand();					
 						Timeslot t = timeslotsMap.get(action);
-						if(t instanceof Lab)
+						if(t instanceof Lab){
 							students.get(i).setAssignedLab(t);
-						else
+							students.get(i).setFlaggedForLabs(false);
+							t.addStudent(students.get(i));
+						}
+						else{
 							students.get(i).setAssignedTut(t);
+							students.get(i).setFlaggedForTuts(false);
+							t.addStudent(students.get(i));
+						}
 					}
 				}
+				dispose();
 			}
 		});
 		JScrollPane scroll = new JScrollPane(table);
 		this.add(scroll, BorderLayout.NORTH);
 		this.add(button, BorderLayout.SOUTH);
-		setSize(200, 140);
+		//setSize(200, 140);
+		this.pack();
 		setVisible(true);
 	}
 
