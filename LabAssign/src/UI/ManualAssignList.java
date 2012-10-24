@@ -98,10 +98,12 @@ public class ManualAssignList extends JFrame {
 						Timeslot t = timeslotsMap.get(action);
 						if(t instanceof Lab){
 							students.get(i).setAssignedLab(t);
+							students.get(i).setFlaggedForLabs(false);
 							t.addStudent(students.get(i));
 						}
 						else{
 							students.get(i).setAssignedTut(t);
+							students.get(i).setFlaggedForTuts(false);
 							t.addStudent(students.get(i));
 						}
 					}
