@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Box;
@@ -409,7 +410,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			if(havelabs){			
 				StudentDataParser labParser = new StudentDataParser(labs);		
 				labsList = labParser.getTimeslots();
-				labStudents = labParser.parseSelections(labsList);
+				labStudents = labParser.parseSelections(labsList, true);
 				doBounds(labsList, true, havelabs, havetuts);
 
 				//NaughtyList for Students with 1 or 0 choices
@@ -427,7 +428,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			if(havetuts){
 				StudentDataParser tutParser = new StudentDataParser(tuts);
 				tutorialsList = tutParser.getTimeslots();
-				tutStudents = tutParser.parseSelections(tutorialsList);
+				tutStudents = tutParser.parseSelections(tutorialsList, false);
 				doBounds(tutorialsList, false, havelabs, havetuts);
 				//NaughtyList for Students with 1 or 0 choices
 				for(Student s: tutStudents){
@@ -454,48 +455,59 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	}
 	
 	public void doRun(){
-		for(Timeslot t : tutorialsList){
-			t.getAssigned().clear();
-		}
 		for(Timeslot t : labsList){
 			t.getAssigned().clear();
+		}
+		for(Timeslot t : tutorialsList){
+			t.getAssigned().clear();
+		}		
+		if(labs.exists()){
+			StudentDataParser tutParser;
+			try {
+				tutParser = new StudentDataParser(labs);
+				labStudents = tutParser.parseSelections(labsList, true);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		if(tuts.exists()){
 			StudentDataParser tutParser;
 			try {
 				tutParser = new StudentDataParser(tuts);
-				tutStudents = tutParser.parseSelections(tutorialsList);
+				tutStudents = tutParser.parseSelections(tutorialsList, false);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-		if(labs.exists()){
-			StudentDataParser tutParser;
-			try {
-				tutParser = new StudentDataParser(labs);
-				labStudents = tutParser.parseSelections(labsList);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		
+		List<Student> students;
+		
+		//if labStudents are not empty, both labs and tutorials has already
+		//been merged into the labstudents list.
+		if(labStudents.isEmpty())
+			students = tutStudents;
+		else
+			students = labStudents;
+		
+		
 		if(selectedAlgorithm.equals("Boss Sort")){
-			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = bs.start();
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
 		else if(selectedAlgorithm.equals("Howard Sort")){
-			HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = hs.start();
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
 		else if(selectedAlgorithm.equals("Cutting Sort")){
-			CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = cs.start();
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}else if(selectedAlgorithm.equals("Permute Sort")){
-			PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
+			PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = ps.start();
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
@@ -523,7 +535,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	//
 	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
 
-			if ( !alreadyRUN ) {
+		if ( !alreadyRUN ) {
 			
 			// created the last of the bounds when
 			// - we only have Labs and are now making bounds for these
@@ -573,7 +585,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				sectionTitle = "TUTS";
 			}
 
-			createTitleRow(boundsPanel, 3+startRow, sectionTitle);
+			createTitleRow(boundsPanel, 3 + startRow, sectionTitle);
 
 			for (int i = 0; i < slots.size(); i++) {
 				Bounds timeslotBounds = new Bounds(slots.get(i));

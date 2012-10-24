@@ -34,7 +34,7 @@ public class StudentParserFactory {
 		
 		StudentDataParser sdp = new StudentDataParser(f);
 		List<Timeslot> test = sdp.getTimeslots();
-		List<Student> selections =sdp.parseSelections(test);
+		List<Student> selections =sdp.parseSelections(test, true);
 		BossSort b= new BossSort((ArrayList<Timeslot>)test, new ArrayList<Timeslot>(),(ArrayList<Student>) selections);
 		//System.out.println(selections);
 	}
