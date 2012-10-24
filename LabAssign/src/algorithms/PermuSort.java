@@ -131,12 +131,12 @@ public class PermuSort implements Algorithm{
 		//For every lab the student of the current node can possibly attend
 		for(Timeslot t: currentNode.getAttendableLabs()){
 			//If the lab size is under its preferred maximum
-			if(numAssignedToTimeslot.get(t) < t.getPreferredMax()){
+			if(numAssignedToTimeslot.get(t).intValue() < t.getPreferredMax()){
 				//Assign the student of this node to that lab
 				currentNode.setCurrentlyAssignedLab(t);
 				//Increment the number assigned to that timeslot
-				int numAssignedStudents = numAssignedToTimeslot.get(currentNode.getCurrentlyAssignedLab());
-				numAssignedToTimeslot.put(currentNode.getCurrentlyAssignedLab(), numAssignedStudents);
+				int numAssignedStudents = numAssignedToTimeslot.get(currentNode.getCurrentlyAssignedLab()).intValue();
+				numAssignedToTimeslot.put(currentNode.getCurrentlyAssignedLab(), ++numAssignedStudents);
 				//If this node has a child
 				if(currentNode.getNext()!=null){
 					//Check if algorithm killswitch has been flipped by the killthread
