@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.NoninvertibleTransformException;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -130,9 +133,9 @@ public class HistoCanvas extends JPanel implements MouseListener {
 		if (rectangles != null)
 			for (Rectangle r : rectangles.keySet()) {
 				if (r.contains(e.getPoint())) {
-					JDialog jD = new JDialog();
+					final JDialog jD = new JDialog();
 					jD.setTitle("Students in Session:");
-					jD.setSize(200, 500);
+					//jD.setSize(200, 500);
 					JPanel jP = new JPanel();
 					jP.setLayout(new BoxLayout(jP, BoxLayout.Y_AXIS));
 
@@ -141,11 +144,21 @@ public class HistoCanvas extends JPanel implements MouseListener {
 					jP.add(jL);
 
 					for (Student s : rectangles.get(r).getAssigned()) {
-						result = "" + s.getStudentNum();
+						result = s.toString();
 						jL = new JLabel(result);
 						jP.add(jL);
 					}
 					jD.add(jP);
+					JButton exit = new JButton("Exit");
+					exit.addActionListener(new ActionListener() {						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							jD.setVisible(false);
+							jD.dispose();
+						}
+					});
+					jP.add(exit);
+					jD.pack();
 					jD.setVisible(true);
 					break;
 				}
