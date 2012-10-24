@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import fitnessFunctions.FirstChoicePercent;
+import fitnessFunctions.LabFullness;
+import fitnessFunctions.ThirdChoicePercent;
+
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.PermuLeafNode;
 import algorithmDataStructures.Student;
@@ -298,7 +302,9 @@ public class PermuSort implements Algorithm{
 			}
 		}
 		System.out.println();
-
+		new FirstChoicePercent(output);
+		new ThirdChoicePercent(output);
+		new LabFullness(output);
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){

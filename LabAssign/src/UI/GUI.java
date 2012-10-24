@@ -70,10 +70,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	private String selectedAlgorithm = "Boss Sort";
 	
+	private JLabel fit;
+	
 	//Fields for fileChosen()/doRun() use
 	File labs;
 	File tuts;
-	List<Student> labStudents = new ArrayList<Student>();
+	private List<Student> labStudents = new ArrayList<Student>();
+	private List<Student> tutStudents = new ArrayList<Student>();
 
 	JButton save;	// save button created in GUI, field so can enable in another method
 	AlgorithmOutput output;
@@ -128,7 +131,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				int returnVal = fc.showOpenDialog(GUI.this);
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
+					labs = fc.getSelectedFile();
 					LabFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
 					fileChosen();
@@ -163,7 +166,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				int returnVal = fc.showOpenDialog(GUI.this);
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
+					tuts = fc.getSelectedFile();
 					TutFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
 					fileChosen();
@@ -242,6 +245,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		fitnessFunctionPanel = new JPanel();
 		fitnessFunctionPanel.setLayout(new BorderLayout());
+		fit = new JLabel();
+		fitnessFunctionPanel.add(fit);
+		fitnessFunctionPanel.setVisible(true);
 
 		eastPanel.add(boundsPanel, BorderLayout.NORTH);
 		eastPanel.add(fitnessFunctionPanel, BorderLayout.CENTER);
@@ -390,7 +396,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			tuts = new File(TutFileTextField.getText());
 
 			labStudents = new ArrayList<Student>();
-			List<Student> tutStudents = new ArrayList<Student>();
+			tutStudents = new ArrayList<Student>();
 
 			boolean havelabs = false;
 			boolean havetuts = false;
@@ -400,7 +406,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				havetuts = true;
 
 			List<Student> naughtyStudents = new ArrayList<Student>();
-			if(havelabs &&  !alreadyRUN){			
+			if(havelabs){			
 				StudentDataParser labParser = new StudentDataParser(labs);		
 				labsList = labParser.getTimeslots();
 				labStudents = labParser.parseSelections(labsList);
@@ -418,7 +424,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 			naughtyStudents = new ArrayList<Student>();	// Cleared so can use for tuts too
 
-			if(havetuts &&  !alreadyRUN){
+			if(havetuts){
 				StudentDataParser tutParser = new StudentDataParser(tuts);
 				tutorialsList = tutParser.getTimeslots();
 				tutStudents = tutParser.parseSelections(tutorialsList);
@@ -433,7 +439,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
-			}
+		    }
 			if (havelabs && havetuts){
 				for(Student s: labStudents){
 					for(Student t: tutStudents){
@@ -448,6 +454,32 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	}
 	
 	public void doRun(){
+		for(Timeslot t : tutorialsList){
+			t.getAssigned().clear();
+		}
+		for(Timeslot t : labsList){
+			t.getAssigned().clear();
+		}
+		if(tuts.exists()){
+			StudentDataParser tutParser;
+			try {
+				tutParser = new StudentDataParser(tuts);
+				tutStudents = tutParser.parseSelections(tutorialsList);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if(labs.exists()){
+			StudentDataParser tutParser;
+			try {
+				tutParser = new StudentDataParser(labs);
+				labStudents = tutParser.parseSelections(labsList);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		if(selectedAlgorithm.equals("Boss Sort")){
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(labStudents));
 			output = bs.start();
@@ -473,10 +505,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 //		for(String f: output.getFitness().keySet()){
 //			fitness += (f + " - " + output.getFitness().get(f) + "\n");
 //		}
-		
-		JLabel fit = new JLabel(fitness);
-		fitnessFunctionPanel.add(fit);
-		fitnessFunctionPanel.setVisible(true);
+		fit.setText(fitness);	
 		frame.validate();
 
 		//Create Naughty Lists
@@ -494,11 +523,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	//
 	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
 
-		if ( (sessionBoundsLabs.size()+ sessionBoundsTuts.size()) != slots.size() 
-				|| !alreadyRUN ) {
-
-			System.out.println("ASDDDDDDDDDDDDD");
-
+			if ( !alreadyRUN ) {
+			
 			// created the last of the bounds when
 			// - we only have Labs and are now making bounds for these
 			// - or we have Tutorials and have done labs, or dont have labs
@@ -507,7 +533,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			else if(!isLabs && hasTuts){
 				alreadyRUN = true;				
 			}
-			save.setEnabled(true);
+			
 			save.setEnabled(true);
 			// recreate bounds array
 			int startRow;
@@ -520,7 +546,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 2, 2, 2);
 			c.fill = GridBagConstraints.VERTICAL;
-			if(isLabs){
+			if(isLabs || (!isLabs && !hasLabs) ){
 				c.weightx = 0.5;
 				c.gridx = 0;
 				c.gridy = 0+startRow;
@@ -541,10 +567,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 			String sectionTitle = "";
 
-			if(isLabs)
+			if(isLabs){
 				sectionTitle = "LABS";
-			else
+			} else {
 				sectionTitle = "TUTS";
+			}
 
 			createTitleRow(boundsPanel, 3+startRow, sectionTitle);
 
@@ -653,7 +680,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				JLabel title = new JLabel(name);
 				c.gridx = 0;
 				panel.add(title, c);
-				final JTextArea minText = new JTextArea("0");
+				final JTextArea minText = new JTextArea(timeslot.getMinStudents()+"");
 				c.gridx++;
 				panel.add(minText, c);
 				minText.getDocument().addDocumentListener(

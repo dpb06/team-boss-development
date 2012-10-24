@@ -3,6 +3,10 @@ package algorithms;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
+import fitnessFunctions.FirstChoicePercent;
+import fitnessFunctions.LabFullness;
+import fitnessFunctions.ThirdChoicePercent;
+
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
@@ -405,8 +409,10 @@ public class BossSort implements Algorithm{
 				System.out.println(s.getStudentNum() + " - " + s.getName());
 			}
 		}
-		System.out.println();
-
+		System.out.println();		
+		new FirstChoicePercent(output);
+		new ThirdChoicePercent(output);
+		new LabFullness(output);
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){
