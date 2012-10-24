@@ -376,43 +376,35 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			out.write("Output for " + selectedAlgorithm);
 			out.newLine();
 
-//			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
-//			out.write("Students Flagged:\n");			
-//			for(Student s: output.getFlagged()){
-//				if(s.getFlaggedForLabs())
-//					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
-//			}
-
-			//TODO Uncomment when flaggedForLabs/flaggedForTuts done
 			//Flagged Students x 3 - for both, just labs & just tuts
 			// Flagged for both:
 			out.write("Students Flagged for both Labs & Tutorials:\n");			
 			for(Student s: output.getFlagged()){
 				if(s.getFlaggedForLabs() && s.getFlaggedForTuts())
-					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+					out.write(s.getStudentNum() + "," + s.getName() + "\n");
 			}
 			// Flagged for labs:
 			out.write("\nStudents Flagged for Labs:\n");			
 			for(Student s: output.getFlagged()){
 				if(s.getFlaggedForLabs() && !s.getFlaggedForTuts())
-					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+					out.write(s.getStudentNum() + "," + s.getName() + "\n");
 			}
 			// Flagged for tuts:
 			out.write("Students Flagged for Tutorials:\n");			
 			for(Student s: output.getFlagged()){
 				if(!s.getFlaggedForLabs() && s.getFlaggedForTuts())
-					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+					out.write(s.getStudentNum() + "," + s.getName() + "\n");
 			}
 
 			/** Iterate through Timeslots twice times (labs & tuts) **/
 
-			out.write("Assigned Students:");
+			out.write("Assigned Students:\n");
 			// Labs
 			for(Timeslot t: output.keySet()){
 				if(t instanceof Lab){
 					out.write("Lab - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
-						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+						out.write(s.getStudentNum() + "," + s.getName() + "\n");
 					}							
 				}
 			}
@@ -422,7 +414,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				if(t instanceof Tutorial){
 					out.write("Tutorial - " + t.toString()+"\n");
 					for(Student s: t.getAssigned()){
-						out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+						out.write( s.getStudentNum() + "," + s.getName() + "\n");
 					}							
 				}
 			}
