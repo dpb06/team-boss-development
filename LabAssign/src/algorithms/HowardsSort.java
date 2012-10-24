@@ -55,45 +55,39 @@ public class HowardsSort implements Algorithm {
 	@Override
 	public AlgorithmOutput start() {
 		//Give students a random order
-		Collections.shuffle(students);
-		//Sort students into labs
-		for(Student s: students){
-			s.combineLabs();
-			if(s.getCombinedLabs().isEmpty()){
-				s.setFlaggedForLabs(true);
-				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
-				flagged.add(s);
+		if(!labs.isEmpty()){
+			Collections.shuffle(students);
+			//Sort students into labs
+			for(Student s: students){
+				s.combineLabs();
+				if(s.getCombinedLabs().isEmpty()){
+					s.setFlaggedForLabs(true);
+					s.setReasonForFlagging("Student has no first, second, or third lab choices.");
+					flagged.add(s);
+				}
 			}
-		}
-		for(Timeslot t:labs)
-			t.sortAssigned();
-		sortLabs();
-		//Prioritize students by their tutorial choices
+			for(Timeslot t:labs)
+				t.sortAssigned();
 
-		for(Student s: students){
-			s.combineTuts();
-//			if(s.getCombinedTuts().isEmpty()){
-//				s.setFlaggedForTuts(true);
-//				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
-//				if(!flagged.contains(s))
-//					flagged.add(s);
-//			}
+			sortLabs();
+
 		}
-		TutorialChecker tc = new TutorialChecker(students);
-		students = tc.getStudents();
-		//Give students random order again
-		//Collections.shuffle(students);
-		//		for(Student s: students){
-		//			s.combineTuts();
-		//			if(s.getCombinedTuts().isEmpty()){
-		//				s.setFlaggedForTuts(true);
-		//				s.setReasonForFlagging("Student has no first, second, or third tutorial choices.");
-		//				flagged.add(s);
-		//			}
-		//		}
-		//Sort students into tutorials
-		//	sortTuts();
-		//Generate AlgorithmOutput
+		if(!tutorials.isEmpty()){
+			for(Student s: students){
+				s.combineTuts();
+				//			if(s.getCombinedTuts().isEmpty()){
+				//				s.setFlaggedForTuts(true);
+				//				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
+				//				if(!flagged.contains(s))
+				//					flagged.add(s);
+				//			}
+			}
+			if(!labs.isEmpty()){
+				TutorialChecker tc = new TutorialChecker(students);
+				students = tc.getStudents();
+			}
+			sortTuts();
+		}
 		generateAlgorithmOutput();
 		//Return output
 		return output;
