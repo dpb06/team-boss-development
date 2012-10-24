@@ -99,7 +99,7 @@ public class JUnitTestingData {
 		choices.add(choicesFifteen);
 		
 		//Create fifty students, with choices for the five labs.
-		for(int i = 300213937; i < 300213987; i++){
+		for(int i = 300213937; i < 300213977; i++){
 			//Pick a set of lab and tutorial choices for the student.
 			int index = i%14;
 			int[] studentLabChoices = choices.get(index);
