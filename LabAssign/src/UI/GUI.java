@@ -69,9 +69,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	boolean alreadyRUN = false;
 
 	private String selectedAlgorithm = "Boss Sort";
-	
+
 	private JLabel fit;
-	
+	private JLabel flaggedLabs;
+	private JButton flaggedLabsButton;
+	private JLabel flaggedTuts;
+	private JButton flaggedTutsButton;	
+
 	//Fields for fileChosen()/doRun() use
 	File labs;
 	File tuts;
@@ -173,7 +177,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
-		
+
 		final JButton manualAssignLabs = new JButton("Manually Assign Labs");
 		manualAssignLabs.setBounds(0, 0, 50, 20);
 		manualAssignLabs.setEnabled(false);
@@ -196,7 +200,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				frame.validate();
 			}
 		});
-		
+
 		final JButton manualAssignTuts = new JButton("Manually Assign Tuts");
 		manualAssignTuts.setBounds(0, 0, 50, 20);
 		manualAssignTuts.setEnabled(false);
@@ -226,13 +230,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				output = null;	//Once 'Run' clicked, output wiped to be refilled
-				manualAssignLabs.setEnabled(true);
-				manualAssignTuts.setEnabled(true);
+				if(labs.exists())
+					manualAssignLabs.setEnabled(true);
+				if(tuts.exists())
+					manualAssignTuts.setEnabled(true);
 				doRun();
 			}
 		});
-
-
 
 		// RadioButtons for Algorithm Selection
 		JPanel algoSelect = new JPanel();
@@ -291,14 +295,43 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		boundsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
 		boundsPanel.setLayout(new GridBagLayout());
 
-		fitnessFunctionPanel = new JPanel();
-		fitnessFunctionPanel.setLayout(new BorderLayout());
-		fit = new JLabel();
-		fitnessFunctionPanel.add(fit);
+		//Fitness/Flagged Section
+		fitnessFunctionPanel = new JPanel(new BorderLayout());
+		fit = new JLabel("Fitness - Yet to be Calculated");
+
+		JPanel flagLab = new JPanel(new BorderLayout());
+		flaggedLabs = new JLabel("Flagged for Labs - None");
+		flaggedLabsButton = new JButton("Show Flagged for Labs");
+		flaggedLabsButton.setEnabled(false);
+		flaggedLabsButton.addActionListener(new ActionListener() {      
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new NaughtyList(output.getFlagged(), labsList).setVisible(true);
+			}
+		});
+		flagLab.add(flaggedLabs, BorderLayout.WEST);
+		flagLab.add(flaggedLabsButton, BorderLayout.EAST);
+
+		JPanel flagTut = new JPanel(new BorderLayout());
+		flaggedTuts = new JLabel("Flagged for Tuts - None");
+		flaggedTutsButton = new JButton("Show Flagged for Labs");
+		flaggedTutsButton.setEnabled(false);
+		flaggedTutsButton.addActionListener(new ActionListener() {      
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
+			}
+		});
+		flagTut.add(flaggedTuts, BorderLayout.WEST);
+		flagTut.add(flaggedTutsButton, BorderLayout.EAST);
+
+		fitnessFunctionPanel.add(fit, BorderLayout.NORTH);
+		fitnessFunctionPanel.add(flagLab, BorderLayout.CENTER);
+		fitnessFunctionPanel.add(flagTut, BorderLayout.SOUTH);
 		fitnessFunctionPanel.setVisible(true);
 
 		eastPanel.add(boundsPanel, BorderLayout.NORTH);
-		eastPanel.add(fitnessFunctionPanel, BorderLayout.CENTER);
+		eastPanel.add(fitnessFunctionPanel, BorderLayout.SOUTH);
 		eastPanel.setVisible(true);
 
 		JPanel topPanel = new JPanel();
@@ -489,7 +522,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
-		    }
+			}
 			if (havelabs && havetuts){
 				for(Student s: labStudents){
 					for(Student t: tutStudents){
@@ -497,12 +530,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					}
 				}
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void doRun(){
 		for(Timeslot t : labsList){
 			t.getAssigned().clear();
@@ -510,37 +543,37 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		for(Timeslot t : tutorialsList){
 			t.getAssigned().clear();
 		}		
-//		if(labs.exists()){
-//			StudentDataParser tutParser;
-//			try {
-//				tutParser = new StudentDataParser(labs);
-//				labStudents = tutParser.parseSelections(labsList, true);
-//			} catch (FileNotFoundException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		}
-//		if(tuts.exists()){
-//			StudentDataParser tutParser;
-//			try {
-//				tutParser = new StudentDataParser(tuts);
-//				tutStudents = tutParser.parseSelections(tutorialsList, false);
-//			} catch (FileNotFoundException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		}
-		
+		//		if(labs.exists()){
+		//			StudentDataParser tutParser;
+		//			try {
+		//				tutParser = new StudentDataParser(labs);
+		//				labStudents = tutParser.parseSelections(labsList, true);
+		//			} catch (FileNotFoundException e1) {
+		//				// TODO Auto-generated catch block
+		//				e1.printStackTrace();
+		//			}
+		//		}
+		//		if(tuts.exists()){
+		//			StudentDataParser tutParser;
+		//			try {
+		//				tutParser = new StudentDataParser(tuts);
+		//				tutStudents = tutParser.parseSelections(tutorialsList, false);
+		//			} catch (FileNotFoundException e1) {
+		//				// TODO Auto-generated catch block
+		//				e1.printStackTrace();
+		//			}
+		//		}
+
 		List<Student> students;
-		
+
 		//if labStudents are not empty, both labs and tutorials has already
 		//been merged into the labstudents list.
 		if(labStudents.isEmpty())
 			students = tutStudents;
 		else
 			students = labStudents;
-		
-		
+
+
 		if(selectedAlgorithm.equals("Boss Sort")){
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = bs.start();
@@ -560,21 +593,42 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			output = ps.start();
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
-	    
+
 		System.out.println(output.fitnessValue());
 		String fitness = "Fitness - " + output.fitnessValue();
-//		for(String f: output.getFitness().keySet()){
-//			fitness += (f + " - " + output.getFitness().get(f) + "\n");
-//		}
+		//		for(String f: output.getFitness().keySet()){
+		//			fitness += (f + " - " + output.getFitness().get(f) + "\n");
+		//		}
+
 		fit.setText(fitness);	
+
+
+		//Enable Naughty Lists Buttons if applicable
+		if(!output.getFlagged().isEmpty()){
+			if(labs.exists()){
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForLabs())
+						studs.add(s);
+				}
+				if(!studs.isEmpty()){
+					flaggedLabs.setText("Flagged for Labs - " + studs.size());
+					flaggedLabsButton.setEnabled(true);
+				}
+			}
+			if(tuts.exists()){
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForTuts())
+						studs.add(s);
+				}
+				if(!studs.isEmpty()){
+					flaggedTuts.setText("Flagged for Tuts - " + studs.size());
+					flaggedTutsButton.setEnabled(true);
+				}
+			}
+		}
 		frame.validate();
-
-		//Create Naughty Lists
-		if(labs.exists())
-			new NaughtyList(output.getFlagged(), labsList).setVisible(true);
-		if(tuts.exists())
-			new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
-
 		frame.repaint();
 	}
 
@@ -585,7 +639,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
 
 		if ( !alreadyRUN ) {
-			
+
 			// created the last of the bounds when
 			// - we only have Labs and are now making bounds for these
 			// - or we have Tutorials and have done labs, or dont have labs
@@ -594,7 +648,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			else if(!isLabs && hasTuts){
 				alreadyRUN = true;				
 			}
-			
+
 			save.setEnabled(true);
 			// recreate bounds array
 			int startRow;
@@ -774,7 +828,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 										maxText.setForeground(Color.red);							
 
 									} else{
-										
+
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
 										timeslot.setMaxStudents(Integer
@@ -818,14 +872,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 										minText.setForeground(Color.red);
 										maxText.setForeground(Color.red);
-										
+
 									} else
 										timeslot.setMinStudents(Integer
 												.parseInt(minText.getText()));
-										timeslot.setMaxStudents(Integer
-												.parseInt(maxText.getText()));
-										minText.setForeground(Color.black);
-										maxText.setForeground(Color.black);
+									timeslot.setMaxStudents(Integer
+											.parseInt(maxText.getText()));
+									minText.setForeground(Color.black);
+									maxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
 								System.out.println(timeslot.getMinStudents());
@@ -835,7 +889,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							}
 
 						});
-				
+
 				c.gridx++;
 				panel.add(prefMinText, c);
 				prefMinText.getDocument().addDocumentListener(
@@ -858,8 +912,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 							public void update(DocumentEvent e) {
 								try {
 									if (Integer.parseInt(prefMinText.getText()) < 0 || 
-										Integer.parseInt(prefMinText.getText()) > timeslot
-										.getPreferredMax()) {
+											Integer.parseInt(prefMinText.getText()) > timeslot
+											.getPreferredMax()) {
 										// do nothing if not between preferred max and 0	
 										prefMinText.setForeground(Color.red);
 										prefMaxText.setForeground(Color.red);
@@ -910,10 +964,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									} else
 										timeslot.setPreferredMin(Integer
 												.parseInt(prefMinText.getText()));
-										timeslot.setPreferredMax(Integer
-												.parseInt(prefMaxText.getText()));
-										prefMinText.setForeground(Color.black);
-										prefMaxText.setForeground(Color.black);
+									timeslot.setPreferredMax(Integer
+											.parseInt(prefMaxText.getText()));
+									prefMinText.setForeground(Color.black);
+									prefMaxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
 								System.out.println(timeslot.getMinStudents());
