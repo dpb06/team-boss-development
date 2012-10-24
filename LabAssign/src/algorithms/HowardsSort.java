@@ -121,9 +121,9 @@ public class HowardsSort implements Algorithm {
 							currentStudent.getAssignedLab().removeStudent(currentStudent);
 							currentStudent.setAssignedLab(null);
 						}
+						currentStudent.setFlaggedForTuts(true);
 						if(!flagged.contains(currentStudent)){
 							flagged.add(currentStudent);
-							currentStudent.setFlaggedForLabs(true);
 						}
 					}
 				}
@@ -169,9 +169,9 @@ public class HowardsSort implements Algorithm {
 							currentStudent.getAssignedLab().removeStudent(currentStudent);
 							currentStudent.setAssignedLab(null);
 						}
+						currentStudent.setFlaggedForLabs(true);
 						if(!flagged.contains(currentStudent)){
 							flagged.add(currentStudent);
-							currentStudent.setFlaggedForLabs(true);
 						}
 					}
 				}
@@ -180,11 +180,14 @@ public class HowardsSort implements Algorithm {
 		}
 
 	}
-
+/**
+ * Checks what Tutorials are over filled if so add them to ArrayList and return it.
+ * @return
+ */
 	public ArrayList<Timeslot> overFilledTuts(){
 		ArrayList<Timeslot> overfilledTutsList = new ArrayList<Timeslot>();
 		for(Timeslot t : tutorials){
-			if(t.isOverfilled()){
+			if(t.getAssigned().size()>t.getPreferredMax()){
 				overfilledTutsList.add(t);
 			}
 		}
@@ -194,7 +197,7 @@ public class HowardsSort implements Algorithm {
 	public ArrayList<Timeslot> overFilledLabs(){
 		ArrayList<Timeslot> overfilledLabsList = new ArrayList<Timeslot>();
 		for(Timeslot t : labs){
-			if(t.isOverfilled()){
+			if(t.getAssigned().size()>t.getPreferredMax()){				
 				overfilledLabsList.add(t);
 			}
 		}

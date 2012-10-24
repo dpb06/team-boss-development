@@ -74,59 +74,59 @@ public class BossSort implements Algorithm{
 	 * as 'cannot attend'. These students are then added to a global priorityQueue called 'priority'.
 	 */
 	private void labPriorityCalculator() {
-			//Begin console output.
-			System.out.println("labPriorityCalculator() in BossSort");
-			//Initialize integer values to represent priority, and the factors that affect it. 
-			int studentPriority;
-			//For every student.
-			for(Student s:students){
-				//Initialise variables for assigning priority points for each choice.
-				int thirdPoints = 0;
-				int secondPoints = 0;
-				int firstPoints = 0;
-	
-				//Largest priority weighting is the number of labs the student can attend.
-				studentPriority = s.getNumCanAttendLabs()*1000;
-				//Next is the number of third choices the student has selected.
-				thirdPoints = s.getThirdChoiceLabs().size()*3;
-				//Next is the number of second choices the student has selected.
-				secondPoints = s.getSecondChoiceLabs().size()*2;
-				//Next is the number of first choices the student has selected.
-				firstPoints = s.getFirstChoiceLabs().size();
-	
-				//Combine priority values by multiplying the lab choices using the number of labs as a factor.
-				studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
-				//Add an element of randomization.
-				studentPriority = studentPriority+((int) (Math.random()*1000));
-				/*
-				 * This means:
-				 *   The students with fewest lab choices have a lower priority-value.
-				 *   In cases of equal number of lab choices:
-				 *     The students with fewest third choices have a lower priority-value.
-				 *     The students with fewest second choices have a lower priority-value.
-				 *     
-				 * Thus, the algorithm primarily attempts to place students in their first choices,
-				 * and does not prioritize placing students in a second choice if they can't be placed
-				 * in a first choice. 
-				 *   
-				 * NB: A LOW PRIORITY-VALUE EQUATES TO A HIGH PRIORITY.
-				 *    (as seen in the compareTo method of the Student class)
-				 */
-				//Set the priority in the Student object.
-				s.setPriority(studentPriority);
-				//Add the student to the priorityQueue.
-				priority.add(s);
-				//Printspam the priority of each student.
-				System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
-			}
-	
-			//How many choices in total do they have? (More = higher priority)
-			//How many first choices do they have? (More = lower priority)
-			//How many second choices do they have? (More = lower priority)
-			//How many third choices do they have? (More = lower priority)
-	
-			System.out.println("\n");
-		
+		//Begin console output.
+		System.out.println("labPriorityCalculator() in BossSort");
+		//Initialize integer values to represent priority, and the factors that affect it. 
+		int studentPriority;
+		//For every student.
+		for(Student s:students){
+			//Initialise variables for assigning priority points for each choice.
+			int thirdPoints = 0;
+			int secondPoints = 0;
+			int firstPoints = 0;
+
+			//Largest priority weighting is the number of labs the student can attend.
+			studentPriority = s.getNumCanAttendLabs()*1000;
+			//Next is the number of third choices the student has selected.
+			thirdPoints = s.getThirdChoiceLabs().size()*3;
+			//Next is the number of second choices the student has selected.
+			secondPoints = s.getSecondChoiceLabs().size()*2;
+			//Next is the number of first choices the student has selected.
+			firstPoints = s.getFirstChoiceLabs().size();
+
+			//Combine priority values by multiplying the lab choices using the number of labs as a factor.
+			studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
+			//Add an element of randomization.
+			studentPriority = studentPriority+((int) (Math.random()*1000));
+			/*
+			 * This means:
+			 *   The students with fewest lab choices have a lower priority-value.
+			 *   In cases of equal number of lab choices:
+			 *     The students with fewest third choices have a lower priority-value.
+			 *     The students with fewest second choices have a lower priority-value.
+			 *     
+			 * Thus, the algorithm primarily attempts to place students in their first choices,
+			 * and does not prioritize placing students in a second choice if they can't be placed
+			 * in a first choice. 
+			 *   
+			 * NB: A LOW PRIORITY-VALUE EQUATES TO A HIGH PRIORITY.
+			 *    (as seen in the compareTo method of the Student class)
+			 */
+			//Set the priority in the Student object.
+			s.setPriority(studentPriority);
+			//Add the student to the priorityQueue.
+			priority.add(s);
+			//Printspam the priority of each student.
+			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+		}
+
+		//How many choices in total do they have? (More = higher priority)
+		//How many first choices do they have? (More = lower priority)
+		//How many second choices do they have? (More = lower priority)
+		//How many third choices do they have? (More = lower priority)
+
+		System.out.println("\n");
+
 	}
 
 
@@ -195,7 +195,7 @@ public class BossSort implements Algorithm{
 				}
 			}
 
-			
+
 			if(!assigned){
 				//Create a list of third choices
 				ArrayList<Timeslot> thirds = s.getThirdChoiceLabs();
@@ -224,7 +224,10 @@ public class BossSort implements Algorithm{
 
 			if(!assigned) {
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
-				flagged.add(s);
+				if(!flagged.contains(s))
+					flagged.add(s);
+				s.setFlaggedForLabs(true);
+				s.setReasonForFlagging("They cannot be put into any of their chosen labs");
 				//Printspam that student is not assigned.
 				System.out.println("Not Assigned");
 			}
@@ -242,44 +245,44 @@ public class BossSort implements Algorithm{
 	 * as 'cannot attend'. These students are then added to a priorityQueue called 'priority'.
 	 */
 	private void tutPriorityCalculator() {
-			//Begin console output.
-			System.out.println("tutPriorityCalculator() in BossSort");
-			//Initialize integer values to represent priority, and factors that affect it. 
-			int studentPriority;
-			//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
-			priority = new PriorityQueue<Student>();
-			//Check if there are no students in tutorials
-			if(students != null){
-				//Iterate list of students.
-				for(Student s:students){
-					//Initialise variables for assigning priority points for each choice.
-					int thirdPoints = 0;
-					int secondPoints = 0;
-					int firstPoints = 0;
-		
-					//Largest priority weighting is the number of tuts the student can attend.
-					studentPriority = s.getNumCanAttendTuts()*1000;
-					//Next is the number of third choices the student has selected.
-					thirdPoints = s.getThirdChoiceTuts().size()*3;
-					//Next is the number of second choices the student has selected.
-					secondPoints = s.getSecondChoiceTuts().size()*2;
-					//Next is the number of first choices the student has selected.
-					firstPoints = s.getFirstChoiceTuts().size();
-		
-					//Combine priority values by multiplying the tut choices using the number of tuts as a factor.
-					studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
-					//Add an element of randomization.
-					studentPriority = studentPriority+((int) (Math.random()*1000));
-					//Set the priority in the Student object.
-					s.setPriority(studentPriority);
-					//Add the student to the priorityQueue.
-					priority.add(s);
-					//Printspam the priority of each student.
-					System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
-				}
+		//Begin console output.
+		System.out.println("tutPriorityCalculator() in BossSort");
+		//Initialize integer values to represent priority, and factors that affect it. 
+		int studentPriority;
+		//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
+		priority = new PriorityQueue<Student>();
+		//Check if there are no students in tutorials
+		if(students != null){
+			//Iterate list of students.
+			for(Student s:students){
+				//Initialise variables for assigning priority points for each choice.
+				int thirdPoints = 0;
+				int secondPoints = 0;
+				int firstPoints = 0;
+
+				//Largest priority weighting is the number of tuts the student can attend.
+				studentPriority = s.getNumCanAttendTuts()*1000;
+				//Next is the number of third choices the student has selected.
+				thirdPoints = s.getThirdChoiceTuts().size()*3;
+				//Next is the number of second choices the student has selected.
+				secondPoints = s.getSecondChoiceTuts().size()*2;
+				//Next is the number of first choices the student has selected.
+				firstPoints = s.getFirstChoiceTuts().size();
+
+				//Combine priority values by multiplying the tut choices using the number of tuts as a factor.
+				studentPriority = studentPriority*(firstPoints+secondPoints+thirdPoints);
+				//Add an element of randomization.
+				studentPriority = studentPriority+((int) (Math.random()*1000));
+				//Set the priority in the Student object.
+				s.setPriority(studentPriority);
+				//Add the student to the priorityQueue.
+				priority.add(s);
+				//Printspam the priority of each student.
+				System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 			}
-			System.out.println("\n");
-		
+		}
+		System.out.println("\n");
+
 	}
 
 
@@ -368,14 +371,18 @@ public class BossSort implements Algorithm{
 					}
 					//If Timeslot is full
 					else {
-						//Remove Timeslot from list of third choices
+						//Remove Timeslot from list of third choiceslabs"
 						thirds.remove(choice);
 					}
 				}
 			}
 			if(!assigned){
 				//If student cannot be assigned, add them to a list of flagged students and carry on without assigning them.
+				if(!flagged.contains(s))
 				flagged.add(s);
+				
+				s.setFlaggedForTuts(true);
+				s.setReasonForFlagging("They cannot be put into any of their chosen Tutorial");
 				//Printspam that student is not assigned.
 				System.out.println("Not Assigned");
 			}
@@ -394,7 +401,7 @@ public class BossSort implements Algorithm{
 		//Begin console output.
 		System.out.println("generateAlgorithmOutput() in BossSort");
 		//Iterate through Labs.
-		
+
 		System.out.println("Labs:");
 		for(Timeslot t:labs){
 			//Add the lab and its assigned students to the output hashmap.
