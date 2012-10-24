@@ -1,10 +1,18 @@
 package algorithms;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+
+import UI.WaitDialog;
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.PermuLeafNode;
 import algorithmDataStructures.Student;
@@ -107,6 +115,12 @@ public class PermuSort implements Algorithm{
 		//Start a thread that will end the algorithm after a set period.
 		new Killthread().start();
 		//Start the algorithm that iterates through permutations, passing it the root node.
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		iterateLabPermutations(start);
 		//Printspam results.
 		long endTime = System.currentTimeMillis();
@@ -316,14 +330,25 @@ public class PermuSort implements Algorithm{
 	 * A thread class that runs for a set amount of time, then changes the killswitch boolean to true to interrupt PermuSort
 	 */
 	private class Killthread extends Thread{
-		private final int timeToRun = 120000; //2 min //TODO: allow people to change this?
+		private final int timeToRun = 12000; //2 min //TODO: allow people to change this?
+		private final int numBlocks = 60; 
+		//The number of times the progress monitor will be updated
 		public void run(){
-			try {
-				sleep(timeToRun);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			WaitDialog wd = new WaitDialog("Please wait for Permute Sort...", numBlocks);
+			wd.validate();
+			for(int i=0; i<numBlocks; i++){
+				try {
+					sleep(timeToRun/numBlocks);
+					wd.setProgress(i);
+					System.out.println("At "+i);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			System.out.println("Killing things");
+			wd.close();
 			kill=true;
+			System.out.println("Done");
 		}
 	}
 
