@@ -25,8 +25,6 @@ public class NaughtyList extends JFrame {
 	private List<Student> students;
 	private List<Timeslot> timeslots;// Just for knowing 'index'
 	private String title = "";
-	private Object[][] rowData;
-
 
 	public NaughtyList(List<Student> flaggedStudents, List<Timeslot> timeslots, String title) {
 		//Constructor for Students with One or less Choices
@@ -54,29 +52,8 @@ public class NaughtyList extends JFrame {
 		}
 		
 		this.setTitle(title);
-
-		String[] titles = new String[timeslots.size() + 1];
-		titles[0] = "Student ID";
-		for (int i = 1; i <= timeslots.size(); ++i) {
-			Timeslot t = timeslots.get(i - 1);
-			// Construct a meaningful name for the timeslot
-			titles[i] = t.toString();
-		}
-		// TODO: Replace this nastiness with a table model
-		rowData = new Object[students.size()][timeslots.size() + 1];
-		for (int i = 0; i < students.size(); ++i) {
-			Student s = students.get(i);
-			Arrays.fill(rowData[i], false);
-			ArrayList<Timeslot> canAttends = new ArrayList<Timeslot>(
-					s.getFirstChoiceLabs());
-			canAttends.addAll(s.getSecondChoiceLabs());
-			canAttends.addAll(s.getThirdChoiceLabs());
-			rowData[i][0] = s.getStudentNum();
-			for (Timeslot t : canAttends) {
-				rowData[i][timeslots.indexOf(t)+1] = true;
-			}
-		}
-		TableModel model = new StudentTableModel(titles, rowData);
+		
+		TableModel model = new StudentTableModel(students, timeslots);
 		table = new JTable(model);
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		add(new JScrollPane(table));
@@ -96,8 +73,7 @@ public class NaughtyList extends JFrame {
 		// JUnitTestingData j = new JUnitTestingData();
 		StudentDataParser p;
 		try {
-			p = new StudentDataParser(new File(
-					"~/FullInputData.txt"));
+			p = new StudentDataParser(new File("~/FullInputData.txt"));
 			List<Timeslot> ts = p.getTimeslots();
 			List<Student> studs;
 			new NaughtyList(studs = p.parseSelections(ts),ts).setVisible(true);
