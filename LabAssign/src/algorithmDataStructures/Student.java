@@ -48,7 +48,7 @@ public class Student implements Comparable<Object> {
 	// -----FUNCTIONALITIES-----\\
 	@Override
 	public String toString() {
-		return "Student: " + studentNum + "\n";
+		return studentNum+"   "+(name!=null?name:"")+"\n";
 	}
 
 	/**

@@ -174,13 +174,49 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			}
 		});
 		
-		JButton manualAssign = new JButton("Manual Assign");
-		manualAssign.setBounds(0, 0, 50, 20);
+		final JButton manualAssignLabs = new JButton("Manually Assign Labs");
+		manualAssignLabs.setBounds(0, 0, 50, 20);
+		manualAssignLabs.setEnabled(false);
+		//Only enabled after algorithm has been run
 
-		manualAssign.addActionListener(new ActionListener() {			 
+		manualAssignLabs.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ManualAssignList(labStudents, labsList);	//TODO Barb to change			
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForLabs())
+						studs.add(s);
+				}
+				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
+				for(Timeslot t: output.keySet()){
+					if(t instanceof Lab)
+						ts.add(t);
+				}
+				new ManualAssignList(studs, ts);
+				frame.validate();
+			}
+		});
+		
+		final JButton manualAssignTuts = new JButton("Manually Assign Tuts");
+		manualAssignTuts.setBounds(0, 0, 50, 20);
+		manualAssignTuts.setEnabled(false);
+		//Only enabled after algorithm has been run
+
+		manualAssignTuts.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForTuts())
+						studs.add(s);
+				}
+				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
+				for(Timeslot t: output.keySet()){
+					if(t instanceof Tutorial)
+						ts.add(t);
+				}
+				new ManualAssignList(studs, ts);
+				frame.validate();
 			}
 		});
 
@@ -190,6 +226,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				output = null;	//Once 'Run' clicked, output wiped to be refilled
+				manualAssignLabs.setEnabled(true);
+				manualAssignTuts.setEnabled(true);
 				doRun();
 			}
 		});
@@ -287,7 +325,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		});
 
 		southPanel.add(save);
-		southPanel.add(manualAssign);
+		southPanel.add(manualAssignLabs);
+		southPanel.add(manualAssignTuts);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
 		frame.add(southPanel, BorderLayout.SOUTH);
