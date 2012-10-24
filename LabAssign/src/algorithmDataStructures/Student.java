@@ -380,7 +380,7 @@ public class Student implements Comparable<Object> {
 		}
 	}
 	
-	public void removeTimeSlot(Timeslot t){
+	public void removeTimeslot(Timeslot t){
 		firstChoicesLabs.remove(t);
 		secondChoicesLabs.remove(t);
 		thirdChoicesLabs.remove(t);
