@@ -95,9 +95,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		frame.setVisible(true);
 		frame.setVisible(false);
 
-		// call method to create the menu
-		createMenu();
-
 		JPanel fileAlgoPanel = new JPanel();
 		fileAlgoPanel.setLayout(new GridBagLayout());
 
@@ -379,15 +376,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			out.write("Output for " + selectedAlgorithm);
 			out.newLine();
 
-			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
-			out.write("Students Flagged:\n");			
-			for(Student s: output.getFlagged()){
-				if(s.getFlaggedForLabs())
-					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
-			}
+//			/** TODO Delete when flaggedForLabs/flaggedForTuts done**/
+//			out.write("Students Flagged:\n");			
+//			for(Student s: output.getFlagged()){
+//				if(s.getFlaggedForLabs())
+//					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
+//			}
 
-			/** TODO Uncomment when flaggedForLabs/flaggedForTuts done
-			/** Flagged Students x 3 - for both, just labs & just tuts
+			//TODO Uncomment when flaggedForLabs/flaggedForTuts done
+			//Flagged Students x 3 - for both, just labs & just tuts
 			// Flagged for both:
 			out.write("Students Flagged for both Labs & Tutorials:\n");			
 			for(Student s: output.getFlagged()){
@@ -405,7 +402,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			for(Student s: output.getFlagged()){
 				if(!s.getFlaggedForLabs() && s.getFlaggedForTuts())
 					out.write("\t" + s.getStudentNum() + " - " + s.getName() + "\n");
-			}**/
+			}
 
 			/** Iterate through Timeslots twice times (labs & tuts) **/
 
@@ -436,36 +433,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		}catch (Exception e){//Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		}
-	}
-
-	/** Self explanatory. Builds the menu used by the game **/
-	public void createMenu() {
-		// Menu bar for the game
-		menuBar = new JMenuBar();
-		menuBar.setAlignmentX(JMenuBar.LEFT_ALIGNMENT);
-		// first chain of menus
-		JMenu file = new JMenu("File");
-		file.setMnemonic(KeyEvent.VK_F); // KeyEvents create hot-key shortcuts
-		file.getAccessibleContext().setAccessibleDescription(
-				"The only menu in this program that has menu items");
-		menuBar.add(file);
-
-		// 'New Game' menu option
-		JMenuItem newGame = new JMenuItem("New Game");
-		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-				ActionEvent.ALT_MASK));
-		newGame.getAccessibleContext().setAccessibleDescription(
-				"Doesn't do anything yet!"); // TODO:
-		newGame.addActionListener(this);
-		file.add(newGame);
-		// 'Close' menu option
-		JMenuItem close = new JMenuItem("Close");
-		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
-				ActionEvent.ALT_MASK));
-		close.getAccessibleContext().setAccessibleDescription(
-				"Will eventually close the game!"); // TODO:
-		close.addActionListener(this);
-		file.add(close);
 	}
 
 	/** main method **/
