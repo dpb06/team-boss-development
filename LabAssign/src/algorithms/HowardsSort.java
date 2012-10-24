@@ -75,12 +75,12 @@ public class HowardsSort implements Algorithm {
 		if(!tutorials.isEmpty()){
 			for(Student s: students){
 				s.combineTuts();
-				//			if(s.getCombinedTuts().isEmpty()){
-				//				s.setFlaggedForTuts(true);
-				//				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
-				//				if(!flagged.contains(s))
-				//					flagged.add(s);
-				//			}
+							if(s.getCombinedTuts().isEmpty()){
+							s.setFlaggedForTuts(true);
+							s.setReasonForFlagging("Student has no first, second, or third lab choices.");
+								if(!flagged.contains(s))
+									flagged.add(s);
+							}
 			}
 			if(!labs.isEmpty()){
 				TutorialChecker tc = new TutorialChecker(students);

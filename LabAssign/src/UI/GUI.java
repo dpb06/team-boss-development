@@ -461,26 +461,26 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		for(Timeslot t : tutorialsList){
 			t.getAssigned().clear();
 		}		
-		if(labs.exists()){
-			StudentDataParser tutParser;
-			try {
-				tutParser = new StudentDataParser(labs);
-				labStudents = tutParser.parseSelections(labsList, true);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		if(tuts.exists()){
-			StudentDataParser tutParser;
-			try {
-				tutParser = new StudentDataParser(tuts);
-				tutStudents = tutParser.parseSelections(tutorialsList, false);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+//		if(labs.exists()){
+//			StudentDataParser tutParser;
+//			try {
+//				tutParser = new StudentDataParser(labs);
+//				labStudents = tutParser.parseSelections(labsList, true);
+//			} catch (FileNotFoundException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}
+//		if(tuts.exists()){
+//			StudentDataParser tutParser;
+//			try {
+//				tutParser = new StudentDataParser(tuts);
+//				tutStudents = tutParser.parseSelections(tutorialsList, false);
+//			} catch (FileNotFoundException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}
 		
 		List<Student> students;
 		
