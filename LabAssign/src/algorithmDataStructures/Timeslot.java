@@ -104,7 +104,7 @@ public abstract class Timeslot implements Comparable<Timeslot>{
 	}
 
 	public boolean isOverfilled(){
-		return (assigned.size()>preferredMax);
+		return (assigned.size()>=preferredMax);
 	}
 
 
