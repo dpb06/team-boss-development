@@ -15,7 +15,7 @@ public class StudentTableModel extends AbstractTableModel {
 	private String[] columnNames;
 	private Object[][] data;
 
-	private boolean DEBUG = true;
+	private boolean DEBUG = false;
 
 	private Map<Integer, Student> studentsMap = new HashMap<Integer, Student>();
 	private Map<Integer, Timeslot> timeslotsMap = new HashMap<Integer, Timeslot>();

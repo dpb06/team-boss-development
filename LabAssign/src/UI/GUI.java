@@ -70,6 +70,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	private String selectedAlgorithm = "Boss Sort";
 	
+	private JLabel fit;
+	
 	//Fields for fileChosen()/doRun() use
 	File labs;
 	File tuts;
@@ -242,6 +244,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		fitnessFunctionPanel = new JPanel();
 		fitnessFunctionPanel.setLayout(new BorderLayout());
+		fit = new JLabel();
+		fitnessFunctionPanel.add(fit);
+		fitnessFunctionPanel.setVisible(true);
 
 		eastPanel.add(boundsPanel, BorderLayout.NORTH);
 		eastPanel.add(fitnessFunctionPanel, BorderLayout.CENTER);
@@ -473,10 +478,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 //		for(String f: output.getFitness().keySet()){
 //			fitness += (f + " - " + output.getFitness().get(f) + "\n");
 //		}
-		
-		JLabel fit = new JLabel(fitness);
-		fitnessFunctionPanel.add(fit);
-		fitnessFunctionPanel.setVisible(true);
+		fit.setText(fitness);	
 		frame.validate();
 
 		//Create Naughty Lists
