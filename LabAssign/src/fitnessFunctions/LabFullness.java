@@ -27,6 +27,7 @@ public class LabFullness implements FitnessFunction{
 		//Make fitness equal to percentage of fullness of all labs.
 		this.fitness = average;
 		//Add fitness to AlgorithmOutput
+		System.out.println(fitness);
 		output.addFitness("LabFullness", (int) fitness);
 	}
 

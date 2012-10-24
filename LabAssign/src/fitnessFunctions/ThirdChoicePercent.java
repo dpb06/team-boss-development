@@ -30,6 +30,7 @@ public class ThirdChoicePercent {
 		//Make fitness equal to percentage of students in a first choice lab
 		this.fitness = (double) 1-((double)thirds/(double)total);
 		//Add fitness to AlgorithmOutput
+		System.out.println(fitness);
 		output.addFitness("ThirdChoicePercent", (int) fitness);
 	}
 	

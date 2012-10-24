@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import fitnessFunctions.FirstChoicePercent;
+import fitnessFunctions.LabFullness;
+import fitnessFunctions.ThirdChoicePercent;
+
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
@@ -65,20 +69,30 @@ public class HowardsSort implements Algorithm {
 			t.sortAssigned();
 		sortLabs();
 		//Prioritize students by their tutorial choices
-		//  TutorialChecker tc = new TutorialChecker(students);
-		//      students = tc.getStudents();
-		//Give students random order again
-		Collections.shuffle(students);
+
 		for(Student s: students){
 			s.combineTuts();
-			if(s.getCombinedTuts().isEmpty()){
-				s.setFlaggedForTuts(true);
-				s.setReasonForFlagging("Student has no first, second, or third tutorial choices.");
-				flagged.add(s);
-			}
+//			if(s.getCombinedTuts().isEmpty()){
+//				s.setFlaggedForTuts(true);
+//				s.setReasonForFlagging("Student has no first, second, or third lab choices.");
+//				if(!flagged.contains(s))
+//					flagged.add(s);
+//			}
 		}
+		TutorialChecker tc = new TutorialChecker(students);
+		students = tc.getStudents();
+		//Give students random order again
+		//Collections.shuffle(students);
+		//		for(Student s: students){
+		//			s.combineTuts();
+		//			if(s.getCombinedTuts().isEmpty()){
+		//				s.setFlaggedForTuts(true);
+		//				s.setReasonForFlagging("Student has no first, second, or third tutorial choices.");
+		//				flagged.add(s);
+		//			}
+		//		}
 		//Sort students into tutorials
-		sortTuts();
+		//	sortTuts();
 		//Generate AlgorithmOutput
 		generateAlgorithmOutput();
 		//Return output
@@ -87,42 +101,42 @@ public class HowardsSort implements Algorithm {
 
 
 	private void sortTuts() {
-		// TODO Basically just copypasta and find+replace Labs with Tuts; ONLY ONCE SORTLABS() WORKS PERFECTLY
 		ArrayList<Timeslot>overfilledTuts;
-		//	System.out.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT" +labs.get(0).toString());
-		for( Student s : students){
-			if(s.getCombinedLabs().contains(labs.get(0)))
-				System.out.println("Contains as first choice: "+labs.get(0).toString());
-		}
+
 		for(Student s: students){
 			if(!s.getFlaggedForTuts()){
-				s.setAssignedTut(s.getCombinedLabs().get(0));
+				s.setAssignedLab(s.getCombinedTuts().get(0));
 				s.getCombinedTuts().get(0).addStudent(s);
 			}
 		}
 		Student currentStudent;
 		overfilledTuts=overFilledTuts();
+
 		while(!overfilledTuts.isEmpty()){
 			for(Timeslot t: overfilledTuts){
 				for(int i=t.getPreferredMax();i<t.getAssigned().size();i++){
 					currentStudent=t.getAssigned().get(i);
-					currentStudent.getCurrentTimeslot().removeStudent(currentStudent);
-					if((currentStudent.getCurrentIndex()+1)<currentStudent.getNumCanAttendLabs()){						
-						currentStudent.incrementIndex();
-						if(currentStudent.getCurrentTimeslot().getAssigned().size()<currentStudent.getCurrentTimeslot().getPreferredMax()){
-							currentStudent.setAssignedLab(currentStudent.getCombinedLabs().get(currentStudent.getCurrentIndex()));
-							currentStudent.getCurrentTimeslot().addStudent(currentStudent);				
-						}
+					if(currentStudent.getCurrentIndexLabs()+1<currentStudent.getCombinedLabs().size()){
+						currentStudent.getCurrentTut().removeStudent(currentStudent);
+						currentStudent.incrementIndexTuts();
+						currentStudent.getCurrentTut().addStudent(currentStudent);
+						currentStudent.setAssignedLab(currentStudent.getCurrentTut());
 					}
 					else{
-						currentStudent.setFlaggedForTuts(true);
-						currentStudent.setReasonForFlagging("FILL THIS OUT"); //TODO: FILL THIS OUT FILL THIS OUT FILL THIS OUT FILL THIS OUT FILL THIS OUT
-						flagged.add(currentStudent);
+						if(currentStudent.getAssignedLab()!=null){
+							currentStudent.getAssignedLab().removeStudent(currentStudent);
+							currentStudent.setAssignedLab(null);
+						}
+						if(!flagged.contains(currentStudent)){
+							flagged.add(currentStudent);
+							currentStudent.setFlaggedForLabs(true);
+						}
 					}
 				}
+				overfilledTuts=overFilledTuts();
 			}
-			overfilledTuts=overFilledTuts();
 		}
+
 	}
 
 
@@ -136,11 +150,7 @@ public class HowardsSort implements Algorithm {
 	//-----FUNCTIONALITIES-----\\
 	public void sortLabs(){
 		ArrayList<Timeslot>overfilledLabs;
-		//	System.out.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT" +labs.get(0).toString());
-		for( Student s : students){
-			if(s.getCombinedLabs().contains(labs.get(0)))
-				System.out.println("Contains as first choice: "+labs.get(0).toString());
-		}
+
 		for(Student s: students){
 			if(!s.getFlaggedForLabs()){
 				s.setAssignedLab(s.getCombinedLabs().get(0));
@@ -149,48 +159,33 @@ public class HowardsSort implements Algorithm {
 		}
 		Student currentStudent;
 		overfilledLabs=overFilledLabs();
+
 		while(!overfilledLabs.isEmpty()){
 			for(Timeslot t: overfilledLabs){
 				for(int i=t.getPreferredMax();i<t.getAssigned().size();i++){
 					currentStudent=t.getAssigned().get(i);
-					currentStudent.getCurrentTimeslot().removeStudent(currentStudent);
-					if((currentStudent.getCurrentIndex()+1)<currentStudent.getNumCanAttendLabs()){						
-						currentStudent.incrementIndex();
-						if(currentStudent.getCurrentTimeslot().getAssigned().size()<currentStudent.getCurrentTimeslot().getPreferredMax()){
-							currentStudent.setAssignedLab(currentStudent.getCombinedLabs().get(currentStudent.getCurrentIndex()));
-							currentStudent.getCurrentTimeslot().addStudent(currentStudent);				
-						}
+					if(currentStudent.getCurrentIndexLabs()+1<currentStudent.getCombinedLabs().size()){
+						currentStudent.getCurrentLab().removeStudent(currentStudent);
+						currentStudent.incrementIndexLabs();
+						currentStudent.getCurrentLab().addStudent(currentStudent);
+						currentStudent.setAssignedLab(currentStudent.getCurrentLab());
 					}
 					else{
-						currentStudent.setFlaggedForLabs(true);
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						//TODO: Fill this out
-						currentStudent.setReasonForFlagging("Josh, you have to fill this out.");
-						flagged.add(currentStudent);
+						if(currentStudent.getAssignedLab()!=null){
+							currentStudent.getAssignedLab().removeStudent(currentStudent);
+							currentStudent.setAssignedLab(null);
+						}
+						if(!flagged.contains(currentStudent)){
+							flagged.add(currentStudent);
+							currentStudent.setFlaggedForLabs(true);
+						}
 					}
 				}
+				overfilledLabs=overFilledLabs();
 			}
-			overfilledLabs=overFilledLabs();
 		}
+
 	}
-
-
 
 	public ArrayList<Timeslot> overFilledTuts(){
 		ArrayList<Timeslot> overfilledTutsList = new ArrayList<Timeslot>();
@@ -246,7 +241,9 @@ public class HowardsSort implements Algorithm {
 			}
 		}
 		System.out.println();
-
+		new FirstChoicePercent(output);
+		new ThirdChoicePercent(output);
+		new LabFullness(output);
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){

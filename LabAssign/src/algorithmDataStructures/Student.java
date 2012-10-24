@@ -30,8 +30,10 @@ public class Student implements Comparable<Object> {
 
 	private ArrayList<Timeslot> combinedLabs=new ArrayList<Timeslot>();
 	private ArrayList<Timeslot> combinedTuts=new ArrayList<Timeslot>();
-	private int currentIndex=0;
-
+	
+	private int currentIndexLabs=0;
+	private int currentIndexTuts=0;
+	
 	private boolean flaggedForLabs = false;
 	private boolean flaggedForTuts = false;
 	private boolean changedChoices = false;
@@ -215,17 +217,28 @@ public class Student implements Comparable<Object> {
 		combinedTuts.addAll(thirdChoicesTuts);
 	}
 	
-	public void incrementIndex(){
-		currentIndex++;
+	public void incrementIndexLabs(){
+		currentIndexLabs++;
+	}
+	public void incrementIndexTuts(){
+		currentIndexTuts++;
+	}
+	// -----GET METHODS-----\\
+	public int getCurrentIndexLabs(){
+		return currentIndexLabs;
 	}
 	
-	// -----GET METHODS-----\\
-	public int getCurrentIndex(){
-		return currentIndex;
+	public int getCurrentIndexTuts(){
+		return currentIndexTuts;
 	}
 
-	public Timeslot getCurrentTimeslot(){
-		return combinedLabs.get(currentIndex);
+
+	public Timeslot getCurrentLab(){
+		return combinedLabs.get(currentIndexLabs);
+	}
+	
+	public Timeslot getCurrentTut(){
+		return combinedTuts.get(currentIndexTuts);
 	}
 	public int getPriority() {
 		return Priority;
@@ -319,8 +332,11 @@ public class Student implements Comparable<Object> {
 		this.assignedLab = t;
 	}
 
-	public void setIndex(int i){
-		currentIndex=i;
+	public void setIndexLab(int i){
+		currentIndexLabs=i;
+	}
+	public void setIndexTut(int i){
+		currentIndexTuts=i;
 	}
 	// For rearranging the order of students choices. Sets a students choice to
 	// an array of
@@ -370,6 +386,23 @@ public class Student implements Comparable<Object> {
 
 	public void setAssignedTut(Timeslot t) {
 		this.assignedTut = t;
+	}
+	
+	public void addThird(Timeslot t){
+		if(t instanceof Lab){
+			addThirdLab(t);
+		}else if (t instanceof Tutorial){
+			addThirdTut(t);
+		}
+	}
+	
+	public void removeTimeslot(Timeslot t){
+		firstChoicesLabs.remove(t);
+		secondChoicesLabs.remove(t);
+		thirdChoicesLabs.remove(t);
+		firstChoicesTuts.remove(t);
+		secondChoicesTuts.remove(t);
+		thirdChoicesTuts.remove(t);
 	}
 
 	/**
