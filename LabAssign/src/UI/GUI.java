@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Box;
@@ -174,6 +173,16 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
+		
+		JButton manualAssign = new JButton("Manual Assign");
+		manualAssign.setBounds(0, 0, 50, 20);
+
+		manualAssign.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ManualAssignList(labStudents, labsList);	//TODO Barb to change			
+			}
+		});
 
 		/** */
 
@@ -278,6 +287,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		});
 
 		southPanel.add(save);
+		southPanel.add(manualAssign);
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
 		frame.add(southPanel, BorderLayout.SOUTH);
