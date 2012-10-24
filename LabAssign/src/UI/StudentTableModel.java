@@ -92,7 +92,7 @@ public class StudentTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return Math.min(columnNames.length, data[0].length);
+		return columnNames.length;
 	}
 
 	@Override

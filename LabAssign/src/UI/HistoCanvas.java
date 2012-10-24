@@ -114,6 +114,7 @@ public class HistoCanvas extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(rectangles != null)
 		for(Rectangle r: rectangles.keySet()){
 			if(r.contains(e.getPoint())){
 				JDialog jD = new JDialog();
