@@ -100,12 +100,12 @@ public class HowardsSort implements Algorithm {
 						currentStudent.getCurrentTut().removeStudent(currentStudent);
 						currentStudent.incrementIndexTuts();
 						currentStudent.getCurrentTut().addStudent(currentStudent);
-						currentStudent.setAssignedLab(currentStudent.getCurrentTut());
+						currentStudent.setAssignedTut(currentStudent.getCurrentTut());
 					}
 					else{
-						if(currentStudent.getAssignedLab()!=null){
-							currentStudent.getAssignedLab().removeStudent(currentStudent);
-							currentStudent.setAssignedLab(null);
+						if(currentStudent.getAssignedTut()!=null){
+							currentStudent.getAssignedTut().removeStudent(currentStudent);
+							currentStudent.setAssignedTut(null);
 						}
 						currentStudent.setFlaggedForTuts(true);
 						if(!flagged.contains(currentStudent)){
