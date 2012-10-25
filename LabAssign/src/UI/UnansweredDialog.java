@@ -1,5 +1,6 @@
 package UI;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,9 +29,11 @@ public class UnansweredDialog extends JDialog {
 
 	public UnansweredDialog(List<Student> unanswered,List<Student> students, GUI parent) {
 		super(parent.getFrame(), true);
+		setPreferredSize(new Dimension(400, 300));
 		unans = new ArrayList<Student>(unanswered);
 		this.students = students;
 		create();
+		this.pack();
 	}
 
 	private void create() {
