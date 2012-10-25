@@ -33,21 +33,7 @@ public class HowardsSort implements Algorithm {
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
-		Collections.sort(students,new Comparator<Student>(){
-			@Override
-			public int compare(Student arg0, Student arg1) {
-				Student s1=arg0;
-				Student s2=arg1;
-				if(s1.getNumCanAttendLabs()<s2.getNumCanAttendLabs()){
-					return 1;
-				}
-				else if(s1.getNumCanAttendLabs()>s2.getNumCanAttendLabs()){
-					return -1;
-				}
-				return 0;
-			}
 
-		});
 	}
 
 
@@ -99,7 +85,7 @@ public class HowardsSort implements Algorithm {
 
 		for(Student s: students){
 			if(!s.getFlaggedForTuts()){
-				s.setAssignedLab(s.getCombinedTuts().get(0));
+				s.setAssignedTut(s.getCombinedTuts().get(0));
 				s.getCombinedTuts().get(0).addStudent(s);
 			}
 		}
@@ -110,16 +96,16 @@ public class HowardsSort implements Algorithm {
 			for(Timeslot t: overfilledTuts){
 				for(int i=t.getPreferredMax();i<t.getAssigned().size();i++){
 					currentStudent=t.getAssigned().get(i);
-					if(currentStudent.getCurrentIndexLabs()+1<currentStudent.getCombinedLabs().size()){
+					if(currentStudent.getCurrentIndexTuts()+1<currentStudent.getCombinedTuts().size()){
 						currentStudent.getCurrentTut().removeStudent(currentStudent);
 						currentStudent.incrementIndexTuts();
 						currentStudent.getCurrentTut().addStudent(currentStudent);
-						currentStudent.setAssignedLab(currentStudent.getCurrentTut());
+						currentStudent.setAssignedTut(currentStudent.getCurrentTut());
 					}
 					else{
-						if(currentStudent.getAssignedLab()!=null){
-							currentStudent.getAssignedLab().removeStudent(currentStudent);
-							currentStudent.setAssignedLab(null);
+						if(currentStudent.getAssignedTut()!=null){
+							currentStudent.getAssignedTut().removeStudent(currentStudent);
+							currentStudent.setAssignedTut(null);
 						}
 						currentStudent.setFlaggedForTuts(true);
 						if(!flagged.contains(currentStudent)){
@@ -241,12 +227,17 @@ public class HowardsSort implements Algorithm {
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
+		output.addFitness("Not Flagged Students", 100*((double)1-((double)flagged.size()/(double)students.size())));
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){
 			System.out.println(s.getStudentNum() + " - " + s.getName());
 			output.addFlagged(s);
 		}
+		System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent"));
+		System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent"));
+		System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness"));
+		System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students"));
 	}
 
 

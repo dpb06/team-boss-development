@@ -88,21 +88,36 @@ public class PermuSort implements Algorithm{
 		for(Student s:students){
 			//If the student hasn't already been flagged
 			if(!s.getFlaggedForLabs()){
-				//If the root node is null
-				if(start==null){
-					//Initialize a new tree, with this student as its root node value.
-					start = new PermuLeafNode(s,null);
-					current = start;
-				}
-				//Otherwise
-				else{
-					//Create a new node for this student with the current node as a parent.
-					PermuLeafNode newNode = new PermuLeafNode(s,current);
-					//Make the current node point to the new node.
-					current.setNext(newNode);
-					//Set the current node to the new node.
-					current = newNode;
-				}
+				Collections.sort(students,new Comparator<Student>(){
+					@Override
+					public int compare(Student arg0, Student arg1) {
+						Student s1=arg0;
+						Student s2=arg1;
+						if(s1.getNumCanAttendLabs()<s2.getNumCanAttendLabs()){
+							return 1;
+						}
+						else if(s1.getNumCanAttendLabs()>s2.getNumCanAttendLabs()){
+							return -1;
+						}
+						return 0;
+					}
+
+				});
+			}
+			//If the root node is null
+			if(start==null){
+				//Initialize a new tree, with this student as its root node value.
+				start = new PermuLeafNode(s,null);
+				current = start;
+			}
+			//Otherwise
+			else{
+				//Create a new node for this student with the current node as a parent.
+				PermuLeafNode newNode = new PermuLeafNode(s,current);
+				//Make the current node point to the new node.
+				current.setNext(newNode);
+				//Set the current node to the new node.
+				current = newNode;
 			}
 		}
 		//Begin timing the algorithm.
@@ -144,7 +159,7 @@ public class PermuSort implements Algorithm{
 					if(!kill){
 						//Recurse on child
 						//System.out.println(c.getStudent()+" : "+c.t.toString());
-					
+
 						counting++;
 						if(counting==116){
 							System.out.println("no homo");
