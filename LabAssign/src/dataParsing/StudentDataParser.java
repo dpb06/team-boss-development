@@ -381,7 +381,7 @@ public class StudentDataParser  {
 			}else if (token.contains("Please enter your last (family) name")){
 				lastName = iter.next().trim();
 				
-			}else if (token.contains("Please enter the last three digits of your student ID number.")){
+			}else if (token.contains("ID number")){
 				String studentID = iter.next().replace('\"', ' ');
 				if(studentID.contains("<Unanswered>")){
 					iStudentID = -1;
