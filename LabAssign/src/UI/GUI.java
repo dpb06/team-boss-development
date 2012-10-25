@@ -82,6 +82,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private List<Student> mergedStudents = new ArrayList<Student>();
 
 	JButton save;	// save button created in GUI, field so can enable in another method
+	JButton unanswered;
+
 	AlgorithmOutput output;
 
 	// currently this sets up all the graphical user interface. I'll later break
@@ -137,7 +139,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		labFileButton.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Make this start in the text field path
 				//Handle 'Browse' button action.
 				JFileChooser fc = new JFileChooser();
 				int returnVal = fc.showOpenDialog(GUI.this);
@@ -150,11 +151,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
-		
+
 		tutFileButton.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Make this start in the text field path
 				//Handle 'Browse' button action.
 				JFileChooser fc = new JFileChooser();
 				int returnVal = fc.showOpenDialog(GUI.this);
@@ -167,10 +167,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
-		
+
 		final JButton manualAssignLabs = new JButton("Manually Assign Labs");	// At bottom of GUI but needed for runButton ActionListener
 		final JButton manualAssignTuts = new JButton("Manually Assign Tuts");	// At bottom of GUI but needed for runButton ActionListener
-		
+
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -190,7 +190,20 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		//String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
 		String[] algorithms = {"Boss Sort", "Howard Sort", "Permute Sort"};
 		JComboBox algoGroup = new JComboBox(algorithms);
-		
+
+		/** Button for Students with incomplete answers
+		 *  **Only visible if there are any **
+		 *  */
+		unanswered = new JButton("");
+		unanswered.setEnabled(false);
+		unanswered.setVisible(false);
+		unanswered.addActionListener(new ActionListener() {      
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO Haydn to add
+			}
+		});
+
 		/** Large chunk of code for TOP OF GUI layout starts */
 		algoGroup.setSelectedIndex(0);
 		algoGroup.addActionListener(new ActionListener() {      
@@ -222,6 +235,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		fileAlgoPanel.add(tutFileButton, defaultCons);
 		fileAlgoPanel.add(algoSelect, lastCons);
 		fileAlgoPanel.add(runButton, lastCons);
+		//TODO Haydn to add unanswered Button's location
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
 		canvasPanel.add(new Box.Filler(d, d, d));
@@ -236,7 +250,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.add(fileAlgoPanel);	
 		/** Large chunk of code for TOP OF GUI layout ends */
-		
+
 		/** RIGHT SIDE OF GUI */
 		JPanel eastPanel = new JPanel();
 		eastPanel.setLayout(new BorderLayout());
@@ -269,7 +283,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		JPanel flagTut = new JPanel(new BorderLayout());
 		flaggedTuts = new JLabel("Flagged for Tuts - None");
-		flaggedTutsButton = new JButton("Show Flagged for Labs");
+		flaggedTutsButton = new JButton("Show Flagged for Tuts");
 		flaggedTutsButton.setEnabled(false);
 		flaggedTutsButton.addActionListener(new ActionListener() {      
 			@Override
@@ -293,16 +307,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		eastPanel.add(boundsPanel, BorderLayout.NORTH);
 		eastPanel.add(fitnessFunctionPanel, BorderLayout.SOUTH);
 		eastPanel.setVisible(true);
-		
+
 		/** BOTTOM OF GUI */
 		JPanel southPanel = new JPanel();
-		
+
 		save = new JButton("Save Results");
 		save.setEnabled(false);
 		save.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Make this start in the text field path
 				//Handle 'Save' button action.
 				if(output != null){
 					JFileChooser jfc = new JFileChooser();
@@ -315,7 +328,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					System.out.println("No output to save");
 			}
 		});
-		
+
 		manualAssignLabs.setBounds(0, 0, 50, 20);
 		manualAssignLabs.setEnabled(false);
 		//Only enabled after algorithm has been run
@@ -365,7 +378,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		southPanel.add(save);
 		southPanel.add(manualAssignLabs);
 		southPanel.add(manualAssignTuts);
-		
+
 		/** Adding all (TOP, RIGHT & BOTTOM) of GUI to frame */
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
@@ -380,7 +393,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		try{
 			// Create file 
 			FileWriter fstream = new FileWriter(fout);
-			//TODO: Allow user to select output file
 			BufferedWriter out = new BufferedWriter(fstream);
 
 			out.write("Output for " + selectedAlgorithm);
@@ -444,6 +456,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	public void fileChosen() {
 		try {
+			int problemStudents = 0;
+
 			labs = new File(LabFileTextField.getText());
 			tuts = new File(TutFileTextField.getText());
 
@@ -469,12 +483,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					if((s.getFirstChoiceLabs().size() + s.getSecondChoiceLabs().size() + s.getThirdChoiceLabs().size()) < 2)
 						naughtyStudents.add(s);
 				}
+				if(naughtyStudents.size() > 0){
+					new NaughtyList(naughtyStudents, labsList, "Students with one/no labs selected").getStudents();
+				}
+				naughtyStudents = new ArrayList<Student>();	// Cleared so can use for tuts too
+				problemStudents += labParser.getProblemStudents().size();
 			}
-			if(naughtyStudents.size() > 0){
-				new NaughtyList(naughtyStudents, labsList, "Students with one/no labs selected").getStudents();
-				//TODO Stop it here awaiting user's checkover of list
-			}
-			naughtyStudents = new ArrayList<Student>();	// Cleared so can use for tuts too
 
 			if(havetuts){
 				StudentDataParser tutParser = new StudentDataParser(tuts);
@@ -488,9 +502,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 				if(naughtyStudents.size() > 0){
 					tutStudents = new NaughtyList(naughtyStudents, labsList, "Students with one/no tutorials selected").getStudents();
-					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
+				problemStudents += tutParser.getProblemStudents().size();
 			}		
 			if (tuts.exists() && labs.exists()){
 				boolean tutInLabsArray[] = new boolean[tutStudents.size()];
@@ -518,7 +532,18 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				mergedStudents = labStudents;
 			}
 
-
+			if(problemStudents > 0){
+				unanswered.setText(problemStudents + " incomplete students");
+				unanswered.setEnabled(true);
+				unanswered.setVisible(true);
+				frame.validate();
+			}
+			else {
+				unanswered.setText("");
+				unanswered.setEnabled(false);
+				unanswered.setVisible(false);
+				frame.validate();
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -676,22 +701,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getActionCommand().equals("New Game")) {
-			// start a new game
-		} else if (e.getActionCommand().equals("Close")) {
-			// close the current game
-			int q = JOptionPane.showConfirmDialog(this, new JLabel(
-					"Are you sure you want to\nclose this application?"),
-					"Close", JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE);
-			if (q == 0) {
-				frame.dispose();
-				System.exit(0);
-			}
-		}
+		// Stub for implementing ActionListener
 	}
-
 
 	public boolean createTitleRow(JPanel panel, int drawRow, String name) {
 		if (panel.getLayout() instanceof GridBagLayout) {
@@ -731,12 +742,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	}
 
-
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		// TODO Auto-generated method stub
+		// Stub for implementing ItemListener
 	}
-
 
 	// The bounds class is used by the GUI to store the bounds
 	// given to it by the user for use in the algorithm of choice.
@@ -957,7 +966,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 		public void addBoundsInputs() {
 		}
-		
+
 		public JFrame getFrame() {
 			return frame;
 		}
