@@ -8,7 +8,9 @@ import org.junit.Test;
 import algorithmDataStructures.Student;
 import algorithms.StudentChoiceOrder;
 
-public class StudentChoiceOrderSuite {
+public class StudentChoiceOrderSuite  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students;
 	

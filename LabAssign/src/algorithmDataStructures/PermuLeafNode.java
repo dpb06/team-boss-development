@@ -2,7 +2,9 @@ package algorithmDataStructures;
 
 import java.util.ArrayList;
 
-public class PermuLeafNode{	
+public class PermuLeafNode { 
+ private final boolean DEBUG = false; 
+	
 
 	private PermuLeafNode parent;
 	private PermuLeafNode next;

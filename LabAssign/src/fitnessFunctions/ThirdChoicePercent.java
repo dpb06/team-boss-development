@@ -4,7 +4,9 @@ import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class ThirdChoicePercent {
+public class ThirdChoicePercent  { 
+ private final boolean DEBUG = false; 
+
 
 	private double fitness;
 	
@@ -30,7 +32,7 @@ public class ThirdChoicePercent {
 		//Make fitness equal to percentage of students in a first choice lab
 		this.fitness =(double) 100*((double) 1-((double)thirds/(double)total));
 		//Add fitness to AlgorithmOutput
-		System.out.println(fitness);
+		if(DEBUG){ System.out.println(fitness); } 
 		output.addFitness("ThirdChoicePercent",  fitness);
 	}
 	

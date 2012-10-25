@@ -15,7 +15,9 @@ import algorithmDataStructures.Timeslot;
 import algorithmDataStructures.Tutorial;
 import algorithms.BossSort;
 
-public class BossSortJUnitSuite {
+public class BossSortJUnitSuite  { 
+ private final boolean DEBUG = false; 
+
 	
 	
 	
@@ -45,7 +47,7 @@ public class BossSortJUnitSuite {
 	public void testStudentPersistence() {
 		// Tests that every student who enters the algorithm, leaves the
 		// algorithm
-		System.out.println("testStudentPersistence() in BossSortJUnitSuite\n");
+		if(DEBUG){ System.out.println("testStudentPersistence() in BossSortJUnitSuite\n"); } 
 		BossSort bs = new BossSort(labs, tutorials, students);
 		AlgorithmOutput out = bs.start();
 		for (Student s : students) {
@@ -63,7 +65,7 @@ public class BossSortJUnitSuite {
 				}
 			}
 			if(!found){
-				System.out.println("--------------------NOT FOUND STUDENT-----------------------------------");
+				if(DEBUG){ System.out.println("--------------------NOT FOUND STUDENT-----------------------------------"); } 
 				s.printDebug();
 			}
 			assertTrue(found);

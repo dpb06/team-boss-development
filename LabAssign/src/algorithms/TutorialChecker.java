@@ -8,13 +8,15 @@ import algorithmDataStructures.Timeslot;
 /**
  * Removes student's tutorial choices that clash with the lab they are assigned to. 
  */
-public class TutorialChecker {
+public class TutorialChecker  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students;
 	
 	public TutorialChecker(ArrayList<Student> students){
 		//Begin console output.
-		System.out.println("modifyTuts() in BossSort");
+		if(DEBUG){ System.out.println("modifyTuts() in BossSort"); } 
 		this.students = new ArrayList<Student>(students);
 		//For each student
 		for (Student s : this.students){
@@ -23,7 +25,7 @@ public class TutorialChecker {
 			//Initialize boolean to track changes 
 			boolean removals = false;
 			//Printspam the name of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ":");
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName() + ":"); } 
 			//Find assigned lab timeslot
 			Timeslot assignedLab = s.getAssignedLab();
 			//Create a copy of student's tutorial first choices
@@ -36,7 +38,7 @@ public class TutorialChecker {
 					firsts.remove(tut);
 					removals = true;
 					//Printspam the removal
-					System.out.println("First choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime());
+					if(DEBUG){ System.out.println("First choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime()); } 
 				}
 			}
 			//Set new list of first choices
@@ -52,7 +54,7 @@ public class TutorialChecker {
 					seconds.remove(tut);
 					removals = true;
 					//Printspam the removal
-					System.out.println("Second choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime());
+					if(DEBUG){ System.out.println("Second choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime()); } 
 				}
 			}
 			//Set new list of second choices
@@ -68,7 +70,7 @@ public class TutorialChecker {
 					thirds.remove(tut);
 					removals = true;
 					//Printspam the removal
-					System.out.println("Third choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime());
+					if(DEBUG){ System.out.println("Third choice tutorial removed: " + tut.getDay() + ", " + tut.getStartTime() + "-" + tut.getEndTime()); } 
 				}
 			}
 			//Set new list of third choices
@@ -76,10 +78,10 @@ public class TutorialChecker {
 			//If no changes have been made to this student
 			if(!removals){
 				//Printspam lack of removals
-				System.out.println("No tutorials removed");
+				if(DEBUG){ System.out.println("No tutorials removed"); } 
 			}
 		}
-		System.out.println("\n");
+		if(DEBUG){ System.out.println("\n"); } 
 	}
 
 	public ArrayList<Student> getStudents() {

@@ -11,7 +11,9 @@ import algorithms.CuttingSort;
 import algorithms.PermuSort;
 import algorithms.StudentChoiceOrder;
 
-public class JUnitTestingData {
+public class JUnitTestingData  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<Timeslot> labs = new ArrayList<Timeslot>();

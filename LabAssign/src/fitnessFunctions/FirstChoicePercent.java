@@ -4,7 +4,9 @@ import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class FirstChoicePercent implements FitnessFunction{
+public class FirstChoicePercent implements FitnessFunction { 
+ private final boolean DEBUG = false; 
+
 
 	private double fitness;
 	
@@ -30,7 +32,7 @@ public class FirstChoicePercent implements FitnessFunction{
 		//Make fitness equal to percentage of students in a first choice lab
 		this.fitness = (double)100*((double)firsts/(double)total);
 		//Add fitness to AlgorithmOutput
-		System.out.println(fitness);
+		if(DEBUG){ System.out.println(fitness); } 
 		output.addFitness("FirstChoicePercent", fitness);
 	}
 	

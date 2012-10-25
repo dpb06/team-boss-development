@@ -4,7 +4,9 @@ package algorithmDataStructures;
  * A data-storage class used to keep track of the number of choices, cannot attends, and can only attends for each Timeslot.
  * Used by CuttingSort.
  */
-public class TimeslotTotals {
+public class TimeslotTotals  { 
+ private final boolean DEBUG = false; 
+
 	//-----FIELDS-----\\
 	private int numFirstChoice=0;
 	private int numSecondChoice=0;

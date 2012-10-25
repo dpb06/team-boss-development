@@ -13,7 +13,9 @@ import java.util.HashMap;
  *   by their types if necessary, and FitnessFunctions can still get all the Timeslots by calling .keySet()
  */
 @SuppressWarnings("serial")
-public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>>{
+public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>> { 
+ private final boolean DEBUG = false; 
+
 
 	//-----VARIABLES-----\\
 	private HashMap<String,Double> fitness = new HashMap<String,Double>(); 

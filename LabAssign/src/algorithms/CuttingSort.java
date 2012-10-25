@@ -11,7 +11,9 @@ import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class CuttingSort implements Algorithm {
+public class CuttingSort implements Algorithm  { 
+ private final boolean DEBUG = false; 
+
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
 	private ArrayList<Timeslot> tutorials;
@@ -51,7 +53,7 @@ public class CuttingSort implements Algorithm {
 		}
 		List<Timeslot> potentialRemovals = new ArrayList<Timeslot>();
 		for (Timeslot t : onlyAttends.keySet()) {
-			//System.out.println(t + " has " + onlyAttends.get(t)	+ " unique attendees");
+			//if(DEBUG){ System.out.println(t + " has " + onlyAttends.get(t)	+ " unique attendees"); } 
 			if(onlyAttends.get(t).equals(0)){
 				potentialRemovals.add(t);
 			}
@@ -67,7 +69,7 @@ public class CuttingSort implements Algorithm {
 //					System.exit(0);
 		//For each timeslot
 		for(Timeslot t: temp){
-			//System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents());
+			//if(DEBUG){ System.out.println(t.getAssigned().size()+" maxSize="+t.getMaxStudents()); } 
 			//If the timeslot has no persons who can only attend that slot
 			if(potentialRemovals.contains(t) && allLabsBelowPreferred(temp)){
 				//Remove the slot from labs

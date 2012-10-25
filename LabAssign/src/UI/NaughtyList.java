@@ -21,7 +21,9 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import dataParsing.StudentDataParser;
 
-public class NaughtyList extends JFrame {
+public class NaughtyList extends JFrame  { 
+ private final boolean DEBUG = false; 
+
 	private JTable table;
 	private List<Student> students;
 	private List<Timeslot> timeslots;// Just for knowing 'index'

@@ -10,7 +10,9 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
 
-public class StudentParserFactory {
+public class StudentParserFactory  { 
+ private final boolean DEBUG = false; 
+
 
 	
 
@@ -36,7 +38,7 @@ public class StudentParserFactory {
 		List<Timeslot> test = sdp.getTimeslots();
 		List<Student> selections =sdp.parseSelections(test, true);
 		BossSort b= new BossSort((ArrayList<Timeslot>)test, new ArrayList<Timeslot>(),(ArrayList<Student>) selections);
-		//System.out.println(selections);
+		//if(DEBUG){ System.out.println(selections); } 
 	}
 }
 
