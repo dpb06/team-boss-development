@@ -16,12 +16,12 @@ import java.util.HashMap;
 public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>>{
 
 	//-----VARIABLES-----\\
-	private HashMap<String,Integer> fitness = new HashMap<String,Integer>(); 
+	private HashMap<String,Double> fitness = new HashMap<String,Double>(); 
 	private ArrayList<Student> flagged = new ArrayList<Student>();
 	
 	
 	//-----ADD METHODS-----\\
-	public void addFitness(String name, int value){
+	public void addFitness(String name, double value){
 		fitness.put(name, value);
 	}
 	
@@ -39,7 +39,7 @@ public class AlgorithmOutput extends HashMap<Timeslot,ArrayList<Student>>{
 		return flagged;
 	}
 	
-	public HashMap<String,Integer> getFitness(){
+	public HashMap<String,Double> getFitness(){
 		return fitness;
 	}
 	

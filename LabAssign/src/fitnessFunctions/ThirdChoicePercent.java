@@ -31,7 +31,7 @@ public class ThirdChoicePercent {
 		this.fitness =(double) 100*((double) 1-((double)thirds/(double)total));
 		//Add fitness to AlgorithmOutput
 		System.out.println(fitness);
-		output.addFitness("ThirdChoicePercent", (int) fitness);
+		output.addFitness("ThirdChoicePercent",  fitness);
 	}
 	
 	public double fitness(){
