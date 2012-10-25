@@ -97,27 +97,39 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel fileAlgoPanel = new JPanel();
 		fileAlgoPanel.setLayout(new GridBagLayout());
 
-		int width = 500;
-		int height = 200;
+		int width = 500, height = 200;
 		fileAlgoPanel.setSize(width, height);
 
+		/** TOP OF GUI */
 		// File for Labs textField
 		LabFileTextField = new JTextField("File Name for Labs here....", 10);
 		LabFileTextField.setMaximumSize(new Dimension(500, 20));
 		LabFileTextField.addKeyListener(new KeyListener() {
-
 			@Override
-			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
-
+			public void keyTyped(KeyEvent e) 	{	alreadyRUN = false;	}
 			@Override
 			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
-
 			@Override
-			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
+			public void keyPressed(KeyEvent e)	{	alreadyRUN = false;	}
 		});
 
 		JButton labFileButton = new JButton("Browse");
 		labFileButton.setBounds(0, 0, 50, 20);
+
+		// File for Tutorials textField
+		TutFileTextField = new JTextField("File Name for Tutorials here....", 10);
+		TutFileTextField.setMaximumSize(new Dimension(500, 20));
+		TutFileTextField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e)	{	alreadyRUN = false;	}
+			@Override
+			public void keyReleased(KeyEvent e)	{	alreadyRUN = false;	}
+			@Override
+			public void keyPressed(KeyEvent e)	{	alreadyRUN = false;	}
+		});
+
+		JButton tutFileButton = new JButton("Browse");
+		tutFileButton.setBounds(0, 0, 50, 20);
 
 		final JButton runButton = new JButton("Run");
 		runButton.setEnabled(false);
@@ -138,25 +150,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
-
-		/** */
-		// File for Tutorials textField
-		TutFileTextField = new JTextField("File Name for Tutorials here....", 10);
-		TutFileTextField.setMaximumSize(new Dimension(500, 20));
-		TutFileTextField.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {		alreadyRUN = false;	}
-
-			@Override
-			public void keyReleased(KeyEvent e) {	alreadyRUN = false;	}
-
-			@Override
-			public void keyPressed(KeyEvent e) {	alreadyRUN = false;	}
-		});
-
-		JButton tutFileButton = new JButton("Browse");
-		tutFileButton.setBounds(0, 0, 50, 20);
-
+		
 		tutFileButton.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -173,57 +167,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 			}
 		});
-
-		final JButton manualAssignLabs = new JButton("Manually Assign Labs");
-		manualAssignLabs.setBounds(0, 0, 50, 20);
-		manualAssignLabs.setEnabled(false);
-		//Only enabled after algorithm has been run
-
-		manualAssignLabs.addActionListener(new ActionListener() {			 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ArrayList<Student> studs = new ArrayList<Student>();
-				for(Student s: output.getFlagged()){
-					if(s.getFlaggedForLabs())
-						studs.add(s);
-				}
-				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
-				for(Timeslot t: output.keySet()){
-					if(t instanceof Lab)
-						ts.add(t);
-				}
-				new ManualAssignList(studs, ts, GUI.this);
-				naughtyCalculation(); 
-				frame.validate();
-			}
-		});
-
-		final JButton manualAssignTuts = new JButton("Manually Assign Tuts");
-		manualAssignTuts.setBounds(0, 0, 50, 20);
-		manualAssignTuts.setEnabled(false);
-		//Only enabled after algorithm has been run
-
-		manualAssignTuts.addActionListener(new ActionListener() {			 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ArrayList<Student> studs = new ArrayList<Student>();
-				for(Student s: output.getFlagged()){
-					if(s.getFlaggedForTuts())
-						studs.add(s);
-				}
-				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
-				for(Timeslot t: output.keySet()){
-					if(t instanceof Tutorial)
-						ts.add(t);
-				}
-				new ManualAssignList(studs, ts, GUI.this);
-				naughtyCalculation(); 
-				frame.validate();
-			}
-		});
-
-		/** */
-
+		
+		final JButton manualAssignLabs = new JButton("Manually Assign Labs");	// At bottom of GUI but needed for runButton ActionListener
+		final JButton manualAssignTuts = new JButton("Manually Assign Tuts");	// At bottom of GUI but needed for runButton ActionListener
+		
 		runButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -243,8 +190,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		//String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
 		String[] algorithms = {"Boss Sort", "Howard Sort", "Permute Sort"};
 		JComboBox algoGroup = new JComboBox(algorithms);
-
-
+		
+		/** Large chunk of code for TOP OF GUI layout starts */
 		algoGroup.setSelectedIndex(0);
 		algoGroup.addActionListener(new ActionListener() {      
 			@Override
@@ -285,10 +232,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+		topPanel.add(fileAlgoPanel);	
+		/** Large chunk of code for TOP OF GUI layout ends */
+		
+		/** RIGHT SIDE OF GUI */
 		JPanel eastPanel = new JPanel();
 		eastPanel.setLayout(new BorderLayout());
 
-		// Finish the panel, pack and display
 		boundsPanel = new JPanel();
 		boundsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
 		boundsPanel.setLayout(new GridBagLayout());
@@ -341,11 +293,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		eastPanel.add(boundsPanel, BorderLayout.NORTH);
 		eastPanel.add(fitnessFunctionPanel, BorderLayout.SOUTH);
 		eastPanel.setVisible(true);
-
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-		topPanel.add(fileAlgoPanel);
+		
+		/** BOTTOM OF GUI */
 		JPanel southPanel = new JPanel();
+		
 		save = new JButton("Save Results");
 		save.setEnabled(false);
 		save.addActionListener(new ActionListener() {			 
@@ -364,10 +315,58 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					System.out.println("No output to save");
 			}
 		});
+		
+		manualAssignLabs.setBounds(0, 0, 50, 20);
+		manualAssignLabs.setEnabled(false);
+		//Only enabled after algorithm has been run
+
+		manualAssignLabs.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForLabs())
+						studs.add(s);
+				}
+				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
+				for(Timeslot t: output.keySet()){
+					if(t instanceof Lab)
+						ts.add(t);
+				}
+				new ManualAssignList(studs, ts, GUI.this);
+				naughtyCalculation(); 
+				frame.validate();
+			}
+		});
+
+		manualAssignTuts.setBounds(0, 0, 50, 20);
+		manualAssignTuts.setEnabled(false);
+		//Only enabled after algorithm has been run
+
+		manualAssignTuts.addActionListener(new ActionListener() {			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForTuts())
+						studs.add(s);
+				}
+				ArrayList<Timeslot> ts = new ArrayList<Timeslot>();
+				for(Timeslot t: output.keySet()){
+					if(t instanceof Tutorial)
+						ts.add(t);
+				}
+				new ManualAssignList(studs, ts, GUI.this);
+				naughtyCalculation(); 
+				frame.validate();
+			}
+		});	
 
 		southPanel.add(save);
 		southPanel.add(manualAssignLabs);
 		southPanel.add(manualAssignTuts);
+		
+		/** Adding all (TOP, RIGHT & BOTTOM) of GUI to frame */
 		frame.add(topPanel, BorderLayout.NORTH);
 		frame.add(eastPanel, BorderLayout.EAST);
 		frame.add(southPanel, BorderLayout.SOUTH);
@@ -506,7 +505,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 				// students that have labs now have their Tutorials stored aswell
 				mergedStudents = labStudents;
-				
+
 				for(int j = 0; j < tutInLabsArray.length; j++){
 					if(!tutInLabsArray[j]){
 						//is a student only in a tut (not a lab)
@@ -534,7 +533,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		}		
 
 		List<Student> students = new ArrayList<Student>();
-		
+
 		//clones the mergedStudents so that the original student objects
 		//do not get tampered with by any algorithms
 		for(Student s : mergedStudents){
