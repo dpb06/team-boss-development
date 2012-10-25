@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -43,9 +44,12 @@ public class UnansweredDialog extends JDialog {
 		exit.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(Student s: unans){
+				for(Iterator<Student> iter = unans.iterator(); iter.hasNext(); ){
+					Student s = iter.next();
 					students.add(s);
+					iter.remove();
 				}
+				unans.clear();
 				UnansweredDialog.this.dispose();
 			}
 		});
@@ -98,7 +102,11 @@ public class UnansweredDialog extends JDialog {
 				return;
 			}
 			if (col == 0) {
-				unans.get(row).setStudentNum(Integer.parseInt(in));
+				try {
+					unans.get(row).setStudentNum(Integer.parseInt(in));
+				} catch (NumberFormatException e) {
+					unans.get(row).setStudentNum(-1);
+				}
 			} else if (col == 1) {
 				unans.get(row).setName(in);
 			}

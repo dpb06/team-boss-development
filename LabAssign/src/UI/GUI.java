@@ -56,7 +56,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	private JFrame frame;
 	private JPanel boundsPanel;
 	private JPanel fitnessFunctionPanel;
-	private JMenuBar menuBar;
 
 	private JTextArea textArea;
 	private final JTextField LabFileTextField;
@@ -81,8 +80,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	File tuts;
 	private List<Student> mergedStudents = new ArrayList<Student>();
 
-	JButton save;	// save button created in GUI, field so can enable in another method
-	JButton unanswered;
+	private JButton save;	// save button created in GUI, field so can enable in another method
+	private JButton unanswered;
+	private List<Student> unansweredStudents = new ArrayList<Student>();
 
 	AlgorithmOutput output;
 	private List<Student> labStudents;
@@ -191,8 +191,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		JPanel algoSelect = new JPanel();
 		algoSelect.setLayout(new BoxLayout(algoSelect, BoxLayout.Y_AXIS));
 		// This array contains all algorithm options
-		//String[] algorithms = {"Boss Sort", "Howard Sort", "Cutting Sort", "Permute Sort"};
-		String[] algorithms = {"Boss Sort", "Howard Sort", "Permute Sort"};
+		String[] algorithms = {"Boss Sort", "Howard Sort"};
 		JComboBox algoGroup = new JComboBox(algorithms);
 
 		/** Button for Students with incomplete answers
@@ -204,7 +203,13 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		unanswered.addActionListener(new ActionListener() {      
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO Haydn to add
+				System.out.println(unansweredStudents);
+				new UnansweredDialog(unansweredStudents, mergedStudents, GUI.this).setVisible(true);
+				unansweredStudents.clear();
+				if (unansweredStudents.isEmpty()){
+					unanswered.setVisible(false);
+				}
+					
 			}
 		});
 
@@ -240,6 +245,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		fileAlgoPanel.add(algoSelect, lastCons);
 		fileAlgoPanel.add(runButton, lastCons);
 		//TODO Haydn to add unanswered Button's location
+		lastCons.gridy = 2;
+		lastCons.gridwidth = 3;
+		fileAlgoPanel.add(unanswered, lastCons);
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
 		canvasPanel.add(new Box.Filler(d, d, d));
@@ -467,6 +475,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 			
 			tutStudents = new ArrayList<Student>();
+			//unansweredStudents = new ArrayList<Student>();
 
 			boolean havelabs = false;
 			boolean havetuts = false;
@@ -493,6 +502,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				}
 				naughtyStudents = new ArrayList<Student>();	// Cleared so can use for tuts too
 				problemStudents += labParser.getProblemStudents().size();
+				if (problemStudents > 0)
+					unansweredStudents.addAll(labParser.getProblemStudents());
 			}
 
 			if(havetuts){
@@ -514,6 +525,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				naughtyStudents = new ArrayList<Student>();
 
 				problemStudents += tutParser.getProblemStudents().size();
+				if (problemStudents > 0)
+					unansweredStudents.addAll(tutParser.getProblemStudents());
+				System.out.println("Num Unanswered"+unansweredStudents.size());
 			}		
 			if (tuts.exists() && labs.exists()){
 				boolean tutInLabsArray[] = new boolean[tutStudents.size()];
