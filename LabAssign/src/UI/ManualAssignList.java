@@ -166,9 +166,19 @@ public class ManualAssignList extends JFrame {
 			Student s = students.get(i);
 			rowData[i][0] = new JLabel("" + s.getStudentNum());
 			for (int t = 0; t < timeslots.size(); ++t) {
-				JRadioButton b = new JRadioButton("");
-				if((Boolean) data[i][t+1])
+				JRadioButton b = new JRadioButton("");;
+				if(s.getFirstChoiceLabs().contains(timeslots.get(t)) || s.getFirstChoiceTuts().contains(timeslots.get(t))){
+					b = new JRadioButton("1st");
 					b.setBackground(Color.green);
+				}
+				else if(s.getSecondChoiceLabs().contains(timeslots.get(t)) || s.getSecondChoiceTuts().contains(timeslots.get(t))){
+					b = new JRadioButton("2nd");
+					b.setBackground(Color.orange);
+				}
+				else if(s.getThirdChoiceLabs().contains(timeslots.get(t)) || s.getThirdChoiceTuts().contains(timeslots.get(t))){
+					b = new JRadioButton("3rd");
+					b.setBackground(Color.yellow);
+				}
 				b.setActionCommand(timeslots.get(t).toString());
 				rowData[i][t+1] = b;
 			}
