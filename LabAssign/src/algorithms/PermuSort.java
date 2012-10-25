@@ -18,7 +18,9 @@ import algorithmDataStructures.Timeslot;
 //TODO: Implement tutorial functionality
 
 
-public class PermuSort implements Algorithm{
+public class PermuSort implements Algorithm { 
+ private final boolean DEBUG = false; 
+
 
 	//-----FIELDS-----\\
 	private ArrayList<Student> students;
@@ -83,7 +85,7 @@ public class PermuSort implements Algorithm{
 	 */
 	public void sortLabs(){
 		//Begin console output.
-		System.out.println("sortLabs() in PermuteSort");
+		if(DEBUG){ System.out.println("sortLabs() in PermuteSort"); } 
 		//For each student in order of how few labs they can attend. TODO: check???
 		for(Student s:students){
 			//If the student hasn't already been flagged
@@ -122,20 +124,20 @@ public class PermuSort implements Algorithm{
 		}
 		//Begin timing the algorithm.
 		long startTime = System.currentTimeMillis();
-		System.out.println("Starting PermuSort at system time: " + startTime);
+		if(DEBUG){ System.out.println("Starting PermuSort at system time: " + startTime); } 
 		//Start a thread that will end the algorithm after a set period.
 		new Killthread().start();
 		//Start the algorithm that iterates through permutations, passing it the root node.
 		iterateLabPermutations(start);
 		//Printspam results.
 		long endTime = System.currentTimeMillis();
-		System.out.println("Ending PermuSort at system time: " + endTime);
+		if(DEBUG){ System.out.println("Ending PermuSort at system time: " + endTime); } 
 		long time = endTime-startTime;
-		System.out.println("Run time: \n"+time+" Millisecs");
+		if(DEBUG){ System.out.println("Run time: \n"+time+" Millisecs"); } 
 		time = time/1000;
-		System.out.println(time+" secs");
+		if(DEBUG){ System.out.println(time+" secs"); } 
 		time = time/60;
-		System.out.println(time+" mins\n");
+		if(DEBUG){ System.out.println(time+" mins\n"); } 
 	}
 
 	/**
@@ -158,16 +160,16 @@ public class PermuSort implements Algorithm{
 					//Check if algorithm killswitch has been flipped by the killthread
 					if(!kill){
 						//Recurse on child
-						//System.out.println(c.getStudent()+" : "+c.t.toString());
+						//if(DEBUG){ System.out.println(c.getStudent()+" : "+c.t.toString()); } 
 
 						counting++;
 						if(counting==116){
-							System.out.println("no homo");
+							if(DEBUG){ System.out.println("no homo"); } 
 						}
 						iterateLabPermutations(currentNode.getNext());
 					}
 					else{
-						System.out.println("FFFFFFFFFFFFFFFFFFFMMMMMMMMMMMMMMMMMMLLLLLLLLLLLLLLLLLLLLLL");
+						if(DEBUG){ System.out.println("FFFFFFFFFFFFFFFFFFFMMMMMMMMMMMMMMMMMMLLLLLLLLLLLLLLLLLLLLLL"); } 
 					}
 				}
 				//If this node doesn't have a child
@@ -175,7 +177,7 @@ public class PermuSort implements Algorithm{
 					//Mark that a solution has been found.
 					count+=1;
 					//Check fitness of this solution
-					System.out.println("found Solution");
+					if(DEBUG){ System.out.println("found Solution"); } 
 					checkFitness(currentNode);
 				}
 			}
@@ -245,13 +247,13 @@ public class PermuSort implements Algorithm{
 		proposedFitness=(averageLabFullness+percentFirst+(1-percentThird))/3;
 		//If the value of this iteration is greater than the best current value
 		if(proposedFitness > bestFitness){
-			//System.out.println("found a better Solution");
-			//System.out.println(percentFirst+" percent first choice");
-			//System.out.println(percentThird+" percent third choice "+(1-percentThird)+" fitness value");
-			//System.out.println("average value: "+averageLabFullness);
+			//if(DEBUG){ System.out.println("found a better Solution"); } 
+			//if(DEBUG){ System.out.println(percentFirst+" percent first choice"); } 
+			//if(DEBUG){ System.out.println(percentThird+" percent third choice "+(1-percentThird)+" fitness value"); } 
+			//if(DEBUG){ System.out.println("average value: "+averageLabFullness); } 
 			//Set the best fitness to this
 			bestFitness = proposedFitness;
-			//System.out.println("Highest fitness function value so far: "+bestFitness);
+			//if(DEBUG){ System.out.println("Highest fitness function value so far: "+bestFitness); } 
 
 			//Iterate from root to bottom leaf
 			while(currentNode.getNext()!=null){
@@ -291,7 +293,7 @@ public class PermuSort implements Algorithm{
 				}
 			}
 		}
-		//System.out.println("Proposed fitness: " + proposedFitness);
+		//if(DEBUG){ System.out.println("Proposed fitness: " + proposedFitness); } 
 	}
 
 	/**
@@ -301,45 +303,45 @@ public class PermuSort implements Algorithm{
 	 */
 	private void generateAlgorithmOutput() {
 		//Begin console output.
-		System.out.println("generateAlgorithmOutput() in PermuSort");
+		if(DEBUG){ System.out.println("generateAlgorithmOutput() in PermuSort"); } 
 		//Iterate through Labs.
-		System.out.println("Labs:");
+		if(DEBUG){ System.out.println("Labs:"); } 
 		for(Timeslot t:labs){
 			//Add the lab and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the lab and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 
 		//Iterate through Tutorials.
-		System.out.println("Tuts:");
+		if(DEBUG){ System.out.println("Tuts:"); } 
 		for(Timeslot t:tutorials){
 			//Add the tutorial and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the tutorial and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
 		//Printspam the flagged students.
-		System.out.println("Flagged:");
+		if(DEBUG){ System.out.println("Flagged:"); } 
 		for(Student s: flagged){
-			System.out.println(s.getStudentNum() + " - " + s.getName());
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			output.addFlagged(s);
 		}
-		System.out.println("End fitnees: " + bestFitness);
-		System.out.println();
+		if(DEBUG){ System.out.println("End fitnees: " + bestFitness); } 
+		if(DEBUG){ System.out.println(); } 
 		//TODO: Add proper fitness evaluation print spam here
-		System.out.println("Solutions found: " + count);
+		if(DEBUG){ System.out.println("Solutions found: " + count); } 
 	}
 
 

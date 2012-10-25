@@ -45,7 +45,9 @@ import algorithmDataStructures.Timeslot;
 
 
 
-public class NaiveSortTest {
+public class NaiveSortTest  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<Timeslot> labs = new ArrayList<Timeslot>();

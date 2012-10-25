@@ -11,7 +11,9 @@ import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class BossSort implements Algorithm{
+public class BossSort implements Algorithm { 
+ private final boolean DEBUG = false; 
+
 
 
 	//TODO: Implement hard/soft bossSort implementations that function on maxstudents and preferred max
@@ -43,7 +45,7 @@ public class BossSort implements Algorithm{
 			//Assign labs to students
 			sortLabs();
 		}
-		System.out.println("Number of students: " + students.size());
+		
 		if(!tutorials.isEmpty()){
 			if(!labs.isEmpty()){
 				//Remove tutorial choices that clash with assigned labs
@@ -57,7 +59,6 @@ public class BossSort implements Algorithm{
 		}
 		//Create an AlgorithmOutput object
 		generateAlgorithmOutput();
-		System.out.println("\n\n");
 		//Return output
 		return output;
 	}
@@ -75,7 +76,6 @@ public class BossSort implements Algorithm{
 	 */
 	private void labPriorityCalculator() {
 		//Begin console output.
-		System.out.println("labPriorityCalculator() in BossSort");
 		//Initialize integer values to represent priority, and the factors that affect it. 
 		int studentPriority;
 		//For every student.
@@ -117,7 +117,6 @@ public class BossSort implements Algorithm{
 			//Add the student to the priorityQueue.
 			priority.add(s);
 			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
 		}
 
 		//How many choices in total do they have? (More = higher priority)
@@ -125,7 +124,7 @@ public class BossSort implements Algorithm{
 		//How many second choices do they have? (More = lower priority)
 		//How many third choices do they have? (More = lower priority)
 
-		System.out.println("\n");
+		
 
 	}
 
@@ -136,13 +135,12 @@ public class BossSort implements Algorithm{
 	 * If the student cannot be assigned, they will be added to a list of flagged students.
 	 */
 	public void sortLabs(){
-		//Begin console output.
-		System.out.println("sortLabs() in BossSort");
+		
 		//For every student (in priority order)
 		while(priority.size() > 0){
 			Student s=priority.poll();
 			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority()); } 
 			//Assert student is not assigned
 			boolean assigned = false;
 
@@ -160,7 +158,7 @@ public class BossSort implements Algorithm{
 					s.setAssignedLab(choice);
 					assigned = true;
 					//Printspam the lab this student is assigned to
-					System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+					if(DEBUG){ System.out.println("Assigned to first choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 					break;
 				}
 				//If Timeslot is full
@@ -184,7 +182,7 @@ public class BossSort implements Algorithm{
 						s.setAssignedLab(choice);
 						assigned = true;
 						//Printspam the lab this student is assigned to
-						System.out.println("Assigned to second choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						if(DEBUG){ System.out.println("Assigned to second choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 						break;
 					}
 					//If Timeslot is full
@@ -211,7 +209,7 @@ public class BossSort implements Algorithm{
 						s.setAssignedLab(choice);
 						assigned = true;
 						//Printspam the lab this student is assigned to
-						System.out.println("Assigned to third choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						if(DEBUG){ System.out.println("Assigned to third choice lab: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 						break;
 					}
 					//If Timeslot is full
@@ -229,10 +227,10 @@ public class BossSort implements Algorithm{
 				s.setFlaggedForLabs(true);
 				s.setReasonForFlagging("They cannot be put into any of their chosen labs");
 				//Printspam that student is not assigned.
-				System.out.println("Not Assigned");
+				if(DEBUG){ System.out.println("Not Assigned"); } 
 			}
 		}
-		System.out.println("\n");
+		if(DEBUG){ System.out.println("\n"); } 
 	}
 
 
@@ -246,7 +244,7 @@ public class BossSort implements Algorithm{
 	 */
 	private void tutPriorityCalculator() {
 		//Begin console output.
-		System.out.println("tutPriorityCalculator() in BossSort");
+		if(DEBUG){ System.out.println("tutPriorityCalculator() in BossSort"); } 
 		//Initialize integer values to represent priority, and factors that affect it. 
 		int studentPriority;
 		//Reinitialize priority, as it will still contain the same set of students from labPriorityCalculator
@@ -278,10 +276,10 @@ public class BossSort implements Algorithm{
 				//Add the student to the priorityQueue.
 				priority.add(s);
 				//Printspam the priority of each student.
-				System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority()); } 
 			}
 		}
-		System.out.println("\n");
+		if(DEBUG){ System.out.println("\n"); } 
 
 	}
 
@@ -294,12 +292,12 @@ public class BossSort implements Algorithm{
 	 */
 	private void sortTuts() {
 		//Begin console output.
-		System.out.println("sortTuts() in BossSort");
+		if(DEBUG){ System.out.println("sortTuts() in BossSort"); } 
 		//For every student (in priority order)
 		while(priority.size()>0){
 			Student s = priority.poll();
 			//Printspam the priority of each student.
-			System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority());
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName() + ", Priority: " + s.getPriority()); } 
 			//While student is not assigned
 			boolean assigned = false;
 
@@ -317,7 +315,7 @@ public class BossSort implements Algorithm{
 					s.setAssignedTut(choice);
 					assigned = true;
 					//Printspam the tut this student is assigned to
-					System.out.println("Assigned to first choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+					if(DEBUG){ System.out.println("Assigned to first choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 					break;
 				}
 				//If Timeslot is full
@@ -341,7 +339,7 @@ public class BossSort implements Algorithm{
 						s.setAssignedTut(choice);
 						assigned = true;
 						//Printspam the tut this student is assigned to
-						System.out.println("Assigned to second choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						if(DEBUG){ System.out.println("Assigned to second choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 						break;
 					}
 					//If Timeslot is full
@@ -366,7 +364,7 @@ public class BossSort implements Algorithm{
 						s.setAssignedTut(choice);
 						assigned = true;
 						//Printspam the tut this student is assigned to
-						System.out.println("Assigned to third choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime());
+						if(DEBUG){ System.out.println("Assigned to third choice tut: " + choice.getDay() + ", " + choice.getStartTime() + "-" + choice.getEndTime()); } 
 						break;
 					}
 					//If Timeslot is full
@@ -384,10 +382,10 @@ public class BossSort implements Algorithm{
 				s.setFlaggedForTuts(true);
 				s.setReasonForFlagging("They cannot be put into any of their chosen Tutorial");
 				//Printspam that student is not assigned.
-				System.out.println("Not Assigned");
+				if(DEBUG){ System.out.println("Not Assigned"); } 
 			}
 		}
-		System.out.println("\n");
+		if(DEBUG){ System.out.println("\n"); } 
 	}
 
 
@@ -399,46 +397,46 @@ public class BossSort implements Algorithm{
 	 */
 	private void generateAlgorithmOutput() {
 		//Begin console output.
-		System.out.println("generateAlgorithmOutput() in BossSort");
+		if(DEBUG){ System.out.println("generateAlgorithmOutput() in BossSort"); } 
 		//Iterate through Labs.
 
-		System.out.println("Labs:");
+		if(DEBUG){ System.out.println("Labs:"); } 
 		for(Timeslot t:labs){
 			//Add the lab and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the lab and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 
 		//Iterate through Tutorials.
-		System.out.println("Tuts:");
+		if(DEBUG){ System.out.println("Tuts:"); } 
 		for(Timeslot t:tutorials){
 			//Add the tutorial and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the tutorial and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();		
+		if(DEBUG){ System.out.println(); } 		
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
 		output.addFitness("Not Flagged Students", 100*((double)1-((double)flagged.size()/(double)students.size())));
 		//Printspam the flagged students.
-		System.out.println("Flagged:");
+		if(DEBUG){ System.out.println("Flagged:"); } 
 		for(Student s: flagged){
-			System.out.println(s.getStudentNum() + " - " + s.getName());
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			output.addFlagged(s);
 		}
-		System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent"));
-		System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent"));
-		System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness"));
-		System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students"));
+		if(DEBUG){ System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent")); } 
+		if(DEBUG){ System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent")); } 
+		if(DEBUG){ System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness")); } 
+		if(DEBUG){ System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students")); } 
 	}
 }

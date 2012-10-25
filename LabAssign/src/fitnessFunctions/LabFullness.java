@@ -3,7 +3,9 @@ package fitnessFunctions;
 import algorithmDataStructures.AlgorithmOutput;
 import algorithmDataStructures.Timeslot;
 
-public class LabFullness implements FitnessFunction{
+public class LabFullness implements FitnessFunction { 
+ private final boolean DEBUG = false; 
+
 
 	private double fitness;
 
@@ -35,7 +37,7 @@ public class LabFullness implements FitnessFunction{
 		//Make fitness equal to percentage of fullness of all labs.
 		this.fitness = average;
 		//Add fitness to AlgorithmOutput
-		System.out.println(fitness);
+		if(DEBUG){ System.out.println(fitness); } 
 		output.addFitness("LabFullness",fitness);
 	}
 

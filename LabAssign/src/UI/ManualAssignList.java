@@ -38,12 +38,11 @@ import algorithmDataStructures.Timeslot;
 import dataParsing.StudentDataParser;
 
 
-public class ManualAssignList extends JFrame {
+public class ManualAssignList extends JFrame  { 
+ private final boolean DEBUG = false; 
+
 	private String[] columnNames;
 	private Object[][] data;
-
-	private boolean DEBUG = true;
-
 	private Map<Integer, Student> studentsMap = new HashMap<Integer, Student>();
 	private Map<Integer, ButtonGroup> buttonMap = new HashMap<Integer, ButtonGroup>();
 	private Map<String, Timeslot> timeslotsMap = new HashMap<String, Timeslot>();
@@ -133,10 +132,10 @@ public class ManualAssignList extends JFrame {
 			titles[i] = t.toString();
 			if(timeslotsMap.containsKey(titles[i])){
 				if(!(timeslotsMap.get(i).compareTo(t) == 0))
-					System.out.println("Key Error!!");
+					if(DEBUG){ System.out.println("Key Error!!"); } 
 			}
 			else if(timeslotsMap.containsValue(t)){
-				System.out.println("Object Error!!");
+				if(DEBUG){ System.out.println("Object Error!!"); } 
 			}
 			else
 				timeslotsMap.put(titles[i], t);

@@ -9,7 +9,9 @@ import java.util.ArrayList;
  * selection). Their priority (used by BossSort). The lab and tutorial they are
  * assigned to.
  */
-public class Student implements Comparable<Object>, Cloneable {
+public class Student implements Comparable<Object>, Cloneable  { 
+ private final boolean DEBUG = false; 
+
 
 	// -----FIELDS-----\\
 	private int studentNum;

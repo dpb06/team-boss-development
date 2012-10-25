@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class StudentChoiceOrder {
+public class StudentChoiceOrder  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students;
 

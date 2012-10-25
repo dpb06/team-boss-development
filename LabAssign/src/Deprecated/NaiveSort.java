@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class NaiveSort {
+public class NaiveSort  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;

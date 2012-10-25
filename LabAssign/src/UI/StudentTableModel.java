@@ -13,11 +13,11 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 import algorithmDataStructures.Tutorial;
 
-public class StudentTableModel extends AbstractTableModel {
+public class StudentTableModel extends AbstractTableModel  { 
+ private final boolean DEBUG = false; 
+
 	private String[] columnNames;
 	private Object[][] data;
-
-	private boolean DEBUG = false;
 
 	private Map<Integer, Student> studentsMap = new HashMap<Integer, Student>();
 	private Map<Integer, Timeslot> timeslotsMap = new HashMap<Integer, Timeslot>();
@@ -41,10 +41,10 @@ public class StudentTableModel extends AbstractTableModel {
 			titles[i] = t.toString();
 			if(timeslotsMap.containsKey(i)){
 				if(!(timeslotsMap.get(i).compareTo(t) == 0))
-					System.out.println("Key Error!!");
+					if(DEBUG){ System.out.println("Key Error!!"); } 
 			}
 			else if(timeslotsMap.containsValue(t)){
-				System.out.println("Object Error!!");
+				if(DEBUG){ System.out.println("Object Error!!"); } 
 			}
 			else
 				timeslotsMap.put(i, t);
@@ -132,7 +132,7 @@ public class StudentTableModel extends AbstractTableModel {
 		fireTableCellUpdated(row, col);
 
 		if (DEBUG) {
-			System.out.println("New value of data:");
+			if(DEBUG){ System.out.println("New value of data:"); } 
 			printDebugData();
 		}
 	}
@@ -146,9 +146,9 @@ public class StudentTableModel extends AbstractTableModel {
 			for (int j=0; j < numCols; j++) {
 				System.out.print("  " + data[i][j]);
 			}
-			System.out.println();
+			if(DEBUG){ System.out.println(); } 
 		}
-		System.out.println("--------------------------");
+		if(DEBUG){ System.out.println("--------------------------"); } 
 	}
 
 }

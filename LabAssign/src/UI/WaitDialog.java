@@ -6,7 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-public class WaitDialog extends JDialog{
+public class WaitDialog extends JDialog { 
+ private final boolean DEBUG = false; 
+
 	private JPanel myPanel = null;
 	private JProgressBar bar;
 	

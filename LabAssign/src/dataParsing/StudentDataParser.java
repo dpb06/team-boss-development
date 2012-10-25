@@ -17,7 +17,9 @@ import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class StudentDataParser {
+public class StudentDataParser  { 
+ private final boolean DEBUG = false; 
+
 	
 	
 	//TODO: Ensure student IDs are unique.
@@ -119,7 +121,7 @@ public class StudentDataParser {
 		String text = startText.replace("<div class=\"\"vtbegenerated\"\">", "");
 		text = text.replace("</div>", "");
 		int i = text.indexOf("Friday");
-		System.out.println(Character.getNumericValue((text.charAt(i+6))));
+		if(DEBUG){ System.out.println(Character.getNumericValue((text.charAt(i+6)))); } 
 		 // this character is a space character used in web programs 
 		 // it is simply replaced with an empty string.
 		char nonspace = (char) 0xA0;
@@ -280,7 +282,7 @@ public class StudentDataParser {
 			timeslots.add(t);
 			}
 		}
-		System.out.println(timeslots);
+		if(DEBUG){ System.out.println(timeslots); } 
 		return timeslots;
 	}
 
@@ -355,7 +357,7 @@ public class StudentDataParser {
 				Timeslot t = getTimeslot(timeslots, quID);
 				if (t == null){
 					if(DEBUG)
-						System.out.println("Fail" + token);
+						if(DEBUG){ System.out.println("Fail" + token); } 
 				}
 				else
 					firstChoice.add(t);
@@ -363,14 +365,14 @@ public class StudentDataParser {
 				Timeslot t = getTimeslot(timeslots, quID);
 				if (t == null){
 					if(DEBUG)
-						System.out.println("Fail" + token);
+						if(DEBUG){ System.out.println("Fail" + token); } 
 				}else
 					secondChoice.add(t);
 			}else if (token.contains("Third Choice")){
 				Timeslot t = getTimeslot(timeslots, quID);
 				if (t == null){
 					if(DEBUG)
-						System.out.println("Fail" + token);
+						if(DEBUG){ System.out.println("Fail" + token); } 
 				}else
 					thirdChoice.add(t);
 			}else if (token.contains("Please enter your first name")){

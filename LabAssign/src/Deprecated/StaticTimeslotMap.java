@@ -8,7 +8,9 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
 @SuppressWarnings("serial")
-public class StaticTimeslotMap extends HashMap<Integer, Timeslot>{
+public class StaticTimeslotMap extends HashMap<Integer, Timeslot> { 
+ private final boolean DEBUG = false; 
+
 
 
 	public ArrayList<Timeslot> getFirsts(Student s){

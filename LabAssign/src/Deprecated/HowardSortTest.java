@@ -7,7 +7,9 @@ import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithms.HowardsSort;
 
-public class HowardSortTest {
+public class HowardSortTest  { 
+ private final boolean DEBUG = false; 
+
 private StaticTimeslotMap stm= new StaticTimeslotMap();
 	public HowardSortTest(){
 		ArrayList<Student> students=new ArrayList<Student>();

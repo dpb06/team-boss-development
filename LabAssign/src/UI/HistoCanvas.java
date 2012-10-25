@@ -27,7 +27,9 @@ import javax.swing.JPanel;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class HistoCanvas extends JPanel implements MouseListener {
+public class HistoCanvas extends JPanel implements MouseListener  { 
+ private final boolean DEBUG = false; 
+
 	private ArrayList<Timeslot> timeslots;
 	private HashMap<Rectangle, Timeslot> rectangles;
 	private JPanel results = new JPanel(); // For where selected TimeSlot
@@ -83,7 +85,7 @@ public class HistoCanvas extends JPanel implements MouseListener {
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		((Graphics2D) g).setFont(new Font("Sans serif", 0, 9));
 		if (this.rectangles == null) { // There's no data
-			System.out.println("No data to plot histogram");
+			if(DEBUG){ System.out.println("No data to plot histogram"); } 
 			return;
 		}
 

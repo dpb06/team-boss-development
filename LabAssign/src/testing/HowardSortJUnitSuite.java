@@ -14,7 +14,9 @@ import algorithmDataStructures.Timeslot;
 import algorithms.BossSort;
 import algorithms.HowardsSort;
 
-public class HowardSortJUnitSuite {
+public class HowardSortJUnitSuite  { 
+ private final boolean DEBUG = false; 
+
 	
 	
 	

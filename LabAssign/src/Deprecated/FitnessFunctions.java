@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
-public class FitnessFunctions {
+public class FitnessFunctions  { 
+ private final boolean DEBUG = false; 
+
 	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
@@ -36,12 +38,12 @@ public class FitnessFunctions {
 		int size;
 		for(Timeslot t: labs){
 			size= t.getAssigned().size();
-			System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay());
+			if(DEBUG){ System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay()); } 
 			labEveness=(float)size/(float)t.getMaxStudents();
 			float labPercent=100*labEveness;
 			System.out.printf("Lab fullness : %.2f percent \n",labPercent);	
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 	}
 	/**
 	 * Calculates the percentage of student who are in there first choice lab.
@@ -70,7 +72,7 @@ public class FitnessFunctions {
 			thirdChoice=(float)numThirdChoice/(float)totalStudents;
 			total.add(firstChoice);
 			
-			System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay());
+			if(DEBUG){ System.out.println(t.getStartTime()+" - "+t.getEndTime()+" "+t.getDay()); } 
 			System.out.printf("Percentage of students in there first choice: %.2f \n",firstChoice);
 			System.out.printf("Percentage of students in there second choice: %.2f \n",secondChoice);
 			System.out.printf("Percentage of students in there third choice: %.2f \n",thirdChoice);

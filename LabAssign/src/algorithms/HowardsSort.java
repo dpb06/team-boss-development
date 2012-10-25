@@ -19,7 +19,9 @@ import algorithmDataStructures.Timeslot;
  * @author phillijosh
  */
 
-public class HowardsSort implements Algorithm {
+public class HowardsSort implements Algorithm  { 
+ private final boolean DEBUG = false; 
+
 
 	//-----FIELDS-----\\
 	private ArrayList<Timeslot> labs;
@@ -198,46 +200,46 @@ public class HowardsSort implements Algorithm {
 	 */
 	private void generateAlgorithmOutput() {
 		//Begin console output.
-		System.out.println("generateAlgorithmOutput() in HowardsSort");
+		if(DEBUG){ System.out.println("generateAlgorithmOutput() in HowardsSort"); } 
 		//Iterate through Labs.
-		System.out.println("Labs:");
+		if(DEBUG){ System.out.println("Labs:"); } 
 		for(Timeslot t:labs){
 			//Add the lab and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the lab and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 
 		//Iterate through Tutorials.
-		System.out.println("Tuts:");
+		if(DEBUG){ System.out.println("Tuts:"); } 
 		for(Timeslot t:tutorials){
 			//Add the tutorial and its assigned students to the output hashmap.
 			output.put(t,  t.getAssigned());
 			//Printspam the tutorial and its assigned students.
-			System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime());
+			if(DEBUG){ System.out.println(t.getDay() + ", " + t.getStartTime() + "-" + t.getEndTime()); } 
 			for(Student s: t.getAssigned()){
-				System.out.println(s.getStudentNum() + " - " + s.getName());
+				if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			}
 		}
-		System.out.println();
+		if(DEBUG){ System.out.println(); } 
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
 		output.addFitness("Not Flagged Students", 100*((double)1-((double)flagged.size()/(double)students.size())));
 		//Printspam the flagged students.
-		System.out.println("Flagged:");
+		if(DEBUG){ System.out.println("Flagged:"); } 
 		for(Student s: flagged){
-			System.out.println(s.getStudentNum() + " - " + s.getName());
+			if(DEBUG){ System.out.println(s.getStudentNum() + " - " + s.getName()); } 
 			output.addFlagged(s);
 		}
-		System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent"));
-		System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent"));
-		System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness"));
-		System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students"));
+		if(DEBUG){ System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent")); } 
+		if(DEBUG){ System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent")); } 
+		if(DEBUG){ System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness")); } 
+		if(DEBUG){ System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students")); } 
 	}
 
 

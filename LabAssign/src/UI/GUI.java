@@ -51,7 +51,9 @@ import dataParsing.StudentDataParser;
 /**
  * @author Haydn Newport and Barbara MacKenzie
  */
-public class GUI extends JFrame implements ActionListener, ItemListener {
+public class GUI extends JFrame implements ActionListener, ItemListener  { 
+ private final boolean DEBUG = false; 
+
 	// Parameters
 	private JFrame frame;
 	private JPanel boundsPanel;
@@ -329,7 +331,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					}
 				}
 				else
-					System.out.println("No output to save");
+					if(DEBUG){ System.out.println("No output to save"); } 
 			}
 		});
 
@@ -595,7 +597,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
 
-		System.out.println(output.fitnessValue());
+		if(DEBUG){ System.out.println(output.fitnessValue()); } 
 		String fitness = "Fitness - " + output.fitnessValue();
 		//		for(String f: output.getFitness().keySet()){
 		//			fitness += (f + " - " + output.getFitness().get(f) + "\n");
@@ -766,7 +768,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	// The bounds class is used by the GUI to store the bounds
 	// given to it by the user for use in the algorithm of choice.
 	// Each set of bounds has a maximum, a minimum, and a preferred max and min.
-	public class Bounds {
+	public class Bounds  { 
+ private final boolean DEBUG = false; 
+
 		private Timeslot timeslot;
 
 		public Bounds(Timeslot _timeslot) {
@@ -830,10 +834,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									}
 								} catch (NumberFormatException nfe) {
 								}
-								System.out.println(timeslot.getMinStudents());
-								System.out.println(timeslot.getMaxStudents());
-								System.out.println(timeslot.getPreferredMin());
-								System.out.println(timeslot.getPreferredMax());
+								if(DEBUG){ System.out.println(timeslot.getMinStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getMaxStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMin()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMax()); } 
 							}
 						});
 
@@ -874,10 +878,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									maxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
-								System.out.println(timeslot.getMinStudents());
-								System.out.println(timeslot.getMaxStudents());
-								System.out.println(timeslot.getPreferredMin());
-								System.out.println(timeslot.getPreferredMax());
+								if(DEBUG){ System.out.println(timeslot.getMinStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getMaxStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMin()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMax()); } 
 							}
 
 						});
@@ -920,10 +924,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 								} catch (NumberFormatException nfe) {
 
 								}
-								System.out.println(timeslot.getMinStudents());
-								System.out.println(timeslot.getMaxStudents());
-								System.out.println(timeslot.getPreferredMin());
-								System.out.println(timeslot.getPreferredMax());
+								if(DEBUG){ System.out.println(timeslot.getMinStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getMaxStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMin()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMax()); } 
 							}
 						});
 
@@ -962,10 +966,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 									prefMaxText.setForeground(Color.black);
 								} catch (NumberFormatException nfe) {
 								}
-								System.out.println(timeslot.getMinStudents());
-								System.out.println(timeslot.getMaxStudents());
-								System.out.println(timeslot.getPreferredMin());
-								System.out.println(timeslot.getPreferredMax());
+								if(DEBUG){ System.out.println(timeslot.getMinStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getMaxStudents()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMin()); } 
+								if(DEBUG){ System.out.println(timeslot.getPreferredMax()); } 
 							}
 						});
 				return true;

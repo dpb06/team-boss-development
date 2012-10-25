@@ -3,7 +3,9 @@ package dataParsing;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentSelections {
+public class StudentSelections  { 
+ private final boolean DEBUG = false; 
+
 
 	
 	List<StudentSelections> firstChoice = new ArrayList<StudentSelections>();

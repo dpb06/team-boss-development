@@ -45,7 +45,9 @@ import algorithms.BossSort;
 
 
 
-public class BossSortTest {
+public class BossSortTest  { 
+ private final boolean DEBUG = false; 
+
 
 	private ArrayList<Student> students = new ArrayList<Student>();
 	private ArrayList<Timeslot> labs = new ArrayList<Timeslot>();
