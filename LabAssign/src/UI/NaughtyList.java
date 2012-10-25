@@ -1,5 +1,6 @@
 package UI;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -57,7 +58,7 @@ public class NaughtyList extends JFrame {
 		table = new JTable(model);
 		setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		add(new JScrollPane(table));
-		JButton returnButton = new JButton("Return");
+		JButton returnButton = new JButton("Save Changes & Close");
 		add(returnButton);
 		returnButton.addActionListener(new ActionListener() {
 			@Override
