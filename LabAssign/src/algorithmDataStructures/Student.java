@@ -427,6 +427,8 @@ public class Student implements Comparable<Object>, Cloneable {
 		secondChoicesTuts.addAll(student.getSecondChoiceTuts());
 		thirdChoicesTuts.addAll(student.getThirdChoiceTuts());
 		cannotAttendTuts.addAll(student.getCannotAttendLabs());
+		setCanAttendLabs(student.getNumCanAttendLabs() + numCanAttendLabs);
+		setCanAttendTuts(student.getNumCanAttendTuts() + numCanAttendTuts);
 		return true;
 	}
 	

@@ -83,6 +83,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 
 	JButton save;	// save button created in GUI, field so can enable in another method
 	AlgorithmOutput output;
+	private List<Student> labStudents;
+	private List<Student> tutStudents;
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -134,6 +136,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					labs = fc.getSelectedFile();
 					LabFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
+					alreadyRUN = false;
 					fileChosen();
 				}
 			}
@@ -169,6 +172,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					tuts = fc.getSelectedFile();
 					TutFileTextField.setText(fc.getSelectedFile().getAbsolutePath());
 					runButton.setEnabled(true);
+					alreadyRUN = false;
 					fileChosen();
 				}
 			}
@@ -436,8 +440,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			labs = new File(LabFileTextField.getText());
 			tuts = new File(TutFileTextField.getText());
 
-			List<Student> labStudents = new ArrayList<Student>();
-			List<Student> tutStudents = new ArrayList<Student>();
+			
+			tutStudents = new ArrayList<Student>();
 
 			boolean havelabs = false;
 			boolean havetuts = false;
@@ -445,6 +449,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				havelabs = true;
 			if(tuts.exists())
 				havetuts = true;
+			mergedStudents = new ArrayList<Student>();
 
 			List<Student> naughtyStudents = new ArrayList<Student>();
 			if(havelabs){			
@@ -476,25 +481,27 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 						naughtyStudents.add(s);
 				}
 				if(naughtyStudents.size() > 0){
-					tutStudents = new NaughtyList(naughtyStudents, labsList, "Students with one/no tutorials selected").getStudents();
+					tutStudents = new NaughtyList(naughtyStudents, tutorialsList, "Students with one/no tutorials selected").getStudents();
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
-			}		
-			if (tuts.exists() && labs.exists()){
+			}
+			
+			
+			if (havelabs && havetuts){
 				boolean tutInLabsArray[] = new boolean[tutStudents.size()];
 				for(Student s: labStudents){
+					mergedStudents.add(s.clone());
+				}
+				for(Student s: mergedStudents){
 					for(int i = 0 ; i < tutStudents.size() ; i++){
 						Student t = tutStudents.get(i);
-						if( s.merge(t) ){
+						if( s.merge(t) ){ // student was in both tuts and labs
 							//merge was successful
 							tutInLabsArray[i] = true;
 						}						
 					}
 				}
-				// students that have labs now have their Tutorials stored aswell
-				mergedStudents = labStudents;
-				
 				for(int j = 0; j < tutInLabsArray.length; j++){
 					if(!tutInLabsArray[j]){
 						//is a student only in a tut (not a lab)
@@ -593,7 +600,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	//
 	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
 
+
 		if ( !alreadyRUN ) {
+			
 
 			// created the last of the bounds when
 			// - we only have Labs and are now making bounds for these
@@ -616,7 +625,11 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 2, 2, 2);
 			c.fill = GridBagConstraints.VERTICAL;
-			if(isLabs || (!isLabs && !hasLabs) ){
+			// if this is the Labs bounds
+			// or we dont have labs and are making the tuts bounds
+			// create a title row.
+			if(isLabs || ((hasTuts && !hasLabs) && !isLabs) ){
+				boundsPanel.removeAll();
 				c.weightx = 0.5;
 				c.gridx = 0;
 				c.gridy = 0+startRow;
