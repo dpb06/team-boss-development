@@ -79,8 +79,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 	//Fields for fileChosen()/doRun() use
 	File labs;
 	File tuts;
-	private List<Student> labStudents = new ArrayList<Student>();
-	private List<Student> tutStudents = new ArrayList<Student>();
+	private List<Student> mergedStudents = new ArrayList<Student>();
 
 	JButton save;	// save button created in GUI, field so can enable in another method
 	AlgorithmOutput output;
@@ -449,8 +448,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 			labs = new File(LabFileTextField.getText());
 			tuts = new File(TutFileTextField.getText());
 
-			labStudents = new ArrayList<Student>();
-			tutStudents = new ArrayList<Student>();
+			List<Student> labStudents = new ArrayList<Student>();
+			List<Student> tutStudents = new ArrayList<Student>();
 
 			boolean havelabs = false;
 			boolean havetuts = false;
@@ -493,14 +492,33 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
-			}
-			if (havelabs && havetuts){
+			}		
+			if (tuts.exists() && labs.exists()){
+				boolean tutInLabsArray[] = new boolean[tutStudents.size()];
 				for(Student s: labStudents){
-					for(Student t: tutStudents){
-						s.merge(t);
+					for(int i = 0 ; i < tutStudents.size() ; i++){
+						Student t = tutStudents.get(i);
+						if( s.merge(t) ){
+							//merge was successful
+							tutInLabsArray[i] = true;
+						}						
 					}
 				}
+				// students that have labs now have their Tutorials stored aswell
+				mergedStudents = labStudents;
+				
+				for(int j = 0; j < tutInLabsArray.length; j++){
+					if(!tutInLabsArray[j]){
+						//is a student only in a tut (not a lab)
+						mergedStudents.add(tutStudents.get(j));
+					}
+				}
+			}else if (havetuts){
+				mergedStudents = tutStudents;
+			}else if (havelabs){
+				mergedStudents = labStudents;
 			}
+
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -514,36 +532,14 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		for(Timeslot t : tutorialsList){
 			t.getAssigned().clear();
 		}		
-		//		if(labs.exists()){
-		//			StudentDataParser tutParser;
-		//			try {
-		//				tutParser = new StudentDataParser(labs);
-		//				labStudents = tutParser.parseSelections(labsList, true);
-		//			} catch (FileNotFoundException e1) {
-		//				// TODO Auto-generated catch block
-		//				e1.printStackTrace();
-		//			}
-		//		}
-		//		if(tuts.exists()){
-		//			StudentDataParser tutParser;
-		//			try {
-		//				tutParser = new StudentDataParser(tuts);
-		//				tutStudents = tutParser.parseSelections(tutorialsList, false);
-		//			} catch (FileNotFoundException e1) {
-		//				// TODO Auto-generated catch block
-		//				e1.printStackTrace();
-		//			}
-		//		}
 
-		List<Student> students;
-
-		//if labStudents are not empty, both labs and tutorials has already
-		//been merged into the labstudents list.
-		if(labStudents.isEmpty())
-			students = tutStudents;
-		else
-			students = labStudents;
-
+		List<Student> students = new ArrayList<Student>();
+		
+		//clones the mergedStudents so that the original student objects
+		//do not get tampered with by any algorithms
+		for(Student s : mergedStudents){
+			students.add(s.clone());
+		}
 
 		if(selectedAlgorithm.equals("Boss Sort")){
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));

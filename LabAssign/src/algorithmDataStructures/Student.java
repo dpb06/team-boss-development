@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * selection). Their priority (used by BossSort). The lab and tutorial they are
  * assigned to.
  */
-public class Student implements Comparable<Object> {
+public class Student implements Comparable<Object>, Cloneable {
 
 	// -----FIELDS-----\\
 	private int studentNum;
@@ -368,6 +368,10 @@ public class Student implements Comparable<Object> {
 	public void setThirdChoiceTuts(ArrayList<Timeslot> choices) {
 		this.thirdChoicesTuts = choices;
 	}
+	
+	public void setStudentNum(int studentNum){
+		this.studentNum = studentNum;
+	}
 
 	public void setFlaggedForLabs(boolean flaggedForLabs) {
 		this.flaggedForLabs = flaggedForLabs;
@@ -424,6 +428,37 @@ public class Student implements Comparable<Object> {
 		thirdChoicesTuts.addAll(student.getThirdChoiceTuts());
 		cannotAttendTuts.addAll(student.getCannotAttendLabs());
 		return true;
+	}
+	
+	public Student clone(){
+		
+		Student clone = new Student(Priority, name);
+		
+		clone.setStudentNum(studentNum);
+		clone.setFirstChoiceLabs(firstChoicesLabs);
+		clone.setFirstChoiceTuts(firstChoicesTuts);
+		clone.setSecondChoiceLabs(secondChoicesLabs);
+		clone.setSecondChoiceTuts(secondChoicesTuts);
+		clone.setThirdChoiceLabs(thirdChoicesLabs);
+		clone.setThirdChoiceTuts(thirdChoicesTuts);
+		clone.setCanAttendLabs(numCanAttendLabs);
+		clone.setCanAttendTuts(numCanAttendTuts);
+		
+
+		
+		
+		return clone;
+		
+	}
+
+	private void setCanAttendTuts(int numCanAttendTuts) {
+		this.numCanAttendTuts = numCanAttendTuts;
+		
+	}
+
+	private void setCanAttendLabs(int numCanAttendLabs) {
+		this.numCanAttendLabs = numCanAttendLabs;
+		
 	}
 
 }
