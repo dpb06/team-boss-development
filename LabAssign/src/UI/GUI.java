@@ -480,11 +480,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
-			}
-			
+			}		
 			if (tuts.exists() && labs.exists()){
 				boolean tutInLabsArray[] = new boolean[tutStudents.size()];
-				
 				for(Student s: labStudents){
 					for(int i = 0 ; i < tutStudents.size() ; i++){
 						Student t = tutStudents.get(i);
@@ -509,7 +507,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 				mergedStudents = labStudents;
 			}
 
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -530,7 +528,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		for(Student s : mergedStudents){
 			students.add(s.clone());
 		}
-
 
 		if(selectedAlgorithm.equals("Boss Sort")){
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
