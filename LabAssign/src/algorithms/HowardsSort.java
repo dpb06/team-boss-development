@@ -96,7 +96,7 @@ public class HowardsSort implements Algorithm {
 			for(Timeslot t: overfilledTuts){
 				for(int i=t.getPreferredMax();i<t.getAssigned().size();i++){
 					currentStudent=t.getAssigned().get(i);
-					if(currentStudent.getCurrentIndexLabs()+1<currentStudent.getCombinedLabs().size()){
+					if(currentStudent.getCurrentIndexTuts()+1<currentStudent.getCombinedTuts().size()){
 						currentStudent.getCurrentTut().removeStudent(currentStudent);
 						currentStudent.incrementIndexTuts();
 						currentStudent.getCurrentTut().addStudent(currentStudent);
