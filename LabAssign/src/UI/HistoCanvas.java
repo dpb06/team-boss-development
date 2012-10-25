@@ -32,8 +32,14 @@ public class HistoCanvas extends JPanel implements MouseListener  {
 
 	private ArrayList<Timeslot> timeslots;
 	private HashMap<Rectangle, Timeslot> rectangles;
-	private JPanel results = new JPanel(); // For where selected TimeSlot
-											// displays
+	private int scaleTop = 0;
+	private JPanel results = new JPanel(); // For where selected TimeSlot displays
+	private final int bottomOffset = 70;
+	//The rightoffset allows the slanted labels to be shown
+	private final int rightOffset = 30;
+	private final int leftOffset = 30;
+	private final int NUM_LABELS = 10;
+	
 
 	public HistoCanvas() {
 		this.addMouseListener(this);
@@ -59,8 +65,8 @@ public class HistoCanvas extends JPanel implements MouseListener  {
 		if (timeslots == null || timeslots.size() <= 0)
 			return;
 		Collections.sort(timeslots);
-		int width = (size.width - 20) / timeslots.size();
-		int height = size.height - 70;
+		int width = (size.width - rightOffset - leftOffset) / timeslots.size();
+		int height = size.height - bottomOffset;
 		int largestSection = Integer.MIN_VALUE;
 		rectangles = new HashMap<Rectangle, Timeslot>();
 		for (Timeslot t : timeslots) {
@@ -71,9 +77,10 @@ public class HistoCanvas extends JPanel implements MouseListener  {
 		if (largestSection <= 0)
 			return;
 		int student = height / largestSection;
+		scaleTop = largestSection;
 		for (int i = 0; i < timeslots.size(); i++) {
 			Timeslot t = timeslots.get(i);
-			rectangles.put(new Rectangle(i * width + 10, height
+			rectangles.put(new Rectangle(i * width + leftOffset, height
 					- (t.getAssigned().size() * student), width, t
 					.getAssigned().size() * student), t);
 		}
@@ -81,12 +88,20 @@ public class HistoCanvas extends JPanel implements MouseListener  {
 
 	/** Histogram representation of all Timeslots */
 	public void histogram(Graphics g) {
+		g.drawLine(rightOffset, 0, rightOffset, getHeight() - bottomOffset);
+		g.drawLine(rightOffset, getHeight() - bottomOffset, getWidth()-rightOffset, getHeight() - bottomOffset);
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		((Graphics2D) g).setFont(new Font("Sans serif", 0, 9));
 		if (this.rectangles == null) { // There's no data
 			if(DEBUG){ System.out.println("No data to plot histogram"); } 
 			return;
+		}
+		double valuesGap = scaleTop/(double)NUM_LABELS;
+		double pixelGap = (scaleTop/(double)NUM_LABELS)*((getHeight()-bottomOffset)/scaleTop);
+		for (int i = 0; i<NUM_LABELS+1; i++){
+			g.drawLine(leftOffset, (int)Math.round(getHeight()-bottomOffset-(i*pixelGap)), leftOffset-leftOffset/3, (int)Math.round(getHeight()-bottomOffset-(i*pixelGap)));
+			g.drawString(""+Math.round(valuesGap*i), leftOffset-20, (int)Math.round(getHeight()-bottomOffset-(i*pixelGap)+5));
 		}
 
 		// Plots a GREEN bar for all timeslots within preferred range
