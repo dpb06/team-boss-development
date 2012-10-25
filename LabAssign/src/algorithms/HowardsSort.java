@@ -85,7 +85,7 @@ public class HowardsSort implements Algorithm {
 
 		for(Student s: students){
 			if(!s.getFlaggedForTuts()){
-				s.setAssignedLab(s.getCombinedTuts().get(0));
+				s.setAssignedTut(s.getCombinedTuts().get(0));
 				s.getCombinedTuts().get(0).addStudent(s);
 			}
 		}
