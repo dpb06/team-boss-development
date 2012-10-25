@@ -481,7 +481,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 						naughtyStudents.add(s);
 				}
 				if(naughtyStudents.size() > 0){
-					tutStudents = new NaughtyList(naughtyStudents, tutorialsList, "Students with one/no tutorials selected").getStudents();
+					new NaughtyList(naughtyStudents, tutorialsList, "Students with one/no tutorials selected").getStudents();
 					//TODO Stop it here awaiting user's checkover of list
 				}
 				naughtyStudents = new ArrayList<Student>();
