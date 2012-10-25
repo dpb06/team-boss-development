@@ -983,8 +983,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		public void addBoundsInputs() {
 		}
 
-		public JFrame getFrame() {
-			return frame;
-		}
+
+	}
+	public JFrame getFrame() {
+		return frame;
 	}
 }

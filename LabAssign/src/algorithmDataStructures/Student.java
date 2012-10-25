@@ -463,4 +463,8 @@ public class Student implements Comparable<Object>, Cloneable {
 		
 	}
 
+	public void setName(String in) {
+		name = in;		
+	}
+
 }
