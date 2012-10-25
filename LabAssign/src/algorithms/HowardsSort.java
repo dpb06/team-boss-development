@@ -33,21 +33,7 @@ public class HowardsSort implements Algorithm {
 		this.students = students;
 		this.labs = labs;
 		this.tutorials = tutorials;
-		Collections.sort(students,new Comparator<Student>(){
-			@Override
-			public int compare(Student arg0, Student arg1) {
-				Student s1=arg0;
-				Student s2=arg1;
-				if(s1.getNumCanAttendLabs()<s2.getNumCanAttendLabs()){
-					return 1;
-				}
-				else if(s1.getNumCanAttendLabs()>s2.getNumCanAttendLabs()){
-					return -1;
-				}
-				return 0;
-			}
 
-		});
 	}
 
 
@@ -241,12 +227,17 @@ public class HowardsSort implements Algorithm {
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
+		output.addFitness("Not Flagged Students", 100*((double)1-((double)flagged.size()/(double)students.size())));
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){
 			System.out.println(s.getStudentNum() + " - " + s.getName());
 			output.addFlagged(s);
 		}
+		System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent"));
+		System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent"));
+		System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness"));
+		System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students"));
 	}
 
 

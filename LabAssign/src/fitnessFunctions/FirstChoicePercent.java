@@ -31,7 +31,7 @@ public class FirstChoicePercent implements FitnessFunction{
 		this.fitness = (double)100*((double)firsts/(double)total);
 		//Add fitness to AlgorithmOutput
 		System.out.println(fitness);
-		output.addFitness("FirstChoicePercent", (int) fitness);
+		output.addFitness("FirstChoicePercent", fitness);
 	}
 	
 	public double fitness(){

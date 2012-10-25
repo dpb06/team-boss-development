@@ -429,11 +429,16 @@ public class BossSort implements Algorithm{
 		new FirstChoicePercent(output);
 		new ThirdChoicePercent(output);
 		new LabFullness(output);
+		output.addFitness("Not Flagged Students", 100*((double)1-((double)flagged.size()/(double)students.size())));
 		//Printspam the flagged students.
 		System.out.println("Flagged:");
 		for(Student s: flagged){
 			System.out.println(s.getStudentNum() + " - " + s.getName());
 			output.addFlagged(s);
 		}
+		System.out.println("First choice Percentage: "+ output.getFitness().get("FirstChoicePercent"));
+		System.out.println("Third choice Percentage: "+ output.getFitness().get("ThirdChoicePercent"));
+		System.out.println("Labfullness Percentage: "+ output.getFitness().get("LabFullness"));
+		System.out.println("Not Flagged Percentage: "+ output.getFitness().get("Not Flagged Students"));
 	}
 }
