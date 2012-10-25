@@ -79,14 +79,15 @@ public class ManualAssignList extends JFrame  {
 			}
 			buttonMap.put(i, group);
 		}
-
 		for(String s: columnNames){
 			table.getColumn(s).setCellRenderer(new RadioButtonRenderer());
 			table.getColumn(s).setCellEditor(new RadioButtonEditor(new JCheckBox()));
 		}
 		JButton button = new JButton("Save Selections");
 		button.setBounds(0, 0, 50, 20);
-
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(0).setPreferredWidth(100);
+		}
 		button.addActionListener(new ActionListener() {			 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +114,6 @@ public class ManualAssignList extends JFrame  {
 		JScrollPane scroll = new JScrollPane(table);
 		this.add(scroll, BorderLayout.NORTH);
 		this.add(button, BorderLayout.SOUTH);
-		//setSize(200, 140);
 		this.pack();
 		setVisible(true);
 	}
@@ -183,26 +183,6 @@ public class ManualAssignList extends JFrame  {
 			}
 		}
 		return rowData;
-	}
-
-	public static void main(String[] args) {
-		// JUnitTestingData j = new JUnitTestingData();
-		StudentDataParser p;
-		try {
-			p = new StudentDataParser(new File("/am/state-opera/home1/mackenbarb/git/team-boss-development-2/LabAssign/src/UI/FullInputData.txt"));
-			List<Timeslot> ts = p.getTimeslots();
-			List<Student> studs = p.parseSelections(ts, true);
-			ManualAssignList frame = new ManualAssignList(studs, ts, new GUI());
-			frame.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				}
-			});
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
 

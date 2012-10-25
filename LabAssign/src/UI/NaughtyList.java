@@ -68,26 +68,10 @@ public class NaughtyList extends JFrame  {
 				NaughtyList.this.dispose();
 			}
 		});
+		for (int i = 0; i < model.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(0).setPreferredWidth(100);
+		}
 		this.pack();
 		this.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		// JUnitTestingData j = new JUnitTestingData();
-		StudentDataParser p;
-		try {
-			p = new StudentDataParser(new File("~/FullInputData.txt"));
-			List<Timeslot> ts = p.getTimeslots();
-			List<Student> studs;
-			new NaughtyList(studs = p.parseSelections(ts,true),ts).setVisible(true);
-			for (Student s:studs){
-				s.printDebug();
-			}
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 }
