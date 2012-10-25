@@ -19,8 +19,14 @@ public class LabFullness implements FitnessFunction{
 			//Check maximum capacity.
 			int max = t.getPreferredMax();
 			//Calculate percentage.
-			double labPercent = 100*(float)size/(float)max;
+			double labPercent;
+			if(size!=0){
+			labPercent = 100*(float)size/(float)max;
 			//Print out each lab's fullness.
+			}
+			else{
+				labPercent=100;
+			}
 			System.out.printf("Lab fullness: %.0f percent\n", labPercent);
 			//Keep running total of average fullness.
 			average += labPercent;
