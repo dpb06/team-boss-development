@@ -193,7 +193,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					if(t instanceof Lab)
 						ts.add(t);
 				}
-				new ManualAssignList(studs, ts);
+				new ManualAssignList(studs, ts, GUI.this);
+				naughtyCalculation(); 
 				frame.validate();
 			}
 		});
@@ -216,7 +217,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 					if(t instanceof Tutorial)
 						ts.add(t);
 				}
-				new ManualAssignList(studs, ts);
+				new ManualAssignList(studs, ts, GUI.this);
+				naughtyCalculation(); 
 				frame.validate();
 			}
 		});
@@ -303,7 +305,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		flaggedLabsButton.addActionListener(new ActionListener() {      
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new NaughtyList(output.getFlagged(), labsList).setVisible(true);
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForLabs())
+						studs.add(s);
+				}
+				new NaughtyList(studs, labsList).setVisible(true);
 			}
 		});
 		flagLab.add(flaggedLabs, BorderLayout.WEST);
@@ -316,7 +323,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		flaggedTutsButton.addActionListener(new ActionListener() {      
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new NaughtyList(output.getFlagged(), tutorialsList).setVisible(true);
+				ArrayList<Student> studs = new ArrayList<Student>();
+				for(Student s: output.getFlagged()){
+					if(s.getFlaggedForTuts())
+						studs.add(s);
+				}
+				new NaughtyList(studs, tutorialsList).setVisible(true);
 			}
 		});
 		flagTut.add(flaggedTuts, BorderLayout.WEST);
@@ -560,37 +572,38 @@ public class GUI extends JFrame implements ActionListener, ItemListener {
 		//		}
 
 		fit.setText(fitness);	
-
-
-		//Enable Naughty Lists Buttons if applicable
-		if(!output.getFlagged().isEmpty()){
-			if(labs.exists()){
-				ArrayList<Student> studs = new ArrayList<Student>();
-				for(Student s: output.getFlagged()){
-					if(s.getFlaggedForLabs())
-						studs.add(s);
-				}
-				if(!studs.isEmpty()){
-					flaggedLabs.setText("Flagged for Labs - " + studs.size());
-					flaggedLabsButton.setEnabled(true);
-				}
-			}
-			if(tuts.exists()){
-				ArrayList<Student> studs = new ArrayList<Student>();
-				for(Student s: output.getFlagged()){
-					if(s.getFlaggedForTuts())
-						studs.add(s);
-				}
-				if(!studs.isEmpty()){
-					flaggedTuts.setText("Flagged for Tuts - " + studs.size());
-					flaggedTutsButton.setEnabled(true);
-				}
-			}
-		}
-		frame.validate();
+		naughtyCalculation();	
 		frame.repaint();
 	}
 
+	protected void naughtyCalculation(){
+		//Enable Naughty Lists Buttons if applicable
+		if(labs.exists()){
+			ArrayList<Student> studs = new ArrayList<Student>();
+			for(Student s: output.getFlagged()){
+				if(s.getFlaggedForLabs())
+					studs.add(s);
+			}
+			flaggedLabs.setText("Flagged for Labs - " + studs.size());
+			if(!studs.isEmpty())				
+				flaggedLabsButton.setEnabled(true);
+			else
+				flaggedLabsButton.setEnabled(false);
+		}
+		if(tuts.exists()){
+			ArrayList<Student> studs = new ArrayList<Student>();
+			for(Student s: output.getFlagged()){
+				if(s.getFlaggedForTuts())
+					studs.add(s);
+			}
+			flaggedTuts.setText("Flagged for Tuts - " + studs.size());
+			if(!studs.isEmpty())				
+				flaggedTutsButton.setEnabled(true);
+			else
+				flaggedTutsButton.setEnabled(false);
+		}
+		frame.validate();
+	}
 
 	//TODO resolve it so that the labs and tutorials are saved
 	// and not overwritten when re-running algorithm.

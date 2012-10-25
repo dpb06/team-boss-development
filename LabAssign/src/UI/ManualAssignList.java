@@ -1,6 +1,5 @@
 package UI;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -43,7 +42,7 @@ public class ManualAssignList extends JFrame {
 	private String[] columnNames;
 	private Object[][] data;
 
-	private boolean DEBUG = false;
+	private boolean DEBUG = true;
 
 	private Map<Integer, Student> studentsMap = new HashMap<Integer, Student>();
 	private Map<Integer, ButtonGroup> buttonMap = new HashMap<Integer, ButtonGroup>();
@@ -51,7 +50,7 @@ public class ManualAssignList extends JFrame {
 	private List<Student> students;
 	//    List<Timeslot> timeslots;
 
-	public ManualAssignList(final List<Student> students, List<Timeslot> timeslots) {
+	public ManualAssignList(final List<Student> students, List<Timeslot> timeslots, final GUI gui) {
 		super("Students to Manually Assign");
 		this.setLayout(new BorderLayout());
 		UIDefaults ui = UIManager.getLookAndFeel().getDefaults();
@@ -108,6 +107,7 @@ public class ManualAssignList extends JFrame {
 						}
 					}
 				}
+				gui.naughtyCalculation();
 				dispose();
 			}
 		});
@@ -117,6 +117,11 @@ public class ManualAssignList extends JFrame {
 		//setSize(200, 140);
 		this.pack();
 		setVisible(true);
+	}
+	
+	public boolean isCellEditable(int row, int col) {
+		//Only Student IDs are uneditable
+		return (col > 0);
 	}
 
 	private String[] createColumnNames(List<Timeslot> timeslots){
@@ -178,7 +183,7 @@ public class ManualAssignList extends JFrame {
 			p = new StudentDataParser(new File("/am/state-opera/home1/mackenbarb/git/team-boss-development-2/LabAssign/src/UI/FullInputData.txt"));
 			List<Timeslot> ts = p.getTimeslots();
 			List<Student> studs = p.parseSelections(ts, true);
-			ManualAssignList frame = new ManualAssignList(studs, ts);
+			ManualAssignList frame = new ManualAssignList(studs, ts, new GUI());
 			frame.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
 					System.exit(0);
@@ -189,8 +194,6 @@ public class ManualAssignList extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 	}
 }
 
@@ -212,7 +215,7 @@ class RadioButtonEditor extends DefaultCellEditor implements ItemListener {
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
-		if (value == null)
+		if (value == null || column < 1)
 			return null;
 		button = (JRadioButton) value;
 		button.addItemListener(this);
