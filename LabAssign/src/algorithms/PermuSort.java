@@ -15,8 +15,23 @@ import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
 
 
-//TODO: Implement tutorial functionality
-
+/** Permusort is a permutation algorithm which naively works through 
+ * every possible combination of choices for the students and saves only the
+ * combination which yields the highest happiness value.
+ * 
+ * As this is a naive algorithm with many trillion combinations (easily more)
+ * this could easily run for a very long time and not finish. 
+ * As such it is set to look for the best combination possible within a set time frame, 
+ * and store only that one, finishing when the time period has past.
+ * If given a long period of time (read "infinite") this would find the best combination.
+ * 
+ *  However as it stands this algorithm has an issue with the time it finishes, finishing 
+ *  much too early so no useful results are found.  
+ *  
+ *  
+ *  This would need to be resolved before this algorithm is used.
+ *
+ */
 
 public class PermuSort implements Algorithm { 
  private final boolean DEBUG = false; 
@@ -86,7 +101,7 @@ public class PermuSort implements Algorithm {
 	public void sortLabs(){
 		//Begin console output.
 		if(DEBUG){ System.out.println("sortLabs() in PermuteSort"); } 
-		//For each student in order of how few labs they can attend. TODO: check???
+		//For each student in order of how few labs they can attend. 
 		for(Student s:students){
 			//If the student hasn't already been flagged
 			if(!s.getFlaggedForLabs()){
@@ -162,14 +177,11 @@ public class PermuSort implements Algorithm {
 						//Recurse on child
 						//if(DEBUG){ System.out.println(c.getStudent()+" : "+c.t.toString()); } 
 
-						counting++;
-						if(counting==116){
-							if(DEBUG){ System.out.println("no homo"); } 
-						}
+						
 						iterateLabPermutations(currentNode.getNext());
 					}
 					else{
-						if(DEBUG){ System.out.println("FFFFFFFFFFFFFFFFFFFMMMMMMMMMMMMMMMMMMLLLLLLLLLLLLLLLLLLLLLL"); } 
+						if(DEBUG){ System.out.println("process killed"); } 
 					}
 				}
 				//If this node doesn't have a child
@@ -340,7 +352,6 @@ public class PermuSort implements Algorithm {
 		}
 		if(DEBUG){ System.out.println("End fitnees: " + bestFitness); } 
 		if(DEBUG){ System.out.println(); } 
-		//TODO: Add proper fitness evaluation print spam here
 		if(DEBUG){ System.out.println("Solutions found: " + count); } 
 	}
 
@@ -349,7 +360,7 @@ public class PermuSort implements Algorithm {
 	 * A thread class that runs for a set amount of time, then changes the killswitch boolean to true to interrupt PermuSort
 	 */
 	private class Killthread extends Thread{
-		private final int timeToRun = 120000; //2 min //TODO: allow people to change this?
+		private final int timeToRun = 120000; //2 min 
 		public void run(){
 			try {
 				sleep(timeToRun);

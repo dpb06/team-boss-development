@@ -15,11 +15,7 @@ public class StudentChoiceOrderSuite  {
 	private ArrayList<Student> students;
 	
 	
-	
-	//TODO: To keep track of the current code coverage, update this fairly regularly.
-	//Current code coverage for StudentChoiceOrder is 100%! Choice, bro.
-		
-	
+
 	
 	public StudentChoiceOrderSuite(){
 		JUnitTestingData j = new JUnitTestingData();

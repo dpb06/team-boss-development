@@ -19,11 +19,7 @@ public class HowardSortJUnitSuite  {
 
 	
 	
-	
-	//TODO: To keep track of the current code coverage, update this fairly regularly.
-	//Current code coverage for StudentChoiceOrder is 31.1%! Weak.
-	//testStudentPersistence is failing, too.
-		
+
 	
 	
 	private ArrayList<Student> students;
@@ -35,12 +31,6 @@ public class HowardSortJUnitSuite  {
 		students = j.getStudents();
 		labs = j.getLabs();
 		tutorials = j.getTutorials();
-
-		// TODO: Test input vs output.
-		// TODO: Test non-determinism of output.
-		// TODO: Are all students in input accounted for by the output?
-		// TODO: Sanity check inputs.
-		// TODO: Check code coverage.
 
 	}
 

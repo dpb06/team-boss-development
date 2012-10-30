@@ -224,9 +224,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 				selectedAlgorithm = (String)cb.getSelectedItem();
 			}
 		});
-
 		algoGroup.setMaximumSize(new Dimension(200,25));
 		algoSelect.add(algoGroup);
+		
 		GridBagConstraints defaultCons = new GridBagConstraints();
 		defaultCons.weightx = 0;
 		GridBagConstraints fileCons = new GridBagConstraints();
@@ -246,17 +246,17 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		fileAlgoPanel.add(tutFileButton, defaultCons);
 		fileAlgoPanel.add(algoSelect, lastCons);
 		fileAlgoPanel.add(runButton, lastCons);
-		//TODO Haydn to add unanswered Button's location
 		lastCons.gridy = 2;
 		lastCons.gridwidth = 3;
 		fileAlgoPanel.add(unanswered, lastCons);
+		
 		JPanel canvasPanel = new JPanel();
 		Dimension d = new Dimension(frame.getWidth() - 100, 500);
 		canvasPanel.add(new Box.Filler(d, d, d));
-		canvas = new HistoCanvas();
-		// canvas.setBackground(Color.red);
+		canvas = new HistoCanvas();		
 		canvasPanel.add(canvas);
 		frame.add(canvasPanel, BorderLayout.CENTER);
+		
 		textArea = new JTextArea(1, 4);
 		textArea.setEditable(true);
 
@@ -490,7 +490,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 			List<Student> naughtyStudents = new ArrayList<Student>();
 			if(havelabs){			
 				StudentDataParser labParser = new StudentDataParser(labs);		
-				labsList = labParser.getTimeslots();
+				labsList = labParser.getLabs();
 				labStudents = labParser.parseSelections(labsList, true);
 				doBounds(labsList, true, havelabs, havetuts);
 
@@ -510,7 +510,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 
 			if(havetuts){
 				StudentDataParser tutParser = new StudentDataParser(tuts);
-				tutorialsList = tutParser.getTimeslots();
+				tutorialsList = tutParser.getTutorials();
 				tutStudents = tutParser.parseSelections(tutorialsList, false);
 				doBounds(tutorialsList, false, havelabs, havetuts);
 				//NaughtyList for Students with 1 or 0 choices
@@ -521,7 +521,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 				if(naughtyStudents.size() > 0){
 
 					new NaughtyList(naughtyStudents, tutorialsList, "Students with one/no tutorials selected").getStudents();
-					//TODO Stop it here awaiting user's checkover of list
 
 				}
 				naughtyStudents = new ArrayList<Student>();
@@ -651,9 +650,6 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		frame.validate();
 	}
 
-	//TODO resolve it so that the labs and tutorials are saved
-	// and not overwritten when re-running algorithm.
-	//
 	private void doBounds(List<Timeslot> slots, boolean isLabs, boolean hasLabs, boolean hasTuts){
 
 

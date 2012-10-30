@@ -132,7 +132,6 @@ public class HistoCanvas extends JPanel implements MouseListener  {
 				((Graphics2D) g).drawString(s.toString(), newPos.x, newPos.y);
 				((Graphics2D) g).rotate(-Math.PI / 6);
 			} catch (NoninvertibleTransformException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

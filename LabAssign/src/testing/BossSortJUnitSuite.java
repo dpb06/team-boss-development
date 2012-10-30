@@ -19,12 +19,7 @@ public class BossSortJUnitSuite  {
  private final boolean DEBUG = false; 
 
 	
-	
-	
-	//TODO: To keep track of the current code coverage, update this fairly regularly.
-	//Current code coverage for BossSort is 96.8%
-		
-	
+
 	
 	private ArrayList<Student> students;
 	private ArrayList<Timeslot> labs;
@@ -35,11 +30,6 @@ public class BossSortJUnitSuite  {
 		students = j.getStudents();
 		labs = j.getLabs();
 		tutorials = j.getTutorials();
-
-		// TODO: Test input vs output.
-		// TODO: Test non-determinism of output.
-		// TODO: Sanity check inputs.
-		// TODO: Check code coverage.
 
 	}
 

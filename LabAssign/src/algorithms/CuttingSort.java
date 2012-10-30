@@ -96,12 +96,6 @@ public class CuttingSort implements Algorithm  {
 		return true;
 	}
 
-	public static void main(String[] args) {
-		JUnitTestingData j = new JUnitTestingData();
-		CuttingSort cs = new CuttingSort(j.getLabs(), j.getTutorials(),
-				j.getStudents());
-		cs.start();
-	}
 
 	/**
 	 * Compare timeslots according the what percentage full they are.

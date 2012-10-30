@@ -16,15 +16,13 @@ import algorithmDataStructures.Day;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
+import algorithmDataStructures.Tutorial;
 
 public class StudentDataParser  { 
  private final boolean DEBUG = false; 
 
 	
-	
-	//TODO: Ensure student IDs are unique.
-	
-	
+
 	/**
 	 * Data file format:
 	 * 
@@ -197,7 +195,7 @@ public class StudentDataParser  {
 	 * @return gives the list of timeslots from the file, with each having a max student count of 0
 	 * @throws Throwable 
 	 */
-	public List<Timeslot> getTimeslots() throws IllegalArgumentException{
+	public List<Timeslot> getTimeslots(boolean isLabs) throws IllegalArgumentException{
 		
 		List<Timeslot> timeslots = new ArrayList<Timeslot>();
 		
@@ -277,13 +275,25 @@ public class StudentDataParser  {
 				if(iTimeEnd == -1){
 					throw new IllegalArgumentException("Expected a time as the fourth token in: "+token);
 				}
-			Timeslot t = new Lab(quID, iTimeStart, iTimeEnd, eDay);
+			Timeslot t;
+			if(isLabs)
+				t = new Lab(quID, iTimeStart, iTimeEnd, eDay);
+			else
+				t = new Tutorial(quID, iTimeStart, iTimeEnd, eDay);
 			//t.setMaxStudents(20);
 			timeslots.add(t);
 			}
 		}
 		if(DEBUG){ System.out.println(timeslots); } 
 		return timeslots;
+	}
+	
+	public List<Timeslot> getLabs(){
+		return getTimeslots(true);
+	}
+	
+	public List<Timeslot> getTutorials(){
+		return getTimeslots(false);
 	}
 
 
@@ -337,6 +347,7 @@ public class StudentDataParser  {
 		String firstName = null;
 		String lastName = null;
 		int iStudentID = -1;
+		boolean failed = false;
 		
 		ArrayList<Timeslot> firstChoice = new ArrayList<Timeslot>();
 		ArrayList<Timeslot> secondChoice = new ArrayList<Timeslot>();
@@ -351,7 +362,6 @@ public class StudentDataParser  {
 			if(token.contains("Question ID")){ // indicates the id is in this string
 				
 				quID =Integer.parseInt(token.substring(11).trim());	
-				
 			}else if (token.contains("First Choice")){
 
 				Timeslot t = getTimeslot(timeslots, quID);
@@ -385,13 +395,20 @@ public class StudentDataParser  {
 				String studentID = iter.next().replace('\"', ' ');
 				if(studentID.contains("<Unanswered>")){
 					iStudentID = -1;
-				}else
-					iStudentID = Integer.parseInt(studentID);
+				}else{
+					try{
+						iStudentID = Integer.parseInt(studentID);
+					}catch(NumberFormatException nfe){
+						iStudentID = -1;
+						if(DEBUG){ System.out.println("Failed to read Student ID: " + studentID); }
+					}
+				}
+					
 				
 				//Student student = new Student(count, firstName, lastName, studentID);
 				String name = firstName + " " + lastName;
 				Student student = new Student(iStudentID, name);
-				if(iStudentID == -1 || name.contains("<Unanswered>"))
+				if(iStudentID == -1 || name.contains("<Unanswered>") || failed )
 					problemStudents.add(student);
 				else
 					students.add(student);
@@ -432,7 +449,6 @@ public class StudentDataParser  {
 		for(Timeslot t : timeslots){
 			if(quID == t.getuID()){
 				return t;
-				
 			}
 		}
 		return null;
