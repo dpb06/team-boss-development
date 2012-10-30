@@ -62,7 +62,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 	private JTextArea textArea;
 	private final JTextField LabFileTextField;
 	private final JTextField TutFileTextField;
-	private HistoCanvas canvas;
+	private HistoCanvas labCanvas;
+	private HistoCanvas tutCanvas;
 	private ArrayList<Bounds> sessionBoundsLabs = new ArrayList<Bounds>();
 	private ArrayList<Bounds> sessionBoundsTuts = new ArrayList<Bounds>();
 	private List<Timeslot> labsList = new ArrayList<Timeslot>();
@@ -251,10 +252,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		fileAlgoPanel.add(unanswered, lastCons);
 		
 		JPanel canvasPanel = new JPanel();
-		Dimension d = new Dimension(frame.getWidth() - 100, 500);
-		canvasPanel.add(new Box.Filler(d, d, d));
-		canvas = new HistoCanvas();		
-		canvasPanel.add(canvas);
+		//Dimension d = new Dimension(frame.getWidth() - 100, 500);
+		//canvasPanel.add(new Box.Filler(d, d, d));
+		labCanvas = new HistoCanvas();	
+		tutCanvas = new HistoCanvas();	
+		canvasPanel.add(labCanvas);
+		canvasPanel.add(tutCanvas);
 		frame.add(canvasPanel, BorderLayout.CENTER);
 		
 		textArea = new JTextArea(1, 4);
@@ -575,6 +578,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 	}
 
 	public void doRun(){
+		ArrayList<Timeslot> labC = new ArrayList<Timeslot>();	// Array for labCanvas histocanvas
+		ArrayList<Timeslot> tutC = new ArrayList<Timeslot>();	// Array for tutCanvas histocanvas
 		for(Timeslot t : labsList){
 			t.getAssigned().clear();
 		}
@@ -593,22 +598,29 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		if(selectedAlgorithm.equals("Boss Sort")){
 			BossSort bs = new BossSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = bs.start();
-			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
 		else if(selectedAlgorithm.equals("Howard Sort")){
 			HowardsSort hs = new HowardsSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = hs.start();
-			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
 		else if(selectedAlgorithm.equals("Cutting Sort")){
 			CuttingSort cs = new CuttingSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = cs.start();
-			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}else if(selectedAlgorithm.equals("Permute Sort")){
 			PermuSort ps = new PermuSort(new ArrayList<Timeslot>(labsList),new ArrayList<Timeslot>(tutorialsList),new ArrayList<Student>(students));
 			output = ps.start();
-			canvas.setTimeslots(new ArrayList<Timeslot>(output.keySet()));
 		}
+		
+		// Assigning output timeslots to lab or tuts...
+		for(Timeslot t: output.keySet()){
+			if(t instanceof Lab)
+				labC.add(t);
+			else
+				tutC.add(t);
+		}
+		// ...and creating histocanas for lab & tuts
+		labCanvas.setTimeslots(labC);
+		tutCanvas.setTimeslots(tutC);
 
 		if(DEBUG){ System.out.println(output.fitnessValue()); } 
 		String fitness = "Fitness - " + output.fitnessValue();
