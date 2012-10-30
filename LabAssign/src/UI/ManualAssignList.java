@@ -7,10 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +31,6 @@ import javax.swing.table.TableCellRenderer;
 import algorithmDataStructures.Lab;
 import algorithmDataStructures.Student;
 import algorithmDataStructures.Timeslot;
-import dataParsing.StudentDataParser;
 
 
 public class ManualAssignList extends JFrame  { 
@@ -50,7 +45,7 @@ public class ManualAssignList extends JFrame  {
 	//    List<Timeslot> timeslots;
 
 	public ManualAssignList(final List<Student> students, List<Timeslot> timeslots, final GUI gui) {
-		super("Students to Manually Assign");
+		super("Students to Manually Assign " + (timeslots.get(0) instanceof Lab? "Labs":"Tuts"));
 		this.setLayout(new BorderLayout());
 		UIDefaults ui = UIManager.getLookAndFeel().getDefaults();
 		UIManager.put("RadioButton.focus", ui.getColor("control"));
