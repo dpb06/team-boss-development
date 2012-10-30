@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,7 +57,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 
 	// Parameters
 	private JFrame frame;
-	private JPanel boundsPanel;
+
 	private JPanel fitnessFunctionPanel;
 
 	private JTextArea textArea;
@@ -90,6 +91,12 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 	AlgorithmOutput output;
 	private List<Student> labStudents;
 	private List<Student> tutStudents;
+
+	private JPanel tutorialsPanel;
+
+	private JPanel labsPanel;
+
+	private int heightOfBounds;
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -272,10 +279,25 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		JPanel eastPanel = new JPanel();
 		eastPanel.setLayout(new BorderLayout());
 
-		boundsPanel = new JPanel();
-		boundsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
-		boundsPanel.setLayout(new GridBagLayout());
+		JPanel boundsPanel = new JPanel();
+		boundsPanel.setLayout(new GridLayout(2, 1));
+		
+		labsPanel = new JPanel();
+		labsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
+		labsPanel.setLayout(new GridBagLayout());
+		
+		tutorialsPanel = new JPanel();
+		tutorialsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
+		tutorialsPanel.setLayout(new GridBagLayout());
 
+		
+		boundsPanel.add(labsPanel);
+		boundsPanel.add(tutorialsPanel);
+		
+		
+		
+		
+		
 		//Fitness/Flagged Section
 		fitnessFunctionPanel = new JPanel(new BorderLayout());
 		fit = new JLabel("Fitness - Yet to be Calculated");
@@ -391,6 +413,8 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 				frame.validate();
 			}
 		});	
+		
+		
 
 		southPanel.add(save);
 		southPanel.add(manualAssignLabs);
@@ -401,8 +425,10 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 		frame.add(eastPanel, BorderLayout.EAST);
 		frame.add(southPanel, BorderLayout.SOUTH);
 		frame.setPreferredSize(new Dimension(1000, 800));
-		frame.pack();		
+		frame.pack();	
 		frame.setVisible(true);
+		
+		heightOfBounds = canvasPanel.getHeight()/2;
 	}
 
 	private void fileOutput(AlgorithmOutput output, File fout) {
@@ -689,29 +715,35 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 			GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 2, 2, 2);
 			c.fill = GridBagConstraints.VERTICAL;
+			JPanel panel;
+			if(isLabs)
+				panel = labsPanel;
+			else
+				panel = tutorialsPanel;
+				
 			// if this is the Labs bounds
 			// or we dont have labs and are making the tuts bounds
 			// create a title row.
-			if(isLabs || ((hasTuts && !hasLabs) && !isLabs) ){
-				boundsPanel.removeAll();
+//			if(isLabs || ((hasTuts && !hasLabs) && !isLabs) ){
+				panel.removeAll();
 				c.weightx = 0.5;
 				c.gridx = 0;
 				c.gridy = 0+startRow;
-				boundsPanel.add(new JLabel("Session Name "));
+				panel.add(new JLabel("Session Name "));
 				c.gridx = 1;
 				c.gridy = 0+startRow;
-				boundsPanel.add(new JLabel("Min      "));
+				panel.add(new JLabel("Min      "));
 				c.gridx = 2;
 				c.gridy = 0+startRow;
-				boundsPanel.add(new JLabel("Max      "));
+				panel.add(new JLabel("Max      "));
 				c.gridx = 3;
 				c.gridy = 0+startRow;
-				boundsPanel.add(new JLabel("Pref. Min"));
+				panel.add(new JLabel("Pref. Min"));
 
 				c.gridx = 4;
 				c.gridy = 0+startRow;
-				boundsPanel.add(new JLabel("Pref. Max"));
-			}
+				panel.add(new JLabel("Pref. Max"));
+//			}
 			String sectionTitle = "";
 
 			if(isLabs){
@@ -720,7 +752,7 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 				sectionTitle = "TUTS";
 			}
 
-			createTitleRow(boundsPanel, 3 + startRow, sectionTitle);
+			createTitleRow(panel, 3 + startRow, sectionTitle);
 
 			for (int i = 0; i < slots.size(); i++) {
 				Bounds timeslotBounds = new Bounds(slots.get(i));
@@ -729,13 +761,17 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 				// it starts two rows down to allow space for the title rows
 				// (eg. Session Name)
 				String slotTitle = slots.get(i).toString();
-				timeslotBounds.createInputBoxes(boundsPanel, i + 4 + startRow, slotTitle);
+				timeslotBounds.createInputBoxes(panel, i + 4 + startRow, slotTitle);
 			}
 			if(isLabs)
 				sessionBoundsLabs = sessionBounds;
 			else
 				sessionBoundsTuts = sessionBounds;
+			
+			
 		}
+		labsPanel.setPreferredSize(new Dimension(labsPanel.getWidth(), heightOfBounds));
+		tutorialsPanel.setPreferredSize(new Dimension(tutorialsPanel.getWidth(), heightOfBounds));
 		frame.validate();
 	}
 
