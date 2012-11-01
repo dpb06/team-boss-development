@@ -2,6 +2,7 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -92,11 +93,15 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 	private List<Student> labStudents;
 	private List<Student> tutStudents;
 
-	private JPanel tutorialsPanel;
+	private JPanel innerTutorialsPanel;
+
+	private JPanel innerLabsPanel;
+
+	private int heightOfBounds;
 
 	private JPanel labsPanel;
 
-	private int heightOfBounds;
+	private JPanel tutorialsPanel;
 
 	// currently this sets up all the graphical user interface. I'll later break
 	// it up into component methods
@@ -281,14 +286,22 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 
 		JPanel boundsPanel = new JPanel();
 		boundsPanel.setLayout(new GridLayout(2, 1));
+		boundsPanel.setOpaque(false);
 		
 		labsPanel = new JPanel();
-		labsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
-		labsPanel.setLayout(new GridBagLayout());
+		labsPanel.setLayout(new BorderLayout());
+		
+		innerLabsPanel = new JPanel();		
+		innerLabsPanel.setLayout(new GridBagLayout());
+		labsPanel.add(innerLabsPanel, BorderLayout.NORTH);
 		
 		tutorialsPanel = new JPanel();
-		tutorialsPanel.setLayout(new BoxLayout(boundsPanel, BoxLayout.Y_AXIS));
-		tutorialsPanel.setLayout(new GridBagLayout());
+		tutorialsPanel.setLayout(new BorderLayout());
+		innerTutorialsPanel = new JPanel();
+		innerTutorialsPanel.setLayout(new GridBagLayout());
+		tutorialsPanel.add(innerTutorialsPanel, BorderLayout.NORTH);
+		
+		
 
 		
 		boundsPanel.add(labsPanel);
@@ -717,9 +730,9 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 			c.fill = GridBagConstraints.VERTICAL;
 			JPanel panel;
 			if(isLabs)
-				panel = labsPanel;
+				panel = innerLabsPanel;
 			else
-				panel = tutorialsPanel;
+				panel = innerTutorialsPanel;
 				
 			// if this is the Labs bounds
 			// or we dont have labs and are making the tuts bounds
@@ -770,9 +783,16 @@ public class GUI extends JFrame implements ActionListener, ItemListener  {
 			
 			
 		}
-		labsPanel.setPreferredSize(new Dimension(labsPanel.getWidth(), heightOfBounds));
-		tutorialsPanel.setPreferredSize(new Dimension(tutorialsPanel.getWidth(), heightOfBounds));
+		innerLabsPanel.setOpaque(false);
+		innerTutorialsPanel.setOpaque(false);	
+		
+		labsPanel.setOpaque(false);
+		tutorialsPanel.setOpaque(false);
+		
+		labsPanel.setPreferredSize(new Dimension(innerLabsPanel.getWidth(), (int) (heightOfBounds)));
+		tutorialsPanel.setPreferredSize(new Dimension(innerTutorialsPanel.getWidth(), (int) (heightOfBounds)));
 		frame.validate();
+		frame.pack();
 	}
 
 	@Override
